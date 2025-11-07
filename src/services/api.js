@@ -1,7 +1,10 @@
 import axios from "axios";
 
+// Configuración para producción y desarrollo
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
 const API = axios.create({
-  baseURL: "http://localhost:4000/",
+  baseURL: API_BASE_URL,
   withCredentials: true, // Importante para enviar cookies
   headers: {
     'Content-Type': 'application/json',
