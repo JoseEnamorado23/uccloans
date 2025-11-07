@@ -1,6 +1,7 @@
 // hooks/useLoanForm.js - MODIFICADO
 import { useState, useEffect, useCallback } from "react";
 import { useProgramas } from "./useProgramas"; // ✅ NUEVO: Importar hook de programas
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
 export const useLoanForm = () => {
   const [formData, setFormData] = useState({
@@ -33,7 +34,7 @@ export const useLoanForm = () => {
     try {
       setCargandoImplementos(true);
       const response = await fetch(
-        "http://localhost:4000/api/implementos/disponibles"
+        `${import.meta.env.VITE_API_URL}/api/implementos/disponibles`
       );
       const data = await response.json();
 
@@ -55,7 +56,7 @@ export const useLoanForm = () => {
   const createUserFromAdmin = async (userData) => {
     try {
       const response = await fetch(
-        "http://localhost:4000/api/auth/register-admin",
+        `${import.meta.env.VITE_API_URL}/api/auth/register-admin`,
         {
           method: "POST",
           headers: {
@@ -112,7 +113,7 @@ export const useLoanForm = () => {
         const formDataForSubmit = getFormDataForSubmit();
         console.log("📤 Enviando préstamo:", formDataForSubmit);
 
-        const response = await fetch("http://localhost:4000/api/prestamos", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/prestamos`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -160,7 +161,7 @@ export const useLoanForm = () => {
     setIsSearching(true);
     try {
       const response = await fetch(
-        `http://localhost:4000/api/usuarios/buscar?q=${encodeURIComponent(
+        `${import.meta.env.VITE_API_URL}/api/usuarios/buscar?q=${encodeURIComponent(
           query
         )}`
       );
@@ -189,7 +190,7 @@ export const useLoanForm = () => {
     setIsSearching(true);
     try {
       const response = await fetch(
-        `http://localhost:4000/api/usuarios/cedula/${cedula}`
+        `${import.meta.env.VITE_API_URL}/api/usuarios/cedula/${cedula}`
       );
       const data = await response.json();
 
@@ -259,30 +260,28 @@ export const useLoanForm = () => {
   };
 
   const selectUser = (user) => {
-  console.log("👤 Seleccionando usuario:", user); // ✅ DEBUG
-  
-  setFormData({
-    nombre_completo: user.nombre_completo || "",
-    cedula: user.numero_cedula || "",
-    telefono: user.numero_telefono || "",
-    programa_id: user.programa_id || "", // ✅ Asegurar que se asigne el programa
-    email: user.email || "", // ✅ Mantener email si existe
-    implemento_id: formData.implemento_id,
-    hora_inicio: formData.hora_inicio,
-  });
-  
-  setSelectedUser(user);
-  setSearchResults([]);
-  setErrors({});
-  setIsNewUser(false);
-  
-  console.log("📋 FormData después de seleccionar:", { 
-    programa: user.programa,
-    formDataPrograma: formData.programa 
-  }); // ✅ DEBUG
-};
-
-  
+    console.log("👤 Seleccionando usuario:", user); // ✅ DEBUG
+    
+    setFormData({
+      nombre_completo: user.nombre_completo || "",
+      cedula: user.numero_cedula || "",
+      telefono: user.numero_telefono || "",
+      programa_id: user.programa_id || "", // ✅ Asegurar que se asigne el programa
+      email: user.email || "", // ✅ Mantener email si existe
+      implemento_id: formData.implemento_id,
+      hora_inicio: formData.hora_inicio,
+    });
+    
+    setSelectedUser(user);
+    setSearchResults([]);
+    setErrors({});
+    setIsNewUser(false);
+    
+    console.log("📋 FormData después de seleccionar:", { 
+      programa: user.programa,
+      formDataPrograma: formData.programa 
+    }); // ✅ DEBUG
+  };
 
   const validateField = (field, value) => {
     const newErrors = { ...errors };
