@@ -12,14 +12,14 @@ export const useImplementos = () => {
   });
 
   // Base URL de la API - CORREGIDO
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
   // Cargar todos los implementos
   const cargarImplementos = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_BASE}/implementos`);
+      const response = await fetch(`${API_BASE}/api/implementos`);
       const data = await response.json();
       
       if (data.success) {
@@ -48,7 +48,7 @@ export const useImplementos = () => {
   // Crear nuevo implemento
   const crearImplemento = async (implementoData) => {
     try {
-      const response = await fetch(`${API_BASE}/implementos`, {
+      const response = await fetch(`${API_BASE}/api/implementos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export const useImplementos = () => {
   // Actualizar implemento
   const actualizarImplemento = async (id, implementoData) => {
     try {
-      const response = await fetch(`${API_BASE}/implementos/${id}`, {
+      const response = await fetch(`${API_BASE}/api/implementos/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ export const useImplementos = () => {
   // Eliminar implemento
   const eliminarImplemento = async (id) => {
     try {
-      const response = await fetch(`${API_BASE}/implementos/${id}`, {
+      const response = await fetch(`${API_BASE}/api/implementos/${id}`, {
         method: 'DELETE'
       });
       
