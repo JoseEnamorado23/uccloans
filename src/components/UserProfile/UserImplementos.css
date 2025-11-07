@@ -1,0 +1,230 @@
+/* src/components/UserProfile/UserImplementos.css */
+.user-implementos {
+  padding: 0;
+}
+
+.implementos-header {
+  margin-bottom: 2rem;
+}
+
+.implementos-header h2 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.implementos-header p {
+  margin: 0;
+  color: #666;
+}
+
+.implementos-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  align-items: end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.filter-group input {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  min-width: 250px;
+}
+
+.implementos-stats {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-align: center;
+  border-left: 4px solid #007bff;
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.implementos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.implemento-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.implemento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.implemento-image {
+  height: 120px;
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.implemento-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.implemento-placeholder {
+  font-size: 3rem;
+  color: #6c757d;
+}
+
+.implemento-content {
+  padding: 1.5rem;
+}
+
+.implemento-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.implemento-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.implemento-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.detail-value {
+  color: #333;
+  font-weight: 500;
+}
+
+.implemento-footer {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.implemento-footer small {
+  color: #999;
+  font-size: 0.8rem;
+}
+
+/* Badges de disponibilidad */
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-available { background: #e8f5e8; color: #2e7d32; }
+.badge-medium { background: #fff3e0; color: #ef6c00; }
+.badge-low { background: #fff3e0; color: #f57c00; }
+.badge-unavailable { background: #ffebee; color: #c62828; }
+
+/* Status */
+.status.active { color: #2e7d32; font-weight: 600; }
+.status.inactive { color: #f57c00; font-weight: 600; }
+
+.loading-container,
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+}
+
+/* Agregar estos estilos al archivo UserImplementos.css */
+
+.implemento-actions {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.btn-solicitar {
+  width: 100%;
+  padding: 10px 15px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-solicitar:hover:not(.disabled) {
+  background: #218838;
+  transform: translateY(-2px);
+}
+
+.btn-solicitar.disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-solicitar:active:not(.disabled) {
+  transform: translateY(0);
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}

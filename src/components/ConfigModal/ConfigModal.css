@@ -1,0 +1,260 @@
+/* components/ConfigModal/ConfigModal.css */
+.config-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  padding: 20px;
+}
+
+.config-modal {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 1000px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.config-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #e1e8ed;
+  background: #f8f9fa;
+}
+
+.config-modal-header h2 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.5rem;
+}
+
+.btn-cerrar {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #7f8c8d;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.btn-cerrar:hover {
+  background: #e74c3c;
+  color: white;
+}
+
+.config-modal-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.config-sidebar {
+  width: 250px;
+  background: #2c3e50;
+  padding: 1.5rem 0;
+  overflow-y: auto;
+}
+
+.sidebar-item {
+  width: 100%;
+  background: none;
+  border: none;
+  color: #ecf0f1;
+  padding: 1rem 1.5rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  border-left: 4px solid transparent;
+}
+
+.sidebar-item:hover {
+  background: #34495e;
+  color: #3498db;
+}
+
+.sidebar-item.active {
+  background: #34495e;
+  color: #3498db;
+  border-left-color: #3498db;
+}
+
+.sidebar-item.disabled {
+  color: #7f8c8d;
+  cursor: not-allowed;
+}
+
+.sidebar-item.disabled:hover {
+  background: transparent;
+  color: #7f8c8d;
+}
+
+/* Contenido Principal */
+.config-main-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  background: #f8f9fa;
+}
+
+.config-seccion h3 {
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.seccion-descripcion {
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+/* Grid de Configuraciones */
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.config-item {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e1e8ed;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.config-item label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.config-item input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e1e8ed;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  box-sizing: border-box;
+}
+
+.config-item input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.config-item small {
+  color: #7f8c8d;
+  font-size: 0.8rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+/* Grupo de input con sufijo */
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-group input {
+  padding-right: 80px;
+  margin-bottom: 0;
+}
+
+.input-suffix {
+  position: absolute;
+  right: 0.75rem;
+  color: #7f8c8d;
+  background: #f8f9fa;
+  padding: 0.75rem 0.5rem;
+  border-left: 1px solid #e1e8ed;
+}
+
+/* Botón Guardar */
+.btn-guardar {
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-guardar:hover:not(:disabled) {
+  background: #219a52;
+  transform: translateY(-1px);
+}
+
+.btn-guardar:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Estados */
+.cargando {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .config-modal {
+    width: 95%;
+    height: 90vh;
+  }
+  
+  .config-modal-content {
+    flex-direction: column;
+  }
+  
+  .config-sidebar {
+    width: 100%;
+    height: auto;
+    padding: 1rem 0;
+  }
+  
+  .config-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .sidebar-item {
+    padding: 0.75rem 1rem;
+    display: inline-block;
+    width: auto;
+    margin: 0 0.5rem;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+  }
+  
+  .sidebar-item.active {
+    border-left: none;
+    border-bottom-color: #3498db;
+  }
+}

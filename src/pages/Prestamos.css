@@ -1,0 +1,417 @@
+.prestamos-page {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+
+/* Estado RECHAZADO */
+.status-rejected {
+  background-color: #fee;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.status-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+
+/* Estado SOLICITADO */
+.status-requested {
+  background-color: #e3f2fd;
+  border: 1px solid #bbdefb;
+  color: #1565c0;
+}
+
+/* Mejorar el estilo de los badges de estado */
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* En Prestamos.css */
+.status-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.rejection-reason-tooltip {
+  cursor: help;
+  display: flex;
+  align-items: center;
+  color: #6c757d;
+  transition: color 0.2s ease;
+}
+
+.rejection-reason-tooltip .info-icon {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.rejection-reason-tooltip:hover .info-icon {
+  opacity: 1;
+}
+
+.rejection-reason-tooltip:hover {
+  color: #0056b3;
+}
+
+.whatsapp-icon {
+  font-size: 14px;
+}
+
+.telefono-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-header {
+  background: #00acc9;
+  color: white;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(0, 172, 201, 0.3);
+}
+
+.page-header h1 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.page-header p {
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Información de resultados */
+.results-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e7f3ff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+  color: #0056b3;
+}
+
+/* Tabla de préstamos */
+.loans-table-container {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.loans-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.loans-table th {
+  background: #f8f9fa;
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #495057;
+  border-bottom: 2px solid #dee2e6;
+  font-size: 0.9em;
+}
+
+.loans-table td {
+  padding: 10px 10px; /* Reducido el padding vertical para filas más delgadas */
+  border-bottom: 1px solid #dee2e6;
+  font-size: 0.9em;
+  vertical-align: middle; /* Para alinear verticalmente el contenido */
+}
+
+.loans-table tr:hover {
+  background: #f8f9fa;
+}
+
+/* Badges de estado */
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.status-active {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-completed {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-lost {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status-default {
+  background: #e2e3e5;
+  color: #383d41;
+}
+
+/* Información de usuario - MODIFICADO */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  /* Se eliminó el efecto hover específico */
+}
+
+.user-info strong {
+  color: #2c3e50;
+  font-weight: 600; /* Mantener el bold */
+  /* Sin efectos especiales, igual que las otras columnas */
+}
+
+/* Programa */
+.programa-text {
+  color: #6c757d;
+  font-size: 0.9em;
+}
+
+/* Badge de implemento */
+.implemento-badge {
+  background: #007bff;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  font-weight: 500;
+}
+
+/* Tiempo real */
+.real-time {
+  color: #28a745;
+  font-size: 0.7em;
+  margin-left: 4px;
+}
+
+/* Acciones de estado */
+.status-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  width: 100%;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: transparent;
+}
+
+.approve-btn {
+  color: #28a745;
+}
+
+.approve-btn:hover {
+  background: #28a745;
+  color: white;
+}
+
+.reject-btn {
+  color: #dc3545;
+}
+
+.reject-btn:hover {
+  background: #dc3545;
+  color: white;
+}
+
+.complete-btn {
+  color: #17a2b8;
+}
+
+.complete-btn:hover {
+  background: #17a2b8;
+  color: white;
+}
+
+/* Paginación */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.pagination-btn {
+  padding: 8px 12px;
+  border: 1px solid #dee2e6;
+  background: white;
+  color: #007bff;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #007bff;
+  color: white;
+}
+
+.pagination-btn.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Estados vacíos y carga */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6c757d;
+}
+
+.empty-icon {
+  font-size: 3em;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  margin: 0 0 10px 0;
+  color: #495057;
+}
+
+.empty-state p {
+  margin: 0;
+}
+
+.loading-full {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6c757d;
+  font-size: 1.1em;
+}
+
+.error-message {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.retry-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.retry-btn:hover {
+  background: #c82333;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.btn-export {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-export:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-actions {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .btn-export {
+    align-self: stretch;
+    text-align: center;
+  }
+  
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .filters-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+  
+  .loans-table {
+    font-size: 0.8em;
+  }
+  
+  .loans-table th,
+  .loans-table td {
+    padding: 8px 10px;
+  }
+  
+  .results-info {
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+  }
+  
+  .status-actions {
+    flex-direction: column;
+    gap: 2px;
+  }
+}
