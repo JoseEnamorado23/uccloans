@@ -11,8 +11,8 @@ export const useImplementos = () => {
     prestados: 0
   });
 
-  // Base URL de la API
-  const API_BASE = 'http://localhost:4000/api';
+  // Base URL de la API - CORREGIDO
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
 
   // Cargar todos los implementos
   const cargarImplementos = async () => {
