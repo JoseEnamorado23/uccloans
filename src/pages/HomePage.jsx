@@ -27,9 +27,9 @@ import './HomePage.css';
 
 // Importar las imágenes desde assets
 import Image1 from '../../public/cards1.jpg';
-import Image2 from '/public/guitar.jpg';
-import Image3 from '/public/jenga.jpg';
-import Image4 from '../assets/';
+import Image2 from '../../public/guitar.jpg';
+import Image3 from '../../public/jenga.jpg';
+import Image4 from '../../public/ball.jpg';
 import logo from '../assets/logo1.svg';
 
 const HomePage = () => {
