@@ -26,11 +26,11 @@ import {
 import './HomePage.css';
 
 // Importar las imágenes desde assets
-import Image1 from '/public/cards1.jpg';
+import Image1 from '../../public/cards1.jpg';
 import Image2 from '/public/guitar.jpg';
 import Image3 from '/public/jenga.jpg';
-import Image4 from '/public/onecards.jpg';
-import logo from '/public/logo1.svg';
+import Image4 from '../assets/';
+import logo from '../assets/logo1.svg';
 
 const HomePage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
