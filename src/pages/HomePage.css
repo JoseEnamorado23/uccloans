@@ -754,7 +754,10 @@ a {
   .section-title {
     font-size: 2rem;
   }
-
+  
+  .hero-section {
+  padding-top: 80px;
+}
   .floating-theme-toggle {
     bottom: 1rem;
     right: 1rem;
