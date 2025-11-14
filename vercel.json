@@ -39,6 +39,10 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://uccloans.vercel.app"
         }
       ]
     },
@@ -46,8 +50,33 @@
       "source": "/(.*)\\.(js|css)",
       "headers": [
         {
-          "key": "Cache-Control",
+          "key": "Cache-Control", 
           "value": "public, max-age=604800"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://uccloans.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://uccloans.vercel.app"
+        },
+        {
+          "key": "Access-Control-Allow-Methods", 
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization, X-CSRF-Token"
+        },
+        {
+          "key": "Access-Control-Allow-Credentials",
+          "value": "true"
         }
       ]
     }
