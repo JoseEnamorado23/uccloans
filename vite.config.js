@@ -11,15 +11,24 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       }
+    },
+    // CSP para desarrollo
+    headers: {
+      'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' http://localhost:4000 https://uccloans.vercel.app; frame-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'",
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'X-XSS-Protection': '1; mode=block'
     }
   },
   build: {
     outDir: 'dist',
     sourcemap: false,
-    // Optimizar para SPA
+    // Optimizar chunks para CSP
     rollupOptions: {
       output: {
-        manualChunks: undefined
+        manualChunks: undefined,
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js'
       }
     }
   },
