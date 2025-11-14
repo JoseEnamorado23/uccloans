@@ -9,18 +9,18 @@
       }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/admin",
-      "dest": "/index.html"
+      "source": "/admin",
+      "destination": "/index.html"
     },
     {
-      "src": "/admin/(.*)",
-      "dest": "/index.html"
+      "source": "/admin/(.*)",
+      "destination": "/index.html"
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
@@ -46,14 +46,6 @@
         {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
-        },
-        {
-          "key": "Strict-Transport-Security",
-          "value": "max-age=31536000; includeSubDomains"
-        },
-        {
-          "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=()"
         }
       ]
     },
@@ -66,41 +58,7 @@
         },
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://uccloans.vercel.app"
-        }
-      ]
-    },
-    {
-      "source": "/(.*)\\.(js|css)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=604800"
-        },
-        {
-          "key": "Access-Control-Allow-Origin", 
-          "value": "https://uccloans.vercel.app"
-        }
-      ]
-    },
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "https://uccloans.vercel.app"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, PUT, DELETE, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization, X-CSRF-Token"
-        },
-        {
-          "key": "Access-Control-Allow-Credentials",
-          "value": "true"
+          "value": "https://uccloans3.vercel.app"
         }
       ]
     }
