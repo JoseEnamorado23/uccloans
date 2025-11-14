@@ -16,5 +16,13 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
-  }
+    // Optimizar para SPA
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
+  },
+  // Base path para producción
+  base: '/',
 })
