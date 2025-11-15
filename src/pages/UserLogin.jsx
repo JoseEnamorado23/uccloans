@@ -2,8 +2,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
-  Mail as MailIcon,
-  Lock as LockIcon,
   LogIn as LogInIcon,
   Eye,
   EyeOff
@@ -73,10 +71,7 @@ const UserLogin = () => {
 
         <form onSubmit={handleSubmit} className="auth-form" autoComplete="on">
           {/* Email */}
-          <div className="form-group has-icon">
-            <span className="input-icon">
-              <MailIcon size={20} />
-            </span>
+          <div className="form-group">
             <input
               type="email"
               id="email"
@@ -92,10 +87,7 @@ const UserLogin = () => {
           </div>
 
           {/* Password */}
-          <div className="form-group has-icon has-password">
-            <span className="input-icon">
-              <LockIcon size={20} />
-            </span>
+          <div className="form-group has-password">
             <input
               type={showPassword ? "text" : "password"}
               id="password"

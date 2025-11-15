@@ -95,26 +95,14 @@
 /* Input groups */
 .form-group {
   position: relative;
-  display: flex;
-  align-items: center;
 }
 
-/* Iconos */
-.input-icon {
-  position: absolute;
-  left: 1rem;
-  color: rgba(0,0,0,0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  pointer-events: none;
-}
-
-/* Icono del ojo (derecha) */
+/* Icono del ojo (derecha) - CENTRADO VERTICALMENTE */
 .password-toggle {
   position: absolute;
   right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
@@ -125,6 +113,7 @@
   border-radius: 4px;
   color: rgba(0,0,0,0.45);
   transition: all 0.2s ease;
+  z-index: 2;
 }
 
 .password-toggle:hover {
@@ -143,12 +132,7 @@
   background: #fff;
   transition: all 0.2s ease;
   color: var(--text-dark);
-}
-
-/* Inputs con icono izquierdo */
-.form-group.has-icon input,
-.form-group.has-icon select {
-  padding-left: 3rem;
+  line-height: 1.5;
 }
 
 /* Inputs con icono derecho (ojo) */
@@ -175,11 +159,7 @@
   transition: all 0.2s ease;
   background: transparent;
   padding: 0 0.25rem;
-}
-
-/* Ajustar label cuando hay icono */
-.form-group.has-icon .floating-label {
-  left: 3rem;
+  line-height: 1;
 }
 
 /* Estados del label */

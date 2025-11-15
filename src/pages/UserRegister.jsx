@@ -2,11 +2,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { 
-  User as UserIcon, 
-  Mail as MailIcon, 
-  Lock as LockIcon,
-  Phone,
-  GraduationCap,
   Eye,
   EyeOff
 } from "lucide-react";
@@ -89,10 +84,7 @@ const UserRegister = () => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           {/* Nombre Completo */}
-          <div className="form-group has-icon">
-            <span className="input-icon">
-              <UserIcon size={20} />
-            </span>
+          <div className="form-group">
             <input
               type="text"
               id="nombre_completo"
@@ -110,10 +102,7 @@ const UserRegister = () => {
 
           <div className="form-row">
             {/* Cédula */}
-            <div className="form-group has-icon">
-              <span className="input-icon">
-                <UserIcon size={20} />
-              </span>
+            <div className="form-group">
               <input
                 type="text"
                 id="numero_cedula"
@@ -130,10 +119,7 @@ const UserRegister = () => {
             </div>
 
             {/* Teléfono */}
-            <div className="form-group has-icon">
-              <span className="input-icon">
-                <Phone size={20} />
-              </span>
+            <div className="form-group">
               <input
                 type="tel"
                 id="numero_telefono"
@@ -151,10 +137,7 @@ const UserRegister = () => {
           </div>
 
           {/* Programa Académico */}
-          <div className="form-group has-icon">
-            <span className="input-icon">
-              <GraduationCap size={20} />
-            </span>
+          <div className="form-group">
             <select
               id="programa_id"
               name="programa_id"
@@ -176,10 +159,7 @@ const UserRegister = () => {
           </div>
 
           {/* Email */}
-          <div className="form-group has-icon">
-            <span className="input-icon">
-              <MailIcon size={20} />
-            </span>
+          <div className="form-group">
             <input
               type="email"
               id="email"
@@ -197,10 +177,7 @@ const UserRegister = () => {
 
           <div className="form-row">
             {/* Contraseña */}
-            <div className="form-group has-icon has-password">
-              <span className="input-icon">
-                <LockIcon size={20} />
-              </span>
+            <div className="form-group has-password">
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
@@ -227,10 +204,7 @@ const UserRegister = () => {
             </div>
 
             {/* Confirmar Contraseña */}
-            <div className="form-group has-icon has-password">
-              <span className="input-icon">
-                <LockIcon size={20} />
-              </span>
+            <div className="form-group has-password">
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 id="confirmPassword"
