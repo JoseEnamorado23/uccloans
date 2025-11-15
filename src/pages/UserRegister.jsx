@@ -200,7 +200,6 @@ const UserRegister = () => {
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
-              <small>Mínimo 6 caracteres</small>
             </div>
 
             {/* Confirmar Contraseña */}
