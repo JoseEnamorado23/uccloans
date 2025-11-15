@@ -1,14 +1,9 @@
-/* src/pages/UserAuth.css
-   Variante: formulario en la IZQUIERDA, visual en la DERECHA.
-   Usa variables definidas en tu HomePage.css: --primary-color, --secondary-color, --white, --text-dark, --light-bg
-*/
-
+/* src/pages/UserAuth.css */
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
 
 * { box-sizing: border-box; }
 
 :root {
-  /* Valores por defecto si no vienen desde HomePage.css */
   --primary-color: #00acc9;
   --secondary-color: #80ba27;
   --white: #ffffff;
@@ -20,25 +15,39 @@
 .auth-page {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 1fr; /* mobile: una columna */
+  grid-template-columns: 1fr;
   background: var(--light-bg);
   font-family: 'Lato', sans-serif;
 }
 
-/* Desktop: dos columnas (form izquierda, visual derecha) */
+/* Desktop: dos columnas INVERTIDAS (visual izquierda, form derecha) */
 @media (min-width: 900px) {
   .auth-page {
-    grid-template-columns: 52% 48%;
+    grid-template-columns: 48% 52%;
     align-items: stretch;
+  }
+  
+  /* Invertir el orden visual */
+  .auth-page.inverted-layout {
+    grid-template-columns: 48% 52%;
+  }
+  
+  .auth-page.inverted-layout .auth-left {
+    order: 2;
+  }
+  
+  .auth-page.inverted-layout .auth-right {
+    order: 1;
   }
 }
 
-/* ---- IZQUIERDA: form ---- */
+/* ---- DERECHA: form (ahora en el lado derecho en desktop) ---- */
 .auth-left {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  order: 2; /* Por defecto en móvil va abajo */
 }
 
 .form-card {
@@ -75,6 +84,12 @@
   gap: 12px;
 }
 
+@media (max-width: 480px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Icon wrapper + input (inline icon) */
 .icon-group {
   position: relative;
@@ -93,10 +108,14 @@
 }
 
 /* Inputs con espacio para icono */
+.form-group {
+  position: relative;
+}
+
 .form-group input,
 .form-group select {
   width: 100%;
-  padding: 0.95rem 1rem 0.95rem 40px; /* left padding para icon */
+  padding: 0.95rem 1rem 0.95rem 40px;
   border: 2px solid #e9eef3;
   border-radius: 10px;
   font-size: 1rem;
@@ -105,9 +124,11 @@
   color: var(--text-dark);
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus {
   border-color: var(--primary-color);
   box-shadow: 0 8px 20px rgba(0,172,201,0.06);
+  outline: none;
 }
 
 /* Floating label */
@@ -133,6 +154,15 @@
   font-weight: 700;
   background: var(--white);
   padding: 0 6px;
+}
+
+/* Para selects sin placeholder */
+.form-group select:required:invalid {
+  color: #99a0a6;
+}
+
+.form-group select option {
+  color: var(--text-dark);
 }
 
 /* Autofill */
@@ -195,13 +225,30 @@
   border-radius: 8px;
   font-weight: 600;
   margin-top: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
 }
 
-/* Errors */
+.demo-button:hover:not(:disabled) {
+  border-color: var(--primary-color);
+  background: rgba(0,172,201,0.05);
+}
+
+/* Messages */
 .error-message {
   background: #fff5f5;
   border: 1px solid #ffd7d7;
   color: #9c1c1c;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.success-message {
+  background: #f0fff4;
+  border: 1px solid #9ae6b4;
+  color: #2d5e3b;
   padding: 12px;
   border-radius: 8px;
   text-align: center;
@@ -215,16 +262,39 @@
   font-size: 0.92rem;
 }
 
-.auth-footer a { color: var(--primary-color); font-weight: 700; text-decoration: none; }
+.auth-footer a { 
+  color: var(--primary-color); 
+  font-weight: 700; 
+  text-decoration: none; 
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
 
 /* Divider */
-.auth-divider { margin: 16px 0; text-align: center; position: relative; }
-.auth-divider::before {
-  content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: #eef2f6;
+.auth-divider { 
+  margin: 16px 0; 
+  text-align: center; 
+  position: relative; 
 }
-.auth-divider span { background: var(--white); padding: 0 12px; position: relative; color: rgba(0,0,0,0.6); }
+.auth-divider::before {
+  content: ""; 
+  position: absolute; 
+  left: 0; 
+  right: 0; 
+  top: 50%; 
+  height: 1px; 
+  background: #eef2f6;
+}
+.auth-divider span { 
+  background: var(--white); 
+  padding: 0 12px; 
+  position: relative; 
+  color: rgba(0,0,0,0.6); 
+}
 
-/* ---- DERECHA: area visual ---- */
+/* ---- IZQUIERDA: area visual (ahora en el lado izquierdo en desktop) ---- */
 .auth-right {
   display: flex;
   flex-direction: column;
@@ -233,6 +303,7 @@
   background: linear-gradient(180deg, rgba(0,172,201,0.06), rgba(128,186,39,0.03));
   gap: 24px;
   text-align: left;
+  order: 1; /* Por defecto en móvil va arriba */
 }
 
 .visual-top {
@@ -259,6 +330,7 @@
   margin: 0;
   color: var(--text-dark);
   opacity: 0.9;
+  line-height: 1.4;
 }
 
 /* Cards list */
@@ -278,19 +350,47 @@
 }
 .vc svg { color: var(--primary-color); }
 .vc strong { display: block; font-size: 0.95rem; }
-.vc small { display: block; color: rgba(0,0,0,0.6); }
+.vc small { display: block; color: rgba(0,0,0,0.6); font-size: 0.85rem; }
 
 /* Visual footer */
-.visual-footer { color: rgba(0,0,0,0.6); }
+.visual-footer { 
+  color: rgba(0,0,0,0.6); 
+  font-size: 0.9rem;
+}
 
 /* Responsive: small screens -> apilar */
 @media (max-width: 899px) {
-  .auth-page { grid-template-columns: 1fr; }
+  .auth-page { 
+    grid-template-columns: 1fr; 
+  }
+  
   .auth-right {
     padding: 1.5rem;
     text-align: center;
   }
-  .auth-right .visual-top { align-items: center; }
-  .vc { justify-content: center; }
-  .form-card { margin-top: 12px; }
+  
+  .auth-right .visual-top { 
+    align-items: center; 
+  }
+  
+  .vc { 
+    justify-content: center; 
+  }
+  
+  .form-card { 
+    margin-top: 12px; 
+    padding: 24px;
+  }
+  
+  .auth-left {
+    padding: 1rem;
+  }
+}
+
+/* Helper text */
+.form-group small {
+  display: block;
+  margin-top: 4px;
+  color: rgba(0,0,0,0.5);
+  font-size: 0.8rem;
 }
