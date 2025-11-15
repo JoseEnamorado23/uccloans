@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { Mail as MailIcon } from 'lucide-react';
+import logo from "../assets/logo1.svg";
 import './UserAuth.css';
 
 const ForgotPassword = () => {
@@ -20,10 +22,22 @@ const ForgotPassword = () => {
     }
   };
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    if (error) clearError();
+    if (message) setMessage('');
+  };
+
   return (
-    <div className="auth-container">
-      <div className="auth-card">
+    <div className="auth-page">
+      <div className="form-card">
         <div className="auth-header">
+          <img src={logo} alt="UCC LOANS Logo" className="visual-logo" />
+          <div className="header-text">
+            <h3 className="visual-title">UCC LOANS</h3>
+            <p className="visual-sub">Gestión de implementos de bienestar universitario</p>
+          </div>
+          
           <h2>Recuperar Contraseña</h2>
           <p>Te enviaremos un enlace para restablecer tu contraseña</p>
         </div>
@@ -42,20 +56,19 @@ const ForgotPassword = () => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
               value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                if (error) clearError();
-                if (message) setMessage('');
-              }}
+              onChange={handleEmailChange}
               required
               disabled={loading}
-              placeholder="tu.email@ejemplo.com"
+              placeholder=" "
+              autoComplete="email"
             />
+            <label htmlFor="email" className="floating-label">
+              Email *
+            </label>
           </div>
 
           <button 
