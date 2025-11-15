@@ -330,13 +330,6 @@
 }
 
 /* Helper text */
-.form-group small {
-  display: block;
-  margin-top: 0.5rem;
-  color: rgba(0,0,0,0.5);
-  font-size: 0.75rem;
-  padding-left: 0.25rem;
-}
 
 /* Responsive */
 @media (max-width: 480px) {
