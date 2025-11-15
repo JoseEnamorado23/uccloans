@@ -1,12 +1,15 @@
 import api from './api';
 
+// Configuración de la URL base
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
 export const authService = {
   // ========== AUTENTICACIÓN DE ADMINISTRADOR SEGURA ==========
   
   // Login para administrador (ahora usa cookies HttpOnly)
   async adminLogin(credentials) {
     try {
-      const response = await api.post('/api/auth/admin-login', credentials, {
+      const response = await api.post(`${API_BASE_URL}/api/auth/admin-login`, credentials, {
         withCredentials: true // Importante para enviar cookies
       });
       return response.data;
@@ -18,7 +21,7 @@ export const authService = {
   // Verificar sesión de administrador
   async checkAdminSession() {
     try {
-      const response = await api.get('/api/auth/admin-session', {
+      const response = await api.get(`${API_BASE_URL}/api/auth/admin-session`, {
         withCredentials: true
       });
       return response.data;
@@ -30,7 +33,7 @@ export const authService = {
   // Refrescar token de administrador
   async refreshAdminToken() {
     try {
-      const response = await api.post('/api/auth/admin-refresh', {}, {
+      const response = await api.post(`${API_BASE_URL}/api/auth/admin-refresh`, {}, {
         withCredentials: true
       });
       return response.data;
@@ -42,7 +45,7 @@ export const authService = {
   // Logout de administrador
   async adminLogout() {
     try {
-      const response = await api.post('/api/auth/admin-logout', {}, {
+      const response = await api.post(`${API_BASE_URL}/api/auth/admin-logout`, {}, {
         withCredentials: true
       });
       return response.data;
@@ -56,7 +59,7 @@ export const authService = {
   // Obtener token CSRF para formularios administrativos
   async getCSRFToken() {
     try {
-      const response = await api.get('/api/auth/admin-csrf', {
+      const response = await api.get(`${API_BASE_URL}/api/auth/admin-csrf`, {
         withCredentials: true
       });
       return response.data.csrfToken;
@@ -109,7 +112,7 @@ export const authService = {
   // 🔐 Registro de usuario
   async userRegister(userData) {
     try {
-      const response = await api.post('/api/auth/register', userData);
+      const response = await api.post(`${API_BASE_URL}/api/auth/register`, userData);
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: 'Error de conexión' };
@@ -119,7 +122,7 @@ export const authService = {
   // 🔐 Login de usuario
   async userLogin(email, password) {
     try {
-      const response = await api.post('/api/auth/login', {
+      const response = await api.post(`${API_BASE_URL}/api/auth/login`, {
         email,
         password
       });
@@ -133,7 +136,7 @@ export const authService = {
   async getUserProfile() {
     try {
       const token = localStorage.getItem('userToken');
-      const response = await api.get('/api/auth/profile', {
+      const response = await api.get(`${API_BASE_URL}/api/auth/profile`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -147,7 +150,7 @@ export const authService = {
   // 📧 Solicitar recuperación de contraseña
   async forgotPassword(email) {
     try {
-      const response = await api.post('/api/auth/forgot-password', { email });
+      const response = await api.post(`${API_BASE_URL}/api/auth/forgot-password`, { email });
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: 'Error de conexión' };
@@ -157,7 +160,7 @@ export const authService = {
   // 🔄 Restablecer contraseña
   async resetPassword(token, newPassword) {
     try {
-      const response = await api.post('/api/auth/reset-password', {
+      const response = await api.post(`${API_BASE_URL}/api/auth/reset-password`, {
         token,
         newPassword
       });

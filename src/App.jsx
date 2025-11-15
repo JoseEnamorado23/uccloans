@@ -14,12 +14,12 @@ import ResetPassword from './pages/ResetPassword';
 import GestionUsuarios from './pages/GestionUsuarios';
 import GestionProgramas from './components/programas/GestionProgramas';
 
-// 🆕 NUEVAS PÁGINAS DE USUARIO
-import UserRegister from './pages/UserRegister';
-import UserLogin from './pages/UserLogin';
-import UserProfile from './pages/UserProfile';
-import ForgotPassword from './pages/ForgotPassword';
-import CreatePassword from './pages/CreatePassword';
+// Paginas de los usuarios
+import UserRegister from './pages/UserRegister'; //registrarse
+import UserLogin from './pages/UserLogin';// iniciar sesion
+import UserProfile from './pages/UserProfile'; // perfil de usuario
+import ForgotPassword from './pages/ForgotPassword';// recuperar contraseña
+import CreatePassword from './pages/CreatePassword';//  crear contraseña
 
 
 // Componente para rutas protegidas de admin
