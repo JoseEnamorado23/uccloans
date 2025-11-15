@@ -1,188 +1,119 @@
 /* src/pages/UserAuth.css
-   Diseño de login en dos columnas, coherente con HomePage.css
-   Usa variables: --primary-color, --secondary-color, --white, --text-dark
-*/
-
-/* Si no tienes definidas estas variables en global, puedes descomentarlas
-:root {
-  --primary-color: #00acc9;
-  --secondary-color: #80ba27;
-  --white: #ffffff;
-  --text-dark: #2c2724;
-}
+   Variante: formulario en la IZQUIERDA, visual en la DERECHA.
+   Usa variables definidas en tu HomePage.css: --primary-color, --secondary-color, --white, --text-dark, --light-bg
 */
 
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
 
 * { box-sizing: border-box; }
 
-/* Layout general */
+:root {
+  /* Valores por defecto si no vienen desde HomePage.css */
+  --primary-color: #00acc9;
+  --secondary-color: #80ba27;
+  --white: #ffffff;
+  --text-dark: #2c2724;
+  --light-bg: #f8f9fa;
+}
+
+/* Layout principal */
 .auth-page {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 1fr;
-  background: var(--light-bg, #f8f9fa);
+  grid-template-columns: 1fr; /* mobile: una columna */
+  background: var(--light-bg);
   font-family: 'Lato', sans-serif;
 }
 
-/* En pantallas grandes: visual + formulario */
+/* Desktop: dos columnas (form izquierda, visual derecha) */
 @media (min-width: 900px) {
   .auth-page {
-    grid-template-columns: 48% 52%;
+    grid-template-columns: 52% 48%;
     align-items: stretch;
   }
 }
 
-/* Columna visual (izquierda) */
-.auth-visual {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 3rem 2.5rem;
-  background: linear-gradient(180deg, rgba(0,172,201,0.08), rgba(128,186,39,0.03));
-  position: relative;
-  overflow: hidden;
-}
-
-/* Top (logo + texto) */
-.visual-top {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: flex-start;
-}
-
-.visual-logo {
-  width: 64px;
-  height: 64px;
-  object-fit: contain;
-  display: block;
-}
-
-.visual-title {
-  margin: 0;
-  font-size: 1.4rem;
-  font-weight: 900;
-  color: var(--primary-color, #00acc9);
-}
-
-.visual-sub {
-  margin: 0;
-  color: var(--text-dark, #2c2724);
-  opacity: 0.85;
-}
-
-/* Área para la ilustración (espacio para que pegues la imagen) */
-.visual-illustration {
+/* ---- IZQUIERDA: form ---- */
+.auth-left {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 1 1 auto;
+  padding: 2rem;
+}
+
+.form-card {
   width: 100%;
-  padding: 1rem;
-}
-
-/* Placeholder estético si aún no colocas imagen */
-.visual-placeholder {
-  width: 100%;
-  max-width: 420px;
-  height: 320px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, rgba(0,172,201,0.12), rgba(128,186,39,0.08));
-  color: rgba(0,0,0,0.45);
-  border: 2px dashed rgba(0,0,0,0.06);
-  text-align: center;
-  font-weight: 700;
-  letter-spacing: 0.2px;
-}
-
-/* Si pones <img> dentro, que ocupe bien */
-.visual-illustration img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
-/* Footer de la visual */
-.visual-footer {
-  margin-top: 1.25rem;
-  color: rgba(0,0,0,0.6);
-  font-size: 0.875rem;
-}
-
-/* Contenedor del formulario (derecha en desktop) */
-.auth-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2.25rem;
-}
-
-/* Card del formulario */
-.auth-card {
-  width: 100%;
-  max-width: 460px;
-  background: var(--white, #fff);
+  max-width: 520px;
+  background: var(--white);
   border-radius: 12px;
   padding: 36px;
-  box-shadow: 0 10px 30px rgba(13, 30, 59, 0.08);
+  box-shadow: 0 10px 30px rgba(13, 30, 59, 0.06);
 }
 
-/* Header */
+/* Header del card */
 .auth-header h2 {
   margin: 0 0 8px 0;
   font-size: 26px;
-  color: var(--text-dark, #2c2724);
+  color: var(--text-dark);
 }
 .auth-header p {
   margin: 0;
   color: rgba(0,0,0,0.6);
 }
 
-/* Form layout */
+/* Form */
 .auth-form {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 14px;
 }
 
-/* Row helper */
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
 
-/* Form group & floating labels (ya tenías las reglas: las mantenemos y refinamos) */
-.form-group {
+/* Icon wrapper + input (inline icon) */
+.icon-group {
   position: relative;
 }
 
+.input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* Inputs con espacio para icono */
 .form-group input,
 .form-group select {
   width: 100%;
-  padding: 0.95rem 1rem;
+  padding: 0.95rem 1rem 0.95rem 40px; /* left padding para icon */
   border: 2px solid #e9eef3;
   border-radius: 10px;
   font-size: 1rem;
   background: #fff;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  color: var(--text-dark, #2c2724);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  color: var(--text-dark);
 }
 
 .form-group input:focus {
-  border-color: var(--primary-color, #00acc9);
-  box-shadow: 0 6px 18px rgba(0,172,201,0.06);
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 20px rgba(0,172,201,0.06);
 }
 
+/* Floating label */
 .form-group .floating-label {
   position: absolute;
-  left: 14px;
+  left: 40px;
   top: 12px;
   color: #99a0a6;
   font-size: 1rem;
@@ -198,13 +129,13 @@
 .form-group select:not([value=""]) ~ .floating-label {
   top: -8px;
   font-size: 0.78rem;
-  color: var(--primary-color, #00acc9);
+  color: var(--primary-color);
   font-weight: 700;
-  background: var(--white, #fff);
+  background: var(--white);
   padding: 0 6px;
 }
 
-/* Autofill correction */
+/* Autofill */
 .form-group input:-webkit-autofill,
 .form-group input:-webkit-autofill:focus {
   -webkit-text-fill-color: #111;
@@ -221,7 +152,7 @@
 }
 
 .forgot-password {
-  color: var(--primary-color, #00acc9);
+  color: var(--primary-color);
   text-decoration: none;
   font-size: 0.9rem;
 }
@@ -229,8 +160,12 @@
 
 /* Buttons */
 .auth-button {
-  background: linear-gradient(135deg, var(--primary-color, #00acc9), var(--secondary-color, #80ba27));
-  color: var(--white, #fff);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: var(--white);
   border: none;
   padding: 12px 14px;
   border-radius: 10px;
@@ -251,18 +186,18 @@
   cursor: not-allowed;
 }
 
-/* Demo button */
+/* Demo button (secondary) */
 .demo-button {
   background: transparent;
   border: 1px dashed rgba(0,0,0,0.08);
-  color: var(--text-dark, #2c2724);
+  color: var(--text-dark);
   padding: 10px;
   border-radius: 8px;
   font-weight: 600;
   margin-top: 8px;
 }
 
-/* Error / success boxes */
+/* Errors */
 .error-message {
   background: #fff5f5;
   border: 1px solid #ffd7d7;
@@ -272,7 +207,7 @@
   text-align: center;
 }
 
-/* Footer del card */
+/* Footer inside card */
 .auth-footer {
   text-align: center;
   margin-top: 18px;
@@ -280,46 +215,82 @@
   font-size: 0.92rem;
 }
 
-.auth-footer a {
-  color: var(--primary-color, #00acc9);
-  font-weight: 700;
-  text-decoration: none;
-}
+.auth-footer a { color: var(--primary-color); font-weight: 700; text-decoration: none; }
 
-.auth-divider {
-  margin: 16px 0;
-  text-align: center;
-  position: relative;
-}
+/* Divider */
+.auth-divider { margin: 16px 0; text-align: center; position: relative; }
 .auth-divider::before {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; top: 50%;
-  height: 1px;
-  background: #eef2f6;
+  content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: #eef2f6;
 }
-.auth-divider span {
-  background: var(--white, #fff);
-  padding: 0 12px;
-  position: relative;
-  color: rgba(0,0,0,0.6);
+.auth-divider span { background: var(--white); padding: 0 12px; position: relative; color: rgba(0,0,0,0.6); }
+
+/* ---- DERECHA: area visual ---- */
+.auth-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+  background: linear-gradient(180deg, rgba(0,172,201,0.06), rgba(128,186,39,0.03));
+  gap: 24px;
+  text-align: left;
 }
 
-/* Small screens adjustments */
+.visual-top {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.visual-logo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.visual-title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--primary-color);
+}
+
+.visual-sub {
+  margin: 0;
+  color: var(--text-dark);
+  opacity: 0.9;
+}
+
+/* Cards list */
+.visual-cards {
+  display: grid;
+  gap: 12px;
+}
+
+.vc {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: rgba(255,255,255,0.5);
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(13,30,59,0.03);
+}
+.vc svg { color: var(--primary-color); }
+.vc strong { display: block; font-size: 0.95rem; }
+.vc small { display: block; color: rgba(0,0,0,0.6); }
+
+/* Visual footer */
+.visual-footer { color: rgba(0,0,0,0.6); }
+
+/* Responsive: small screens -> apilar */
 @media (max-width: 899px) {
-  .visual-illustration { display: none; } /* oculta la ilustración para mobiles */
-  .auth-visual {
-    padding: 2rem 1.25rem;
+  .auth-page { grid-template-columns: 1fr; }
+  .auth-right {
+    padding: 1.5rem;
     text-align: center;
   }
-
-  .auth-card {
-    padding: 28px;
-  }
-
-  .visual-placeholder {
-    height: 220px;
-    max-width: 320px;
-    margin: 0 auto;
-  }
+  .auth-right .visual-top { align-items: center; }
+  .vc { justify-content: center; }
+  .form-card { margin-top: 12px; }
 }

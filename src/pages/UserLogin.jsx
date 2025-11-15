@@ -1,9 +1,14 @@
 // src/pages/UserLogin.jsx
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { User, Mail, LogIn } from "lucide-react";
+import {
+  User as UserIcon,
+  Mail as MailIcon,
+  Lock as LockIcon,
+  LogIn as LogInIcon
+} from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
-import logo from "../assets/logo1.svg"; // ajusta ruta si es necesario
+import logo from "../assets/logo1.svg"; // ajusta la ruta si hace falta
 import "./UserAuth.css";
 
 const UserLogin = () => {
@@ -35,7 +40,6 @@ const UserLogin = () => {
     const result = await login(formData.email, formData.password);
 
     if (result?.success) {
-      // Mensaje simple (puedes reemplazar por toast)
       alert("✅ ¡Bienvenido de vuelta!");
       navigate(from, { replace: true });
     }
@@ -50,37 +54,9 @@ const UserLogin = () => {
 
   return (
     <div className="auth-page">
-      {/* Columna visual (imagen + logo). Deja aquí el espacio para pegar la imagen) */}
-      <aside className="auth-visual" aria-hidden={false}>
-        <div className="visual-top">
-          <img src={logo} alt="UCC LOANS Logo" className="visual-logo" />
-          <h3 className="visual-title">UCC LOANS</h3>
-          <p className="visual-sub">Gestión de implementos de bienestar universitario</p>
-        </div>
-
-        <div className="visual-illustration" id="visual-illustration">
-          {/* ---- ESPACIO PARA COLOCAR TU IMAGEN ----
-              Opciones:
-              1) Reemplaza este div por:
-                 <img src={require('../assets/tu-imagen.jpg')} alt="..." />
-              2) O importa la imagen arriba (import Ill from '../assets/ill.jpg') y usa:
-                 <img src={Ill} alt="Ilustración" />
-              3) También puedes usar background-image vía CSS apuntando a #visual-illustration
-          */}
-          <div className="visual-placeholder">
-            {/* Aquí puedes insertar la imagen luego */}
-            <span>Tu imagen / ilustración</span>
-          </div>
-        </div>
-
-        <footer className="visual-footer">
-          <small>Hecho para la comunidad UCC</small>
-        </footer>
-      </aside>
-
-      {/* Columna del formulario */}
-      <main className="auth-container">
-        <div className="auth-card">
+      {/* IZQUIERDA: Form centrado */}
+      <main className="auth-left">
+        <div className="auth-card form-card" role="region" aria-label="Formulario de inicio de sesión">
           <div className="auth-header">
             <h2>Iniciar Sesión</h2>
             <p>Accede a tu cuenta de usuario</p>
@@ -89,11 +65,8 @@ const UserLogin = () => {
           {error && <div className="error-message" role="alert">❌ {error}</div>}
 
           <form onSubmit={handleSubmit} className="auth-form" autoComplete="on">
-            <div className="form-row">
-              {/* Si quieres dos campos en fila, usa form-row */}
-            </div>
-
-            <div className="form-group">
+            <div className="form-group icon-group">
+              <span className="input-icon"><MailIcon size={18} /></span>
               <input
                 type="email"
                 id="email"
@@ -106,13 +79,11 @@ const UserLogin = () => {
                 autoComplete="email"
                 aria-label="Email"
               />
-              <label htmlFor="email" className="floating-label">
-                Email
-              </label>
-              <small className="sr-only">Usa tu correo institucional</small>
+              <label htmlFor="email" className="floating-label">Email</label>
             </div>
 
-            <div className="form-group">
+            <div className="form-group icon-group">
+              <span className="input-icon"><LockIcon size={18} /></span>
               <input
                 type="password"
                 id="password"
@@ -125,9 +96,7 @@ const UserLogin = () => {
                 autoComplete="current-password"
                 aria-label="Contraseña"
               />
-              <label htmlFor="password" className="floating-label">
-                Contraseña
-              </label>
+              <label htmlFor="password" className="floating-label">Contraseña</label>
             </div>
 
             <div className="form-options">
@@ -142,10 +111,15 @@ const UserLogin = () => {
               disabled={loading}
               aria-busy={loading ? "true" : "false"}
             >
-              {loading ? "Iniciando Sesión..." : "Iniciar Sesión"}
+              {loading ? "Iniciando Sesión..." : (
+                <>
+                  <LogInIcon size={16} style={{ marginRight: 8 }} />
+                  Iniciar Sesión
+                </>
+              )}
             </button>
 
-            {/* Botón demo solo en desarrollo */}
+            {/* Botón demo solo en development */}
             {process.env.NODE_ENV === "development" && (
               <button
                 type="button"
@@ -176,6 +150,46 @@ const UserLogin = () => {
           </div>
         </div>
       </main>
+
+      {/* DERECHA: Área visual (logo + texto) */}
+      <aside className="auth-right" aria-hidden="false">
+        <div className="visual-top">
+          <img src={logo} alt="UCC LOANS Logo" className="visual-logo" />
+          <h3 className="visual-title">UCC LOANS</h3>
+          <p className="visual-sub">Gestión de implementos de bienestar universitario</p>
+        </div>
+
+        <div className="visual-extra">
+          {/* Aquí puedes agregar elementos visuales sencillos (illustration CSS shapes, texto, etc.) */}
+          <div className="visual-cards">
+            <div className="vc">
+              <UserIcon size={20} />
+              <div>
+                <strong>Rápido</strong>
+                <small>Solicita en pocos pasos</small>
+              </div>
+            </div>
+            <div className="vc">
+              <MailIcon size={20} />
+              <div>
+                <strong>Seguro</strong>
+                <small>Validación de correo institucional</small>
+              </div>
+            </div>
+            <div className="vc">
+              <LockIcon size={20} />
+              <div>
+                <strong>Responsable</strong>
+                <small>Control de devoluciones</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer className="visual-footer">
+          <small>Hecho para la comunidad UCC</small>
+        </footer>
+      </aside>
     </div>
   );
 };
