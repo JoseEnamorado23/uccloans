@@ -1,6 +1,8 @@
 // src/pages/CreatePassword.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { Eye, EyeOff, Loader2, CheckCircle, XCircle } from 'lucide-react';
+import logo from "../assets/logo1.svg";
 import './UserAuth.css';
 
 // Configuración de la URL base
@@ -17,6 +19,8 @@ const CreatePassword = () => {
   const [message, setMessage] = useState('');
   const [tokenValid, setTokenValid] = useState(null);
   const [userEmail, setUserEmail] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Verificar si el token es válido al cargar la página
   useEffect(() => {
@@ -25,7 +29,6 @@ const CreatePassword = () => {
 
   const verifyToken = async () => {
     try {
-      // ✅ USAR API_BASE_URL en lugar de localhost
       const response = await fetch(`${API_BASE_URL}/api/auth/verify-token/${token}`);
       const result = await response.json();
       
@@ -60,7 +63,6 @@ const CreatePassword = () => {
     setLoading(true);
 
     try {
-      // ✅ USAR API_BASE_URL en lugar de localhost
       const response = await fetch(`${API_BASE_URL}/api/auth/create-password`, {
         method: 'POST',
         headers: {
@@ -78,7 +80,7 @@ const CreatePassword = () => {
         setMessage('✅ ' + result.message);
         setTimeout(() => {
           navigate('/user/login');
-        }, 3000);
+        }, 2000); // Redirige después de 2 segundos
       } else {
         setMessage('❌ ' + result.message);
       }
@@ -89,13 +91,28 @@ const CreatePassword = () => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   if (tokenValid === null) {
     return (
-      <div className="auth-container">
-        <div className="auth-card">
-          <div className="loading-message">
-            <div className="loading-spinner"></div>
-            <p>Verificando enlace...</p>
+      <div className="auth-page">
+        <div className="form-card">
+          <div className="auth-header">
+            <img src={logo} alt="UCC LOANS Logo" className="visual-logo" />
+            <div className="header-text">
+              <h3 className="visual-title">UCC LOANS</h3>
+              <p className="visual-sub">Gestión de implementos de bienestar universitario</p>
+            </div>
+          </div>
+          <div style={{ textAlign: 'center', padding: '2rem' }}>
+            <Loader2 size={48} className="loading-spinner" style={{ animation: 'spin 1s linear infinite', margin: '0 auto 1rem', display: 'block', color: 'var(--primary-color)' }} />
+            <p style={{ fontSize: '1.1rem', margin: '0', color: 'var(--text-dark)' }}>Verificando enlace...</p>
           </div>
         </div>
       </div>
@@ -104,12 +121,20 @@ const CreatePassword = () => {
 
   if (tokenValid === false) {
     return (
-      <div className="auth-container">
-        <div className="auth-card">
-          <div className="error-message">
-            <h3>❌ Enlace Inválido</h3>
-            <p>{message}</p>
-            <Link to="/user/login" className="auth-button" style={{display: 'block', textAlign: 'center', marginTop: '20px'}}>
+      <div className="auth-page">
+        <div className="form-card">
+          <div className="auth-header">
+            <img src={logo} alt="UCC LOANS Logo" className="visual-logo" />
+            <div className="header-text">
+              <h3 className="visual-title">UCC LOANS</h3>
+              <p className="visual-sub">Gestión de implementos de bienestar universitario</p>
+            </div>
+          </div>
+          <div className="error-message" style={{ textAlign: 'center' }}>
+            <XCircle size={48} style={{ margin: '0 auto 1rem', display: 'block', color: '#9c1c1c' }} />
+            <h3 style={{ margin: '0 0 1rem 0', color: '#9c1c1c' }}>Enlace Inválido</h3>
+            <p style={{ margin: '0 0 1.5rem 0' }}>{message}</p>
+            <Link to="/user/login" className="auth-button" style={{ display: 'block', textAlign: 'center' }}>
               Ir al Login
             </Link>
           </div>
@@ -119,13 +144,19 @@ const CreatePassword = () => {
   }
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
+    <div className="auth-page">
+      <div className="form-card">
         <div className="auth-header">
+          <img src={logo} alt="UCC LOANS Logo" className="visual-logo" />
+          <div className="header-text">
+            <h3 className="visual-title">UCC LOANS</h3>
+            <p className="visual-sub">Gestión de implementos de bienestar universitario</p>
+          </div>
+          
           <h2>Crear Contraseña</h2>
           <p>Hola, establece tu contraseña para activar tu cuenta</p>
           {userEmail && (
-            <p style={{color: '#666', fontSize: '14px', marginTop: '5px'}}>
+            <p style={{ color: 'var(--primary-color)', fontSize: '0.9rem', margin: '0.5rem 0 0 0', fontWeight: '600' }}>
               Cuenta: {userEmail}
             </p>
           )}
@@ -133,14 +164,16 @@ const CreatePassword = () => {
 
         {message && (
           <div className={message.includes('✅') ? 'success-message' : 'error-message'}>
+            {message.includes('✅') && <CheckCircle size={20} style={{ marginRight: '0.5rem' }} />}
+            {message.includes('❌') && <XCircle size={20} style={{ marginRight: '0.5rem' }} />}
             {message}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
+          <div className="form-group has-password">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={formData.password}
               onChange={(e) => setFormData({...formData, password: e.target.value})}
               required
@@ -149,12 +182,19 @@ const CreatePassword = () => {
               minLength="6"
             />
             <label className="floating-label">Nueva Contraseña *</label>
-            <small>Mínimo 6 caracteres</small>
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={togglePasswordVisibility}
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
 
-          <div className="form-group">
+          <div className="form-group has-password">
             <input
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               value={formData.confirmPassword}
               onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
               required
@@ -162,6 +202,14 @@ const CreatePassword = () => {
               placeholder=" "
             />
             <label className="floating-label">Confirmar Contraseña *</label>
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={toggleConfirmPasswordVisibility}
+              tabIndex={-1}
+            >
+              {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
 
           <button 
@@ -170,12 +218,15 @@ const CreatePassword = () => {
             disabled={loading}
           >
             {loading ? (
-              <div className="button-loading">
-                <span className="loading-spinner-small"></span>
+              <>
+                <Loader2 size={18} className="loading-spinner" />
                 Creando contraseña...
-              </div>
+              </>
             ) : (
-              '✅ Activar Cuenta y Crear Contraseña'
+              <>
+                <CheckCircle size={18} />
+                Activar Cuenta y Crear Contraseña
+              </>
             )}
           </button>
         </form>
