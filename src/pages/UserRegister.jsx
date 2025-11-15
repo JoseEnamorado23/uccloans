@@ -215,7 +215,7 @@ const UserRegister = () => {
                 placeholder=" "
               />
               <label htmlFor="confirmPassword" className="floating-label">
-                Confirmar Contraseña *
+                Confirmar*
               </label>
               <button
                 type="button"
