@@ -1,13 +1,19 @@
 // src/pages/UserRegister.jsx
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { 
+  User as UserIcon, 
+  Mail as MailIcon, 
+  Lock as LockIcon 
+} from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { useProgramas } from "../hooks/useProgramas";
-import "./UserAuth.css"; // Crearemos este CSS después
+import logo from "../assets/logo1.svg";
+import "./UserAuth.css";
 
 const UserRegister = () => {
   const { register, loading, error, clearError } = useAuth();
-  const { programas, loading: programasLoading } = useProgramas(); // ✅ NUEVO
+  const { programas, loading: programasLoading } = useProgramas();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -27,14 +33,12 @@ const UserRegister = () => {
       [name]: value,
     }));
 
-    // Limpiar error cuando el usuario empiece a escribir
     if (error) clearError();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validaciones básicas
     if (formData.password !== formData.confirmPassword) {
       alert("Las contraseñas no coinciden");
       return;
@@ -45,9 +49,7 @@ const UserRegister = () => {
       return;
     }
 
-    // Preparar datos para enviar (sin confirmPassword)
     const { confirmPassword, ...userData } = formData;
-
     const result = await register(userData);
 
     if (result.success) {
@@ -57,17 +59,23 @@ const UserRegister = () => {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
+    <div className="auth-page">
+      <div className="form-card">
+        {/* Header con logo y título */}
         <div className="auth-header">
-          <h2>Crear Cuenta de Usuario</h2>
+          <img src={logo} alt="UCC LOANS Logo" className="visual-logo" />
+          <h3 className="visual-title">UCC LOANS</h3>
+          <p className="visual-sub">Gestión de implementos de bienestar universitario</p>
+          
+          <h2>Crear Cuenta</h2>
           <p>Regístrate para gestionar tus préstamos</p>
         </div>
 
         {error && <div className="error-message">❌ {error}</div>}
 
         <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
+          <div className="form-group icon-group">
+            <span className="input-icon"><UserIcon size={18} /></span>
             <input
               type="text"
               id="nombre_completo"
@@ -84,7 +92,8 @@ const UserRegister = () => {
           </div>
 
           <div className="form-row">
-            <div className="form-group">
+            <div className="form-group icon-group">
+              <span className="input-icon"><UserIcon size={18} /></span>
               <input
                 type="text"
                 id="numero_cedula"
@@ -100,7 +109,8 @@ const UserRegister = () => {
               </label>
             </div>
 
-            <div className="form-group">
+            <div className="form-group icon-group">
+              <span className="input-icon"><MailIcon size={18} /></span>
               <input
                 type="tel"
                 id="numero_telefono"
@@ -117,7 +127,8 @@ const UserRegister = () => {
             </div>
           </div>
 
-          <div className="form-group">
+          <div className="form-group icon-group">
+            <span className="input-icon"><UserIcon size={18} /></span>
             <select
               id="programa_id"
               name="programa_id"
@@ -129,20 +140,17 @@ const UserRegister = () => {
               <option value="">Selecciona tu programa</option>
               {programas.map((programa) => (
                 <option key={programa.id} value={programa.id}>
-                  {" "}
-                  {/* ✅ Cambiado de programa.nombre a programa.id */}
                   {programa.nombre}
                 </option>
               ))}
             </select>
             <label htmlFor="programa_id" className="floating-label">
-              {" "}
-              {/* ✅ Cambiado a programa_id */}
               Programa Académico *
             </label>
           </div>
 
-          <div className="form-group">
+          <div className="form-group icon-group">
+            <span className="input-icon"><MailIcon size={18} /></span>
             <input
               type="email"
               id="email"
@@ -159,7 +167,8 @@ const UserRegister = () => {
           </div>
 
           <div className="form-row">
-            <div className="form-group">
+            <div className="form-group icon-group">
+              <span className="input-icon"><LockIcon size={18} /></span>
               <input
                 type="password"
                 id="password"
@@ -177,7 +186,8 @@ const UserRegister = () => {
               <small>Mínimo 6 caracteres</small>
             </div>
 
-            <div className="form-group">
+            <div className="form-group icon-group">
+              <span className="input-icon"><LockIcon size={18} /></span>
               <input
                 type="password"
                 id="confirmPassword"
@@ -189,7 +199,7 @@ const UserRegister = () => {
                 placeholder=" "
               />
               <label htmlFor="confirmPassword" className="floating-label">
-                Confirmar Contraseña
+                Confirmar Contraseña *
               </label>
             </div>
           </div>
