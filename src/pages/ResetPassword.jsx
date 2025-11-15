@@ -1,6 +1,8 @@
 // src/pages/ResetPassword.jsx
 import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import { Eye, EyeOff, Lock as LockIcon } from 'lucide-react';
+import logo from "../assets/logo1.svg";
 import './UserAuth.css';
 
 const ResetPassword = () => {
@@ -12,6 +14,8 @@ const ResetPassword = () => {
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,10 +62,24 @@ const ResetPassword = () => {
     }
   };
 
+  const toggleNewPasswordVisibility = () => {
+    setShowNewPassword(!showNewPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   return (
-    <div className="auth-container">
-      <div className="auth-card">
+    <div className="auth-page">
+      <div className="form-card">
         <div className="auth-header">
+          <img src={logo} alt="UCC LOANS Logo" className="visual-logo" />
+          <div className="header-text">
+            <h3 className="visual-title">UCC LOANS</h3>
+            <p className="visual-sub">Gestión de implementos de bienestar universitario</p>
+          </div>
+          
           <h2>Restablecer Contraseña</h2>
           <p>Crea una nueva contraseña para tu cuenta</p>
         </div>
@@ -73,31 +91,51 @@ const ResetPassword = () => {
         )}
 
         <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
-            <label htmlFor="newPassword">Nueva Contraseña</label>
+          <div className="form-group has-password">
             <input
-              type="password"
+              type={showNewPassword ? "text" : "password"}
               id="newPassword"
               value={formData.newPassword}
               onChange={(e) => setFormData({...formData, newPassword: e.target.value})}
               required
               disabled={loading}
               minLength="6"
-              placeholder="Mínimo 6 caracteres"
+              placeholder=" "
             />
+            <label htmlFor="newPassword" className="floating-label">
+              Nueva Contraseña *
+            </label>
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={toggleNewPasswordVisibility}
+              tabIndex={-1}
+            >
+              {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="confirmPassword">Confirmar Contraseña</label>
+          <div className="form-group has-password">
             <input
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               id="confirmPassword"
               value={formData.confirmPassword}
               onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
               required
               disabled={loading}
-              placeholder="Repite la contraseña"
+              placeholder=" "
             />
+            <label htmlFor="confirmPassword" className="floating-label">
+              Confirmar Contraseña *
+            </label>
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={toggleConfirmPasswordVisibility}
+              tabIndex={-1}
+            >
+              {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
 
           <button type="submit" className="auth-button" disabled={loading}>
