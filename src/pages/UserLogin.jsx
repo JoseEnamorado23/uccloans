@@ -5,10 +5,11 @@ import {
   User as UserIcon,
   Mail as MailIcon,
   Lock as LockIcon,
-  LogIn as LogInIcon
+  LogIn as LogInIcon,
+  ArrowLeft
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
-import logo from "../assets/logo1.svg"; // ajusta la ruta si hace falta
+import logo from "../assets/logo1.svg";
 import "./UserAuth.css";
 
 const UserLogin = () => {
@@ -21,7 +22,6 @@ const UserLogin = () => {
     password: "",
   });
 
-  // Ruta a la que redirigir después del login
   const from = location.state?.from?.pathname || "/user/profile";
 
   const handleChange = (e) => {
@@ -36,7 +36,6 @@ const UserLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const result = await login(formData.email, formData.password);
 
     if (result?.success) {
@@ -53,10 +52,49 @@ const UserLogin = () => {
   };
 
   return (
-    <div className="auth-page">
-      {/* IZQUIERDA: Form centrado */}
+    <div className="auth-page inverted-layout">
+      {/* IZQUIERDA: Área visual */}
+      <aside className="auth-right">
+        <div className="visual-top">
+          <img src={logo} alt="UCC LOANS Logo" className="visual-logo" />
+          <h3 className="visual-title">UCC LOANS</h3>
+          <p className="visual-sub">Gestión de implementos de bienestar universitario</p>
+        </div>
+
+        <div className="visual-extra">
+          <div className="visual-cards">
+            <div className="vc">
+              <UserIcon size={20} />
+              <div>
+                <strong>Rápido</strong>
+                <small>Solicita en pocos pasos</small>
+              </div>
+            </div>
+            <div className="vc">
+              <MailIcon size={20} />
+              <div>
+                <strong>Seguro</strong>
+                <small>Validación de correo institucional</small>
+              </div>
+            </div>
+            <div className="vc">
+              <LockIcon size={20} />
+              <div>
+                <strong>Responsable</strong>
+                <small>Control de devoluciones</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer className="visual-footer">
+          <small>Hecho para la comunidad UCC</small>
+        </footer>
+      </aside>
+
+      {/* DERECHA: Form centrado */}
       <main className="auth-left">
-        <div className="auth-card form-card" role="region" aria-label="Formulario de inicio de sesión">
+        <div className="form-card" role="region" aria-label="Formulario de inicio de sesión">
           <div className="auth-header">
             <h2>Iniciar Sesión</h2>
             <p>Accede a tu cuenta de usuario</p>
@@ -119,7 +157,6 @@ const UserLogin = () => {
               )}
             </button>
 
-            {/* Botón demo solo en development */}
             {process.env.NODE_ENV === "development" && (
               <button
                 type="button"
@@ -137,7 +174,7 @@ const UserLogin = () => {
               ¿No tienes cuenta? <Link to="/user/register">Regístrate aquí</Link>
             </p>
             <p>
-              <Link to="/">← Volver al Inicio</Link>
+              <Link to="/"><ArrowLeft size={14} style={{ display: 'inline', marginRight: 8 }} />Volver al Inicio</Link>
             </p>
 
             <div className="auth-divider" aria-hidden="true">
@@ -150,46 +187,6 @@ const UserLogin = () => {
           </div>
         </div>
       </main>
-
-      {/* DERECHA: Área visual (logo + texto) */}
-      <aside className="auth-right" aria-hidden="false">
-        <div className="visual-top">
-          <img src={logo} alt="UCC LOANS Logo" className="visual-logo" />
-          <h3 className="visual-title">UCC LOANS</h3>
-          <p className="visual-sub">Gestión de implementos de bienestar universitario</p>
-        </div>
-
-        <div className="visual-extra">
-          {/* Aquí puedes agregar elementos visuales sencillos (illustration CSS shapes, texto, etc.) */}
-          <div className="visual-cards">
-            <div className="vc">
-              <UserIcon size={20} />
-              <div>
-                <strong>Rápido</strong>
-                <small>Solicita en pocos pasos</small>
-              </div>
-            </div>
-            <div className="vc">
-              <MailIcon size={20} />
-              <div>
-                <strong>Seguro</strong>
-                <small>Validación de correo institucional</small>
-              </div>
-            </div>
-            <div className="vc">
-              <LockIcon size={20} />
-              <div>
-                <strong>Responsable</strong>
-                <small>Control de devoluciones</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <footer className="visual-footer">
-          <small>Hecho para la comunidad UCC</small>
-        </footer>
-      </aside>
     </div>
   );
 };
