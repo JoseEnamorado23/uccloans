@@ -377,6 +377,37 @@
   padding-left: 0.25rem;
 }
 
+/* Ocultar icono izquierdo CUANDO el input tiene foco */
+.form-group.has-left-icon input:focus ~ .input-icon,
+.form-group.has-left-icon select:focus ~ .input-icon {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Ocultar icono izquierdo CUANDO el input tiene texto */
+.form-group.has-left-icon input:not(:placeholder-shown) ~ .input-icon,
+.form-group.has-left-icon select:not([value=""]) ~ .input-icon {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Ajustar padding cuando el icono está oculto */
+.form-group.has-left-icon input:focus,
+.form-group.has-left-icon input:not(:placeholder-shown),
+.form-group.has-left-icon select:focus,
+.form-group.has-left-icon select:not([value=""]) {
+  padding-left: 1rem !important;
+}
+
+/* Asegurar que el icono sea visible cuando no hay foco ni texto */
+.form-group.has-left-icon .input-icon {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: all 0.2s ease !important;
+}
+
 /* Responsive */
 @media (max-width: 480px) {
   .form-card {
