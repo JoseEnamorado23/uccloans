@@ -60,7 +60,6 @@ const UserLogin = () => {
   return (
     <div className="auth-page">
       <div className="form-card">
-        {/* Header con logo y título */}
         <div className="auth-header">
           <img src={logo} alt="UCC LOANS Logo" className="visual-logo" />
           <h3 className="visual-title">UCC LOANS</h3>
@@ -73,8 +72,11 @@ const UserLogin = () => {
         {error && <div className="error-message" role="alert">❌ {error}</div>}
 
         <form onSubmit={handleSubmit} className="auth-form" autoComplete="on">
-          <div className="form-group has-left-icon">
-            <span className="input-icon"><MailIcon size={18} /></span>
+          {/* Email */}
+          <div className="form-group has-icon">
+            <span className="input-icon">
+              <MailIcon size={20} />
+            </span>
             <input
               type="email"
               id="email"
@@ -85,13 +87,15 @@ const UserLogin = () => {
               disabled={loading}
               placeholder=" "
               autoComplete="email"
-              aria-label="Email"
             />
             <label htmlFor="email" className="floating-label">Email</label>
           </div>
 
-          <div className="form-group has-left-icon has-right-icon">
-            <span className="input-icon"><LockIcon size={18} /></span>
+          {/* Password */}
+          <div className="form-group has-icon has-password">
+            <span className="input-icon">
+              <LockIcon size={20} />
+            </span>
             <input
               type={showPassword ? "text" : "password"}
               id="password"
@@ -102,7 +106,6 @@ const UserLogin = () => {
               disabled={loading}
               placeholder=" "
               autoComplete="current-password"
-              aria-label="Contraseña"
             />
             <label htmlFor="password" className="floating-label">Contraseña</label>
             <button
@@ -125,11 +128,10 @@ const UserLogin = () => {
             type="submit"
             className="auth-button"
             disabled={loading}
-            aria-busy={loading ? "true" : "false"}
           >
             {loading ? "Iniciando Sesión..." : (
               <>
-                <LogInIcon size={16} />
+                <LogInIcon size={18} />
                 Iniciar Sesión
               </>
             )}
@@ -152,7 +154,7 @@ const UserLogin = () => {
             ¿No tienes cuenta? <Link to="/user/register">Regístrate aquí</Link>
           </p>
           
-          <div className="auth-divider" aria-hidden="true">
+          <div className="auth-divider">
             <span>O</span>
           </div>
 

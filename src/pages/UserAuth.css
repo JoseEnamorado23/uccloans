@@ -77,13 +77,13 @@
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 @media (max-width: 480px) {
@@ -92,40 +92,38 @@
   }
 }
 
-/* Icon wrapper + input */
+/* Input groups */
 .form-group {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
+/* Iconos */
 .input-icon {
   position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
+  left: 1rem;
   color: rgba(0,0,0,0.45);
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
-  transition: all 0.2s ease;
   z-index: 2;
+  pointer-events: none;
 }
 
 /* Icono del ojo (derecha) */
 .password-toggle {
   position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: rgba(0,0,0,0.45);
+  right: 1rem;
   background: none;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px;
+  padding: 0.25rem;
   border-radius: 4px;
+  color: rgba(0,0,0,0.45);
   transition: all 0.2s ease;
 }
 
@@ -134,11 +132,11 @@
   background: rgba(0,0,0,0.05);
 }
 
-/* Inputs */
+/* Inputs base */
 .form-group input,
 .form-group select {
   width: 100%;
-  padding: 0.95rem 1rem;
+  padding: 1rem;
   border: 2px solid #e9eef3;
   border-radius: 10px;
   font-size: 1rem;
@@ -148,17 +146,24 @@
 }
 
 /* Inputs con icono izquierdo */
-.form-group.has-left-icon input,
-.form-group.has-left-icon select {
-  padding-left: 2.5rem;
+.form-group.has-icon input,
+.form-group.has-icon select {
+  padding-left: 3rem;
 }
 
 /* Inputs con icono derecho (ojo) */
-.form-group.has-right-icon input {
-  padding-right: 2.5rem;
+.form-group.has-password input {
+  padding-right: 3rem;
 }
 
-/* Floating label */
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(0,172,201,0.1);
+  outline: none;
+}
+
+/* Floating label - CENTRADO VERTICALMENTE */
 .form-group .floating-label {
   position: absolute;
   left: 1rem;
@@ -169,51 +174,28 @@
   pointer-events: none;
   transition: all 0.2s ease;
   background: transparent;
-  padding: 0 4px;
+  padding: 0 0.25rem;
 }
 
-/* Ajustar label cuando hay icono izquierdo */
-.form-group.has-left-icon .floating-label {
-  left: 2.5rem;
+/* Ajustar label cuando hay icono */
+.form-group.has-icon .floating-label {
+  left: 3rem;
 }
 
+/* Estados del label */
 .form-group input:focus ~ .floating-label,
 .form-group input:not(:placeholder-shown) ~ .floating-label,
 .form-group select:focus ~ .floating-label,
 .form-group select:not([value=""]) ~ .floating-label {
-  top: -8px;
+  top: -0.5rem;
   font-size: 0.75rem;
   color: var(--primary-color);
   font-weight: 700;
   background: var(--white);
-  padding: 0 6px;
+  padding: 0 0.5rem;
 }
 
-/* Ocultar icono izquierdo cuando hay contenido o foco */
-.form-group.has-left-icon input:focus ~ .input-icon,
-.form-group.has-left-icon input:not(:placeholder-shown) ~ .input-icon,
-.form-group.has-left-icon select:focus ~ .input-icon,
-.form-group.has-left-icon select:not([value=""]) ~ .input-icon {
-  opacity: 0;
-  visibility: hidden;
-}
-
-/* Ajustar padding cuando no hay icono izquierdo visible */
-.form-group.has-left-icon input:focus,
-.form-group.has-left-icon input:not(:placeholder-shown),
-.form-group.has-left-icon select:focus,
-.form-group.has-left-icon select:not([value=""]) {
-  padding-left: 1rem;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 4px 12px rgba(0,172,201,0.1);
-  outline: none;
-}
-
-/* Para selects sin placeholder */
+/* Para selects */
 .form-group select:required:invalid {
   color: #99a0a6;
 }
@@ -235,7 +217,6 @@
   display: flex;
   justify-content: flex-end;
   margin-top: -0.5rem;
-  margin-bottom: 0.5rem;
 }
 
 .forgot-password {
@@ -254,7 +235,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 0.5rem;
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   color: var(--white);
   border: none;
@@ -371,41 +352,10 @@
 /* Helper text */
 .form-group small {
   display: block;
-  margin-top: 4px;
+  margin-top: 0.5rem;
   color: rgba(0,0,0,0.5);
   font-size: 0.75rem;
   padding-left: 0.25rem;
-}
-
-/* Ocultar icono izquierdo CUANDO el input tiene foco */
-.form-group.has-left-icon input:focus ~ .input-icon,
-.form-group.has-left-icon select:focus ~ .input-icon {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
-
-/* Ocultar icono izquierdo CUANDO el input tiene texto */
-.form-group.has-left-icon input:not(:placeholder-shown) ~ .input-icon,
-.form-group.has-left-icon select:not([value=""]) ~ .input-icon {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
-
-/* Ajustar padding cuando el icono está oculto */
-.form-group.has-left-icon input:focus,
-.form-group.has-left-icon input:not(:placeholder-shown),
-.form-group.has-left-icon select:focus,
-.form-group.has-left-icon select:not([value=""]) {
-  padding-left: 1rem !important;
-}
-
-/* Asegurar que el icono sea visible cuando no hay foco ni texto */
-.form-group.has-left-icon .input-icon {
-  opacity: 1 !important;
-  visibility: visible !important;
-  transition: all 0.2s ease !important;
 }
 
 /* Responsive */
@@ -419,5 +369,9 @@
     padding: 0.5rem;
     align-items: flex-start;
     padding-top: 2rem;
+  }
+  
+  .auth-form {
+    gap: 1.25rem;
   }
 }

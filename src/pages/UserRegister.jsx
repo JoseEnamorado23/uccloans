@@ -5,6 +5,8 @@ import {
   User as UserIcon, 
   Mail as MailIcon, 
   Lock as LockIcon,
+  Phone,
+  GraduationCap,
   Eye,
   EyeOff
 } from "lucide-react";
@@ -74,7 +76,6 @@ const UserRegister = () => {
   return (
     <div className="auth-page">
       <div className="form-card">
-        {/* Header con logo y título */}
         <div className="auth-header">
           <img src={logo} alt="UCC LOANS Logo" className="visual-logo" />
           <h3 className="visual-title">UCC LOANS</h3>
@@ -87,8 +88,11 @@ const UserRegister = () => {
         {error && <div className="error-message">❌ {error}</div>}
 
         <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group has-left-icon">
-            <span className="input-icon"><UserIcon size={18} /></span>
+          {/* Nombre Completo */}
+          <div className="form-group has-icon">
+            <span className="input-icon">
+              <UserIcon size={20} />
+            </span>
             <input
               type="text"
               id="nombre_completo"
@@ -105,8 +109,11 @@ const UserRegister = () => {
           </div>
 
           <div className="form-row">
-            <div className="form-group has-left-icon">
-              <span className="input-icon"><UserIcon size={18} /></span>
+            {/* Cédula */}
+            <div className="form-group has-icon">
+              <span className="input-icon">
+                <UserIcon size={20} />
+              </span>
               <input
                 type="text"
                 id="numero_cedula"
@@ -122,8 +129,11 @@ const UserRegister = () => {
               </label>
             </div>
 
-            <div className="form-group has-left-icon">
-              <span className="input-icon"><MailIcon size={18} /></span>
+            {/* Teléfono */}
+            <div className="form-group has-icon">
+              <span className="input-icon">
+                <Phone size={20} />
+              </span>
               <input
                 type="tel"
                 id="numero_telefono"
@@ -140,8 +150,11 @@ const UserRegister = () => {
             </div>
           </div>
 
-          <div className="form-group has-left-icon">
-            <span className="input-icon"><UserIcon size={18} /></span>
+          {/* Programa Académico */}
+          <div className="form-group has-icon">
+            <span className="input-icon">
+              <GraduationCap size={20} />
+            </span>
             <select
               id="programa_id"
               name="programa_id"
@@ -162,8 +175,11 @@ const UserRegister = () => {
             </label>
           </div>
 
-          <div className="form-group has-left-icon">
-            <span className="input-icon"><MailIcon size={18} /></span>
+          {/* Email */}
+          <div className="form-group has-icon">
+            <span className="input-icon">
+              <MailIcon size={20} />
+            </span>
             <input
               type="email"
               id="email"
@@ -180,8 +196,11 @@ const UserRegister = () => {
           </div>
 
           <div className="form-row">
-            <div className="form-group has-left-icon has-right-icon">
-              <span className="input-icon"><LockIcon size={18} /></span>
+            {/* Contraseña */}
+            <div className="form-group has-icon has-password">
+              <span className="input-icon">
+                <LockIcon size={20} />
+              </span>
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
@@ -207,8 +226,11 @@ const UserRegister = () => {
               <small>Mínimo 6 caracteres</small>
             </div>
 
-            <div className="form-group has-left-icon has-right-icon">
-              <span className="input-icon"><LockIcon size={18} /></span>
+            {/* Confirmar Contraseña */}
+            <div className="form-group has-icon has-password">
+              <span className="input-icon">
+                <LockIcon size={20} />
+              </span>
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 id="confirmPassword"
@@ -220,7 +242,7 @@ const UserRegister = () => {
                 placeholder=" "
               />
               <label htmlFor="confirmPassword" className="floating-label">
-                Confirmar*
+                Confirmar Contraseña *
               </label>
               <button
                 type="button"
