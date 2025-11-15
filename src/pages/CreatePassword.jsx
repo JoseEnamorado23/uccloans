@@ -80,7 +80,7 @@ const CreatePassword = () => {
         setMessage('✅ ' + result.message);
         setTimeout(() => {
           navigate('/user/login');
-        }, 2000); // Redirige después de 2 segundos
+        }, 6000); // Redirige después de 6 segundos
       } else {
         setMessage('❌ ' + result.message);
       }
