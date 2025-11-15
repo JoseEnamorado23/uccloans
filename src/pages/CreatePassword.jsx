@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import './UserAuth.css';
 
+// Configuración de la URL base
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
 const CreatePassword = () => {
   const { token } = useParams();
   const navigate = useNavigate();
@@ -22,7 +25,8 @@ const CreatePassword = () => {
 
   const verifyToken = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/api/auth/verify-token/${token}`);
+      // ✅ USAR API_BASE_URL en lugar de localhost
+      const response = await fetch(`${API_BASE_URL}/api/auth/verify-token/${token}`);
       const result = await response.json();
       
       if (result.success) {
@@ -56,7 +60,8 @@ const CreatePassword = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:4000/api/auth/create-password', {
+      // ✅ USAR API_BASE_URL en lugar de localhost
+      const response = await fetch(`${API_BASE_URL}/api/auth/create-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
