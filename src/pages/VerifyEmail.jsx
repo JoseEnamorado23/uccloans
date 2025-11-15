@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import './UserAuth.css';
 
+// Configuración de la URL base
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
 const VerifyEmail = () => {
   const { token } = useParams();
   const navigate = useNavigate();
@@ -15,7 +18,8 @@ const VerifyEmail = () => {
 
   const verifyEmailToken = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/api/auth/verify-email/${token}`);
+      // ✅ USAR API_BASE_URL en lugar de localhost
+      const response = await fetch(`${API_BASE_URL}/api/auth/verify-email/${token}`);
       const result = await response.json();
       
       if (result.success) {
@@ -32,6 +36,7 @@ const VerifyEmail = () => {
     } catch (error) {
       setStatus('error');
       setMessage('Error de conexión al verificar el email');
+      console.error('Error verificando email:', error);
     }
   };
 
