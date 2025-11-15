@@ -5,6 +5,9 @@ import { Eye, EyeOff, Lock as LockIcon } from 'lucide-react';
 import logo from "../assets/logo1.svg";
 import './UserAuth.css';
 
+// Configuración de la URL base
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
 const ResetPassword = () => {
   const { token } = useParams();
   const navigate = useNavigate();
@@ -34,7 +37,8 @@ const ResetPassword = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:4000/api/auth/reset-password', {
+      // ✅ USAR API_BASE_URL en lugar de localhost
+      const response = await fetch(`${API_BASE_URL}/api/auth/reset-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
