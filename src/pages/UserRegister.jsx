@@ -4,7 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { 
   User as UserIcon, 
   Mail as MailIcon, 
-  Lock as LockIcon 
+  Lock as LockIcon,
+  Eye,
+  EyeOff
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { useProgramas } from "../hooks/useProgramas";
@@ -25,6 +27,9 @@ const UserRegister = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,6 +63,14 @@ const UserRegister = () => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   return (
     <div className="auth-page">
       <div className="form-card">
@@ -74,7 +87,7 @@ const UserRegister = () => {
         {error && <div className="error-message">❌ {error}</div>}
 
         <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group icon-group">
+          <div className="form-group has-left-icon">
             <span className="input-icon"><UserIcon size={18} /></span>
             <input
               type="text"
@@ -92,7 +105,7 @@ const UserRegister = () => {
           </div>
 
           <div className="form-row">
-            <div className="form-group icon-group">
+            <div className="form-group has-left-icon">
               <span className="input-icon"><UserIcon size={18} /></span>
               <input
                 type="text"
@@ -109,7 +122,7 @@ const UserRegister = () => {
               </label>
             </div>
 
-            <div className="form-group icon-group">
+            <div className="form-group has-left-icon">
               <span className="input-icon"><MailIcon size={18} /></span>
               <input
                 type="tel"
@@ -127,7 +140,7 @@ const UserRegister = () => {
             </div>
           </div>
 
-          <div className="form-group icon-group">
+          <div className="form-group has-left-icon">
             <span className="input-icon"><UserIcon size={18} /></span>
             <select
               id="programa_id"
@@ -149,7 +162,7 @@ const UserRegister = () => {
             </label>
           </div>
 
-          <div className="form-group icon-group">
+          <div className="form-group has-left-icon">
             <span className="input-icon"><MailIcon size={18} /></span>
             <input
               type="email"
@@ -167,10 +180,10 @@ const UserRegister = () => {
           </div>
 
           <div className="form-row">
-            <div className="form-group icon-group">
+            <div className="form-group has-left-icon has-right-icon">
               <span className="input-icon"><LockIcon size={18} /></span>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
                 value={formData.password}
@@ -183,13 +196,21 @@ const UserRegister = () => {
               <label htmlFor="password" className="floating-label">
                 Contraseña *
               </label>
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={togglePasswordVisibility}
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
               <small>Mínimo 6 caracteres</small>
             </div>
 
-            <div className="form-group icon-group">
+            <div className="form-group has-left-icon has-right-icon">
               <span className="input-icon"><LockIcon size={18} /></span>
               <input
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 id="confirmPassword"
                 name="confirmPassword"
                 value={formData.confirmPassword}
@@ -201,6 +222,14 @@ const UserRegister = () => {
               <label htmlFor="confirmPassword" className="floating-label">
                 Confirmar Contraseña *
               </label>
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={toggleConfirmPasswordVisibility}
+                tabIndex={-1}
+              >
+                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
           </div>
 

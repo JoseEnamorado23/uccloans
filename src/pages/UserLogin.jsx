@@ -4,7 +4,9 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   Mail as MailIcon,
   Lock as LockIcon,
-  LogIn as LogInIcon
+  LogIn as LogInIcon,
+  Eye,
+  EyeOff
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import logo from "../assets/logo1.svg";
@@ -19,6 +21,8 @@ const UserLogin = () => {
     email: "",
     password: "",
   });
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const from = location.state?.from?.pathname || "/user/profile";
 
@@ -49,6 +53,10 @@ const UserLogin = () => {
     });
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="auth-page">
       <div className="form-card">
@@ -65,7 +73,7 @@ const UserLogin = () => {
         {error && <div className="error-message" role="alert">❌ {error}</div>}
 
         <form onSubmit={handleSubmit} className="auth-form" autoComplete="on">
-          <div className="form-group icon-group">
+          <div className="form-group has-left-icon">
             <span className="input-icon"><MailIcon size={18} /></span>
             <input
               type="email"
@@ -82,10 +90,10 @@ const UserLogin = () => {
             <label htmlFor="email" className="floating-label">Email</label>
           </div>
 
-          <div className="form-group icon-group">
+          <div className="form-group has-left-icon has-right-icon">
             <span className="input-icon"><LockIcon size={18} /></span>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               name="password"
               value={formData.password}
@@ -97,6 +105,14 @@ const UserLogin = () => {
               aria-label="Contraseña"
             />
             <label htmlFor="password" className="floating-label">Contraseña</label>
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={togglePasswordVisibility}
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
 
           <div className="form-options">
