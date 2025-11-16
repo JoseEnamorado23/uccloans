@@ -6,6 +6,27 @@ import { userProfileService } from "../services/userProfileService";
 import UserLoansHistory from "../components/UserProfile/UserLoansHistory";
 import UserStats from "../components/UserProfile/UserStats";
 import UserImplementos from "../components/UserProfile/UserImplementos";
+import UserLoanRequests from "../components/UserProfile/UserLoanRequests";
+import { 
+  FaUser, 
+  FaHistory, 
+  FaTools, 
+  FaChartBar, 
+  FaSignOutAlt,
+  FaBook,
+  FaClock,
+  FaCheckCircle,
+  FaEnvelope,
+  FaPhone,
+  FaIdCard
+} from "react-icons/fa";
+import { 
+  MdEmail, 
+  MdPhone, 
+  MdPerson, 
+  MdSchool,
+  MdCalendarToday
+} from "react-icons/md";
 import logo from "../assets/logo1.svg";
 import "./UserProfile.css";
 
@@ -83,6 +104,14 @@ const UserProfile = () => {
     return "Sin programa asignado";
   };
 
+  // Items de navegación
+  const navItems = [
+    { id: "profile", icon: FaUser, label: "Información Personal" },
+    { id: "implementos", icon: FaTools, label: "Implementos" },
+    { id: "history", icon: FaHistory, label: "Historial" },
+    { id: "stats", icon: FaChartBar, label: "Estadísticas" }
+  ];
+
   if (loading && !userData) {
     return (
       <div className="profile-container">
@@ -96,71 +125,123 @@ const UserProfile = () => {
 
   return (
     <div className="profile-container">
-      {/* Header Superior */}
-      <header className="profile-header">
-        <div className="header-left">
+      {/* Sidebar */}
+      <div className="profile-sidebar">
+        {/* Header del Sidebar */}
+        <div className="sidebar-header">
           <div className="logo-container">
             <img src={logo} alt="UCC LOANS" className="logo-svg" />
             <span className="logo-text">UCC LOANS</span>
           </div>
-          <div className="user-info-mobile">
-            <div className="user-avatar-small">
-              {user?.nombre_completo?.charAt(0) || "U"}
+        </div>
+
+        {/* Información del Usuario */}
+        <div className="user-info-sidebar">
+          <div className="user-avatar">
+            {user?.nombre_completo?.charAt(0) || "U"}
+          </div>
+          <h3 className="user-name">{user?.nombre_completo}</h3>
+          <p className="user-email">{user?.email}</p>
+          <p className="user-program">
+            <MdSchool style={{ marginRight: '4px' }} />
+            {getProgramaNombre()}
+          </p>
+          
+          <div className="user-stats-sidebar">
+            <div className="stat-sidebar">
+              <span className="stat-value-sidebar">
+                {userData?.horas_totales_acumuladas || 0}
+              </span>
+              <span className="stat-label-sidebar">Horas</span>
             </div>
-            <span className="user-name-mobile">Mi Perfil</span>
+            <div className="stat-sidebar">
+              <span className="stat-value-sidebar">
+                {userData?.total_prestamos || 0}
+              </span>
+              <span className="stat-label-sidebar">Préstamos</span>
+            </div>
           </div>
         </div>
 
-        <div className="header-right">
-          <div className="hours-badge">
-            ⏱️ {userData?.horas_totales_acumuladas || 0}h
-          </div>
-          <button 
-            className="logout-button-mobile" 
-            onClick={handleLogout}
-          >
-            🚪 Salir
+        {/* Navegación */}
+        <nav className="sidebar-nav">
+          <ul className="nav-list">
+            {navItems.map((item) => {
+              const IconComponent = item.icon;
+              return (
+                <li key={item.id} className="nav-item">
+                  <button
+                    className={`nav-link ${activeTab === item.id ? 'active' : ''}`}
+                    onClick={() => handleTabChange(item.id)}
+                  >
+                    <IconComponent className="nav-icon" />
+                    <span>{item.label}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        {/* Footer del Sidebar */}
+        <div className="sidebar-footer">
+          <button className="logout-button" onClick={handleLogout}>
+            <FaSignOutAlt />
+            Cerrar Sesión
           </button>
         </div>
-      </header>
+      </div>
 
       {/* Contenido Principal */}
       <main className="profile-main">
+        <div className="profile-header">
+          <h1>Mi Perfil</h1>
+          <p>Gestiona tu información y préstamos</p>
+        </div>
+
         {activeTab === "profile" && (
           <div className="tab-content">
             <h2>Información Personal</h2>
             <div className="info-grid">
               <div className="info-item">
-                <label>Nombre Completo</label>
+                <label><MdPerson style={{ marginRight: '4px' }} /> Nombre Completo</label>
                 <span>{userData?.nombre_completo}</span>
               </div>
               <div className="info-item">
-                <label>Número de Cédula</label>
+                <label><FaIdCard style={{ marginRight: '4px' }} /> Número de Cédula</label>
                 <span>{userData?.numero_cedula}</span>
               </div>
               <div className="info-item">
-                <label>Teléfono</label>
+                <label><MdPhone style={{ marginRight: '4px' }} /> Teléfono</label>
                 <span>{userData?.numero_telefono}</span>
               </div>
               <div className="info-item">
-                <label>Programa</label>
+                <label><MdSchool style={{ marginRight: '4px' }} /> Programa</label>
                 <span>{getProgramaNombre()}</span>
               </div>
               <div className="info-item">
-                <label>Email</label>
+                <label><MdEmail style={{ marginRight: '4px' }} /> Email</label>
                 <span>{userData?.email}</span>
               </div>
               <div className="info-item">
-                <label>Estado de Cuenta</label>
+                <label><FaCheckCircle style={{ marginRight: '4px' }} /> Estado de Cuenta</label>
                 <span className={`status ${userData?.verificado ? "verified" : "pending"}`}>
                   {userData?.verificado ? "✅ Verificada" : "⏳ Pendiente"}
                 </span>
               </div>
               <div className="info-item">
-                <label>Fecha de Registro</label>
+                <label><MdCalendarToday style={{ marginRight: '4px' }} /> Fecha de Registro</label>
                 <span>
                   {userData?.fecha_registro
                     ? formatDate(userData.fecha_registro)
+                    : "N/A"}
+                </span>
+              </div>
+              <div className="info-item">
+                <label><FaClock style={{ marginRight: '4px' }} /> Último Login</label>
+                <span>
+                  {userData?.ultimo_login
+                    ? formatDate(userData.ultimo_login)
                     : "N/A"}
                 </span>
               </div>
@@ -182,6 +263,13 @@ const UserProfile = () => {
           </div>
         )}
 
+        {activeTab === "solicitudes" && userData && (
+          <div className="tab-content">
+            <h2>Mis Solicitudes de Préstamo</h2>
+            <UserLoanRequests userId={userData.id} />
+          </div>
+        )}
+
         {activeTab === "stats" && userData && (
           <div className="tab-content">
             <h2>Estadísticas de Uso</h2>
@@ -189,101 +277,6 @@ const UserProfile = () => {
           </div>
         )}
       </main>
-
-      {/* Navigation Bar Inferior */}
-      <nav className="profile-nav-bottom">
-        <button
-          className={`nav-item-bottom ${activeTab === "profile" ? "active" : ""}`}
-          onClick={() => handleTabChange("profile")}
-        >
-          <span className="nav-icon">👤</span>
-          <span className="nav-label">Perfil</span>
-        </button>
-
-        <button
-          className={`nav-item-bottom ${activeTab === "implementos" ? "active" : ""}`}
-          onClick={() => handleTabChange("implementos")}
-        >
-          <span className="nav-icon">🎯</span>
-          <span className="nav-label">Implementos</span>
-        </button>
-
-        <button
-          className={`nav-item-bottom ${activeTab === "history" ? "active" : ""}`}
-          onClick={() => handleTabChange("history")}
-        >
-          <span className="nav-icon">📋</span>
-          <span className="nav-label">Historial</span>
-        </button>
-
-        <button
-          className={`nav-item-bottom ${activeTab === "stats" ? "active" : ""}`}
-          onClick={() => handleTabChange("stats")}
-        >
-          <span className="nav-icon">📊</span>
-          <span className="nav-label">Estadísticas</span>
-        </button>
-      </nav>
-
-      {/* Sidebar Desktop (solo se muestra en desktop) */}
-      <div className="profile-sidebar-desktop">
-        <div className="user-summary-desktop">
-          <div className="user-avatar-desktop">
-            {user?.nombre_completo?.charAt(0) || "U"}
-          </div>
-          <h3>{user?.nombre_completo}</h3>
-          <p className="user-email-desktop">{user?.email}</p>
-          <p>📚 {getProgramaNombre()}</p>
-          <div className="user-stats-desktop">
-            <div className="stat-desktop">
-              <span className="stat-value-desktop">
-                {userData?.horas_totales_acumuladas || 0}
-              </span>
-              <span className="stat-label-desktop">Horas</span>
-            </div>
-            <div className="stat-desktop">
-              <span className="stat-value-desktop">
-                {userData?.total_prestamos || 0}
-              </span>
-              <span className="stat-label-desktop">Préstamos</span>
-            </div>
-          </div>
-        </div>
-
-        <nav className="profile-nav-desktop">
-          <button
-            className={`nav-item-desktop ${activeTab === "profile" ? "active" : ""}`}
-            onClick={() => handleTabChange("profile")}
-          >
-            👤 Información Personal
-          </button>
-
-          <button
-            className={`nav-item-desktop ${activeTab === "implementos" ? "active" : ""}`}
-            onClick={() => handleTabChange("implementos")}
-          >
-            🎯 Implementos Disponibles
-          </button>
-
-          <button
-            className={`nav-item-desktop ${activeTab === "history" ? "active" : ""}`}
-            onClick={() => handleTabChange("history")}
-          >
-            📋 Historial de Préstamos
-          </button>
-
-          <button
-            className={`nav-item-desktop ${activeTab === "stats" ? "active" : ""}`}
-            onClick={() => handleTabChange("stats")}
-          >
-            📊 Estadísticas
-          </button>
-        </nav>
-
-        <button className="logout-button-desktop" onClick={handleLogout}>
-          🚪 Cerrar Sesión
-        </button>
-      </div>
     </div>
   );
 };
