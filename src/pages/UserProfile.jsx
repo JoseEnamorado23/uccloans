@@ -6,7 +6,7 @@ import { userProfileService } from "../services/userProfileService";
 import UserLoansHistory from "../components/UserProfile/UserLoansHistory";
 import UserStats from "../components/UserProfile/UserStats";
 import UserImplementos from "../components/UserProfile/UserImplementos";
-import UserLoanRequests from "../components/UserProfile/UserLoanRequests";
+import logo from "../assets/logo1.svg";
 import "./UserProfile.css";
 
 const UserProfile = () => {
@@ -28,7 +28,6 @@ const UserProfile = () => {
       if (result.success) {
         setUserData(result.data);
 
-        // Cargar estadísticas adicionales si está en la pestaña de stats
         if (activeTab === "stats") {
           await loadUserStats(result.data.id);
         }
@@ -74,7 +73,6 @@ const UserProfile = () => {
     });
   };
 
-  // ✅ CORREGIDO: Función para obtener el nombre del programa
   const getProgramaNombre = () => {
     if (userData?.programa_nombre) {
       return userData.programa_nombre;
@@ -98,167 +96,193 @@ const UserProfile = () => {
 
   return (
     <div className="profile-container">
-      <div className="profile-header">
-        <h1>Mi Perfil</h1>
-        <p>Gestiona tu información y préstamos</p>
-      </div>
-
-      <div className="profile-content">
-        {/* Sidebar */}
-        <div className="profile-sidebar">
-          <div className="user-summary">
-            <div className="user-avatar">
+      {/* Header Superior */}
+      <header className="profile-header">
+        <div className="header-left">
+          <div className="logo-container">
+            <img src={logo} alt="UCC LOANS" className="logo-svg" />
+            <span className="logo-text">UCC LOANS</span>
+          </div>
+          <div className="user-info-mobile">
+            <div className="user-avatar-small">
               {user?.nombre_completo?.charAt(0) || "U"}
             </div>
-            <h3>{user?.nombre_completo}</h3>
-            <p className="user-email">{user?.email}</p>
-            {/* ✅ CORREGIDO: Mostrar nombre del programa */}
-            <p className="user-program">📚 {getProgramaNombre()}</p>
-            <div className="user-stats">
-              <div className="stat">
-                <span className="stat-value">
-                  {userData?.horas_totales_acumuladas || 0}
-                </span>
-                <span className="stat-label">Horas Acumuladas</span>
+            <span className="user-name-mobile">Mi Perfil</span>
+          </div>
+        </div>
+
+        <div className="header-right">
+          <div className="hours-badge">
+            ⏱️ {userData?.horas_totales_acumuladas || 0}h
+          </div>
+          <button 
+            className="logout-button-mobile" 
+            onClick={handleLogout}
+          >
+            🚪 Salir
+          </button>
+        </div>
+      </header>
+
+      {/* Contenido Principal */}
+      <main className="profile-main">
+        {activeTab === "profile" && (
+          <div className="tab-content">
+            <h2>Información Personal</h2>
+            <div className="info-grid">
+              <div className="info-item">
+                <label>Nombre Completo</label>
+                <span>{userData?.nombre_completo}</span>
               </div>
-              <div className="stat">
-                {/* ✅ CORREGIDO: Usar total_prestamos del userData en lugar de stats */}
-                <span className="stat-value">
-                  {userData?.total_prestamos || 0}
+              <div className="info-item">
+                <label>Número de Cédula</label>
+                <span>{userData?.numero_cedula}</span>
+              </div>
+              <div className="info-item">
+                <label>Teléfono</label>
+                <span>{userData?.numero_telefono}</span>
+              </div>
+              <div className="info-item">
+                <label>Programa</label>
+                <span>{getProgramaNombre()}</span>
+              </div>
+              <div className="info-item">
+                <label>Email</label>
+                <span>{userData?.email}</span>
+              </div>
+              <div className="info-item">
+                <label>Estado de Cuenta</label>
+                <span className={`status ${userData?.verificado ? "verified" : "pending"}`}>
+                  {userData?.verificado ? "✅ Verificada" : "⏳ Pendiente"}
                 </span>
-                <span className="stat-label">Préstamos Totales</span>
+              </div>
+              <div className="info-item">
+                <label>Fecha de Registro</label>
+                <span>
+                  {userData?.fecha_registro
+                    ? formatDate(userData.fecha_registro)
+                    : "N/A"}
+                </span>
               </div>
             </div>
           </div>
+        )}
 
-          <nav className="profile-nav">
-            <button
-              className={`nav-item ${activeTab === "profile" ? "active" : ""}`}
-              onClick={() => handleTabChange("profile")}
-            >
-              👤 Información Personal
-            </button>
+        {activeTab === "implementos" && (
+          <div className="tab-content">
+            <h2>Implementos Disponibles</h2>
+            <UserImplementos />
+          </div>
+        )}
 
-            <button
-              className={`nav-item ${
-                activeTab === "implementos" ? "active" : ""
-              }`}
-              onClick={() => handleTabChange("implementos")}
-            >
-              🎯 Implementos Disponibles
-            </button>
-            <button
-              className={`nav-item ${
-                activeTab === "solicitudes" ? "active" : ""
-              }`}
-              onClick={() => handleTabChange("solicitudes")}
-            >
-              📝 Mis Solicitudes
-            </button>
-            <button
-              className={`nav-item ${activeTab === "history" ? "active" : ""}`}
-              onClick={() => handleTabChange("history")}
-            >
-              📋 Historial de Préstamos
-            </button>
-            <button
-              className={`nav-item ${activeTab === "stats" ? "active" : ""}`}
-              onClick={() => handleTabChange("stats")}
-            >
-              📊 Estadísticas
-            </button>
-          </nav>
+        {activeTab === "history" && userData && (
+          <div className="tab-content">
+            <h2>Historial de Préstamos</h2>
+            <UserLoansHistory userId={userData.id} />
+          </div>
+        )}
 
-          <button className="logout-button" onClick={handleLogout}>
-            🚪 Cerrar Sesión
+        {activeTab === "stats" && userData && (
+          <div className="tab-content">
+            <h2>Estadísticas de Uso</h2>
+            <UserStats userId={userData.id} statsData={stats} />
+          </div>
+        )}
+      </main>
+
+      {/* Navigation Bar Inferior */}
+      <nav className="profile-nav-bottom">
+        <button
+          className={`nav-item-bottom ${activeTab === "profile" ? "active" : ""}`}
+          onClick={() => handleTabChange("profile")}
+        >
+          <span className="nav-icon">👤</span>
+          <span className="nav-label">Perfil</span>
+        </button>
+
+        <button
+          className={`nav-item-bottom ${activeTab === "implementos" ? "active" : ""}`}
+          onClick={() => handleTabChange("implementos")}
+        >
+          <span className="nav-icon">🎯</span>
+          <span className="nav-label">Implementos</span>
+        </button>
+
+        <button
+          className={`nav-item-bottom ${activeTab === "history" ? "active" : ""}`}
+          onClick={() => handleTabChange("history")}
+        >
+          <span className="nav-icon">📋</span>
+          <span className="nav-label">Historial</span>
+        </button>
+
+        <button
+          className={`nav-item-bottom ${activeTab === "stats" ? "active" : ""}`}
+          onClick={() => handleTabChange("stats")}
+        >
+          <span className="nav-icon">📊</span>
+          <span className="nav-label">Estadísticas</span>
+        </button>
+      </nav>
+
+      {/* Sidebar Desktop (solo se muestra en desktop) */}
+      <div className="profile-sidebar-desktop">
+        <div className="user-summary-desktop">
+          <div className="user-avatar-desktop">
+            {user?.nombre_completo?.charAt(0) || "U"}
+          </div>
+          <h3>{user?.nombre_completo}</h3>
+          <p className="user-email-desktop">{user?.email}</p>
+          <p>📚 {getProgramaNombre()}</p>
+          <div className="user-stats-desktop">
+            <div className="stat-desktop">
+              <span className="stat-value-desktop">
+                {userData?.horas_totales_acumuladas || 0}
+              </span>
+              <span className="stat-label-desktop">Horas</span>
+            </div>
+            <div className="stat-desktop">
+              <span className="stat-value-desktop">
+                {userData?.total_prestamos || 0}
+              </span>
+              <span className="stat-label-desktop">Préstamos</span>
+            </div>
+          </div>
+        </div>
+
+        <nav className="profile-nav-desktop">
+          <button
+            className={`nav-item-desktop ${activeTab === "profile" ? "active" : ""}`}
+            onClick={() => handleTabChange("profile")}
+          >
+            👤 Información Personal
           </button>
-        </div>
 
-        {/* Main Content */}
-        <div className="profile-main">
-          {activeTab === "implementos" && (
-            <div className="tab-content">
-              <UserImplementos />
-            </div>
-          )}
-          {activeTab === "profile" && (
-            <div className="tab-content">
-              <h2>Información Personal</h2>
-              <div className="info-grid">
-                <div className="info-item">
-                  <label>Nombre Completo:</label>
-                  <span>{userData?.nombre_completo}</span>
-                </div>
-                <div className="info-item">
-                  <label>Número de Cédula:</label>
-                  <span>{userData?.numero_cedula}</span>
-                </div>
-                <div className="info-item">
-                  <label>Teléfono:</label>
-                  <span>{userData?.numero_telefono}</span>
-                </div>
-                <div className="info-item">
-                  <label>Programa:</label>
-                  <span>{getProgramaNombre()}</span>
-                </div>
-                <div className="info-item">
-                  <label>Email:</label>
-                  <span>{userData?.email}</span>
-                </div>
-                <div className="info-item">
-                  <label>Estado de Cuenta:</label>
-                  <span
-                    className={`status ${
-                      userData?.verificado ? "verified" : "pending"
-                    }`}
-                  >
-                    {userData?.verificado
-                      ? "✅ Verificada"
-                      : "⏳ Pendiente de verificación"}
-                  </span>
-                </div>
-                <div className="info-item">
-                  <label>Fecha de Registro:</label>
-                  <span>
-                    {userData?.fecha_registro
-                      ? formatDate(userData.fecha_registro)
-                      : "N/A"}
-                  </span>
-                </div>
-                <div className="info-item">
-                  <label>Último Login:</label>
-                  <span>
-                    {userData?.ultimo_login
-                      ? formatDate(userData.ultimo_login)
-                      : "N/A"}
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
+          <button
+            className={`nav-item-desktop ${activeTab === "implementos" ? "active" : ""}`}
+            onClick={() => handleTabChange("implementos")}
+          >
+            🎯 Implementos Disponibles
+          </button>
 
-          {activeTab === "history" && userData && (
-            <div className="tab-content">
-              <h2>Historial de Préstamos</h2>
-              <UserLoansHistory userId={userData.id} />
-            </div>
-          )}
+          <button
+            className={`nav-item-desktop ${activeTab === "history" ? "active" : ""}`}
+            onClick={() => handleTabChange("history")}
+          >
+            📋 Historial de Préstamos
+          </button>
 
-          {/* ✅ NUEVA PESTAÑA - AGREGAR ESTO */}
-          {activeTab === "solicitudes" && userData && (
-            <div className="tab-content">
-              <h2>Mis Solicitudes de Préstamo</h2>
-              <UserLoanRequests userId={userData.id} />
-            </div>
-          )}
+          <button
+            className={`nav-item-desktop ${activeTab === "stats" ? "active" : ""}`}
+            onClick={() => handleTabChange("stats")}
+          >
+            📊 Estadísticas
+          </button>
+        </nav>
 
-          {activeTab === "stats" && userData && (
-            <div className="tab-content">
-              <h2>Estadísticas de Uso</h2>
-              <UserStats userId={userData.id} statsData={stats} />
-            </div>
-          )}
-        </div>
+        <button className="logout-button-desktop" onClick={handleLogout}>
+          🚪 Cerrar Sesión
+        </button>
       </div>
     </div>
   );
