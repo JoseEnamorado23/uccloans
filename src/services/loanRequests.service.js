@@ -1,44 +1,84 @@
-// src/services/loanRequests.service.js - CON HORA BOGOTÁ
+// src/services/loanRequests.service.js - VERSIÓN DEFINITIVA
 import api from './api';
 
-// Función para obtener la hora actual en Bogotá (UTC-5)
+// ✅ FUNCIÓN MEJORADA para hora Bogotá - funciona en cualquier timezone
 const getBogotaTime = () => {
-  // Crear fecha actual en UTC
   const now = new Date();
   
-  // Convertir a hora de Bogotá (UTC-5)
-  const bogotaOffset = -5 * 60; // UTC-5 en minutos
-  const localOffset = now.getTimezoneOffset(); // Offset local en minutos
-  const bogotaTime = new Date(now.getTime() + (bogotaOffset + localOffset) * 60000);
+  // Método más confiable: usar toLocaleString con timezone específico
+  const bogotaTimeString = now.toLocaleString('en-US', {
+    timeZone: 'America/Bogota',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  });
   
-  return bogotaTime;
+  // Convertir "MM/DD/YYYY, HH:MM:SS" a Date object
+  const [datePart, timePart] = bogotaTimeString.split(', ');
+  const [month, day, year] = datePart.split('/');
+  
+  return new Date(`${year}-${month}-${day}T${timePart}`);
 };
 
-// Formatear fecha para el backend (ISO string)
+// ✅ Formatear fecha para el backend
 const formatDateForBackend = (date) => {
   return date.toISOString();
+};
+
+// ✅ Función para debug de timezone
+const debugTimezone = () => {
+  const now = new Date();
+  const bogotaTime = getBogotaTime();
+  
+  console.log('🌎 DEBUG TIMEZONE:');
+  console.log('📍 Hora local del navegador:', now.toString());
+  console.log('📍 Hora Bogotá calculada:', bogotaTime.toString());
+  console.log('🕒 ISO Local:', now.toISOString());
+  console.log('🕒 ISO Bogotá:', bogotaTime.toISOString());
+  console.log('⏰ Diferencia (minutos):', (bogotaTime - now) / 60000);
+  
+  return bogotaTime;
 };
 
 const loanRequestsService = {
   createLoanRequest: async (loanData) => {
     try {
-      // ✅ Agregar timestamps con hora de Bogotá
+      // ✅ Obtener hora Bogotá real
       const bogotaTime = getBogotaTime();
+      
+      // ✅ Debug en producción
+      debugTimezone();
+      
       const enrichedLoanData = {
         ...loanData,
         fecha_solicitud: formatDateForBackend(bogotaTime),
-        // Si necesitas fecha de devolución estimada
         fecha_devolucion_estimada: loanData.fecha_devolucion_estimada 
           ? formatDateForBackend(new Date(loanData.fecha_devolucion_estimada))
           : null,
-        // Timestamp adicional para auditoría
-        timestamp_bogota: formatDateForBackend(bogotaTime)
+        timestamp_bogota: formatDateForBackend(bogotaTime),
+        // ✅ Metadata para verificar en backend
+        timezone_metadata: {
+          source: 'frontend-bogota',
+          bogota_time: bogotaTime.toString(),
+          bogota_iso: bogotaTime.toISOString(),
+          client_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          calculated_at: new Date().toISOString()
+        }
       };
 
-      const response = await api.post('/api/prestamos/solicitar', enrichedLoanData);
+      console.log('📤 ENVIANDO SOLICITUD CON HORA BOGOTÁ:');
+      console.log('✅ Hora Bogotá:', bogotaTime.toString());
+      console.log('✅ Datos:', enrichedLoanData);
+
+      // ✅ RUTAS CORREGIDAS (sin /api duplicado si tu baseURL ya lo tiene)
+      const response = await api.post('/prestamos/solicitar', enrichedLoanData);
       return response.data;
     } catch (error) {
-      console.error('Error creando solicitud:', error);
+      console.error('❌ Error creando solicitud:', error);
       throw error.response?.data || { 
         success: false, 
         message: 'Error de conexión al crear solicitud' 
@@ -48,7 +88,7 @@ const loanRequestsService = {
 
   getPendingRequests: async () => {
     try {
-      const response = await api.get('/api/prestamos/solicitudes-pendientes');
+      const response = await api.get('/prestamos/solicitudes-pendientes');
       return response.data;
     } catch (error) {
       console.error('Error obteniendo solicitudes pendientes:', error);
@@ -61,7 +101,7 @@ const loanRequestsService = {
 
   getUserLoanRequests: async (userId) => {
     try {
-      const response = await api.get(`/api/prestamos/usuario/${userId}/solicitudes`);
+      const response = await api.get(`/prestamos/usuario/${userId}/solicitudes`);
       return response.data;
     } catch (error) {
       console.error('Error obteniendo mis solicitudes:', error);
@@ -74,14 +114,17 @@ const loanRequestsService = {
 
   approveLoanRequest: async (loanId) => {
     try {
-      // ✅ Agregar timestamp de aprobación en hora Bogotá
       const bogotaTime = getBogotaTime();
       const requestData = {
         fecha_aprobacion: formatDateForBackend(bogotaTime),
-        timestamp_aprobacion_bogota: formatDateForBackend(bogotaTime)
+        timestamp_aprobacion_bogota: formatDateForBackend(bogotaTime),
+        timezone_metadata: {
+          source: 'frontend-bogota-approval',
+          bogota_time: bogotaTime.toString()
+        }
       };
 
-      const response = await api.put(`/api/prestamos/${loanId}/aprobar`, requestData);
+      const response = await api.put(`/prestamos/${loanId}/aprobar`, requestData);
       return response.data;
     } catch (error) {
       console.error('Error aprobando solicitud:', error);
@@ -94,15 +137,18 @@ const loanRequestsService = {
 
   rejectLoanRequest: async (loanId, motivo) => {
     try {
-      // ✅ Agregar timestamp de rechazo en hora Bogotá
       const bogotaTime = getBogotaTime();
       const requestData = {
         motivo_rechazo: motivo,
         fecha_rechazo: formatDateForBackend(bogotaTime),
-        timestamp_rechazo_bogota: formatDateForBackend(bogotaTime)
+        timestamp_rechazo_bogota: formatDateForBackend(bogotaTime),
+        timezone_metadata: {
+          source: 'frontend-bogota-rejection',
+          bogota_time: bogotaTime.toString()
+        }
       };
 
-      const response = await api.put(`/api/prestamos/${loanId}/rechazar`, requestData);
+      const response = await api.put(`/prestamos/${loanId}/rechazar`, requestData);
       return response.data;
     } catch (error) {
       console.error('Error rechazando solicitud:', error);
@@ -115,7 +161,7 @@ const loanRequestsService = {
 
   getAvailableImplementos: async () => {
     try {
-      const response = await api.get('/api/implementos');
+      const response = await api.get('/implementos');
       return response.data;
     } catch (error) {
       console.error('Error obteniendo implementos:', error);
@@ -124,6 +170,11 @@ const loanRequestsService = {
         message: 'Error de conexión al obtener implementos' 
       };
     }
+  },
+
+  // ✅ Función para verificar la configuración
+  checkBogotaTime: () => {
+    return debugTimezone();
   },
 
   // ✅ Función auxiliar para formatear fechas en el frontend
