@@ -72,7 +72,7 @@ const loanRequestsService = {
 
       console.log('📤 ENVIANDO SOLICITUD CON HORA BOGOTÁ:');
       console.log('✅ Hora Bogotá:', bogotaTime.toString());
-      console.log('✅ Datos:', enrichedLoanData);
+      console.log('✅ Datos:', enrichedLoanData);//esto para el commit
 
       // ✅ RUTAS CORREGIDAS (sin /api duplicado si tu baseURL ya lo tiene)
       const response = await api.post('/prestamos/solicitar', enrichedLoanData);
