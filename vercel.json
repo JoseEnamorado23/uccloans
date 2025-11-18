@@ -5,18 +5,9 @@
       "destination": "/index.html"
     }
   ],
-  "env": {
-    "TZ": "America/Bogota"
-  },
   "build": {
     "env": {
-      "TZ": "America/Bogota"
-    }
-  },
-  "functions": {
-    "**/*.js": {
-      "runtime": "nodejs18.x"
+      "NODE_ENV": "production"
     }
   }
 }
-

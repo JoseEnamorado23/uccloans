@@ -5,24 +5,15 @@ import api from './api';
 const getBogotaTime = () => {
   const now = new Date();
   
-  // Método más confiable: usar toLocaleString con timezone específico
-  const bogotaTimeString = now.toLocaleString('en-US', {
-    timeZone: 'America/Bogota',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false
-  });
+  // Calcular hora Bogotá manualmente (UTC-5)
+  const bogotaOffset = -5 * 60 * 60 * 1000; // UTC-5 en milisegundos
+  const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+  const bogotaTime = new Date(utc + bogotaOffset);
+  
+  return bogotaTime;
+};
   
   // Convertir "MM/DD/YYYY, HH:MM:SS" a Date object
-  const [datePart, timePart] = bogotaTimeString.split(', ');
-  const [month, day, year] = datePart.split('/');
-  
-  return new Date(`${year}-${month}-${day}T${timePart}`);
-};
 
 // ✅ Formatear fecha para el backend
 const formatDateForBackend = (date) => {
