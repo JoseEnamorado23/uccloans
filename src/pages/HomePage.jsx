@@ -107,6 +107,7 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
+    
     const timer1 = setTimeout(() => {
       const leftContent = document.querySelector('.container__left');
       if (leftContent) {

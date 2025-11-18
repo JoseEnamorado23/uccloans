@@ -1,376 +1,144 @@
-// src/components/UserProfile/UserImplementos.jsx
-import React, { useState, useEffect } from 'react';
-import { useImplementosUser } from '../../hooks/useImplementosUser';
-import loanRequestsService from '../../services/loanRequests.service';
-import { useAuth } from '../../hooks/useAuth'; 
-import { 
-  Search, 
-  RefreshCw, 
-  Wrench, 
-  Package, 
-  PackageCheck, 
-  PackageX,
-  CheckCircle, 
-  XCircle, 
-  Dices,
-  Clock,
-  AlertCircle,
-  BarChart3,
-  Send
-} from 'lucide-react';
-import './UserImplementos.css';
+// src/services/loanRequests.service.js - CON HORA BOGOTÁ
+import api from './api';
 
-const UserImplementos = () => {
-  const { 
-    implementos, 
-    stats, 
-    loading, 
-    error, 
-    cargarImplementosDisponibles, 
-    buscarImplementos 
-  } = useImplementosUser();
-
-  const { user } = useAuth();
+// Función para obtener la hora actual en Bogotá (UTC-5)
+const getBogotaTime = () => {
+  // Crear fecha actual en UTC
+  const now = new Date();
   
-  // Debug para verificar datos del usuario
-  console.log('🔐 Usuario desde useAuth:', user);
-  console.log('🆔 User ID:', user?.id);
-  console.log('📧 User email:', user?.email);
-
-  const [filters, setFilters] = useState({
-    search: ''
-  });
-  const [solicitando, setSolicitando] = useState(null);
-
-  useEffect(() => {
-    if (filters.search) {
-      buscarImplementos(filters.search);
-    } else {
-      cargarImplementosDisponibles();
-    }
-  }, [filters.search]);
-
-  const handleFilterChange = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
-  };
-
-  const handleSolicitarPrestamo = async (implemento) => {
-    // Verificar usuario
-    console.log('🔄 Intentando solicitar préstamo...');
-    console.log('👤 Usuario actual:', user);
-    console.log('🆔 User ID para solicitud:', user?.id);
-
-    if (!user?.id) {
-      alert('❌ Debes iniciar sesión para solicitar préstamos');
-      console.error('❌ No se encontró user.id');
-      return;
-    }
-
-    // Confirmación antes de enviar solicitud
-    const confirmar = window.confirm(
-      `¿Estás seguro de que quieres solicitar el implemento: ${implemento.nombre}?`
-    );
-
-    if (!confirmar) return;
-
-    try {
-      setSolicitando(implemento.id);
-      
-      console.log('📤 Enviando solicitud con datos:', {
-        usuario_id: user.id,
-        implemento: implemento.nombre
-      });
-
-      const result = await loanRequestsService.createLoanRequest({
-        usuario_id: user.id,
-        implemento: implemento.nombre
-      });
-
-      if (result.success) {
-        alert('✅ Solicitud enviada. Espera la aprobación del administrador.');
-        // Recargar implementos para actualizar disponibilidad
-        await cargarImplementosDisponibles();
-      }
-    } catch (error) {
-      console.error('❌ Error solicitando préstamo:', error);
-      alert(error.message || 'Error al enviar solicitud');
-    } finally {
-      setSolicitando(null);
-    }
-  };
-
-  const getDisponibilidadBadge = (cantidadDisponible, cantidadTotal) => {
-    if (cantidadDisponible === 0) {
-      return { 
-        text: 'No disponible', 
-        class: 'badge-unavailable',
-        icon: <PackageX size={14} />
-      };
-    } else if (cantidadDisponible < cantidadTotal * 0.3) {
-      return { 
-        text: 'Poco stock', 
-        class: 'badge-low',
-        icon: <Package size={14} />
-      };
-    } else if (cantidadDisponible < cantidadTotal * 0.7) {
-      return { 
-        text: 'Stock moderado', 
-        class: 'badge-medium',
-        icon: <Package size={14} />
-      };
-    } else {
-      return { 
-        text: 'Disponible', 
-        class: 'badge-available',
-        icon: <PackageCheck size={14} />
-      };
-    }
-  };
-
-  const getStockInfo = (cantidadDisponible, cantidadTotal) => {
-    return `${cantidadDisponible} de ${cantidadTotal} disponibles`;
-  };
-
-  if (error) {
-    return (
-      <div className="error-state">
-        <div className="error-icon">
-          <AlertCircle size={48} />
-        </div>
-        <h3>Error al cargar implementos</h3>
-        <p>{error}</p>
-        <button 
-          className="btn btn-primary"
-          onClick={() => cargarImplementosDisponibles()}
-        >
-          <RefreshCw size={16} />
-          Reintentar
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="user-implementos">
-      <div className="implementos-header">
-        <h2>
-          <Wrench size={24} />
-          Implementos Disponibles
-        </h2>
-        <p>Selecciona un implemento para solicitar préstamo</p>
-      </div>
-
-      {/* Filtros */}
-      <div className="implementos-filters">
-        <div className="filter-group">
-          <label>
-            <Search size={16} />
-            Buscar implemento:
-          </label>
-          <input
-            type="text"
-            placeholder="Nombre del implemento..."
-            value={filters.search}
-            onChange={(e) => handleFilterChange('search', e.target.value)}
-          />
-        </div>
-
-        <button 
-          className="btn btn-secondary btn-sm"
-          onClick={() => cargarImplementosDisponibles()}
-          disabled={loading}
-        >
-          {loading ? (
-            <>
-              <RefreshCw size={16} className="spinning" />
-              Cargando...
-            </>
-          ) : (
-            <>
-              <RefreshCw size={16} />
-              Actualizar
-            </>
-          )}
-        </button>
-      </div>
-
-      {/* Estadísticas rápidas */}
-      <div className="implementos-stats">
-        <div className="stat-card">
-          <span className="stat-number">{stats.total}</span>
-          <span className="stat-label">
-            <Dices size={16} />
-            Total Implementos
-          </span>
-        </div>
-        <div className="stat-card">
-          <span className="stat-number">{stats.disponibles}</span>
-          <span className="stat-label">
-            <PackageCheck size={16} />
-            Disponibles Ahora
-          </span>
-        </div>
-        <div className="stat-card">
-          <span className="stat-number">{stats.unidadesTotales}</span>
-          <span className="stat-label">
-            <Package size={16} />
-            Unidades Totales
-          </span>
-        </div>
-      </div>
-
-      {/* Lista de implementos */}
-      {loading ? (
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <p>Cargando implementos...</p>
-        </div>
-      ) : implementos.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-icon">
-            <Dices size={48} />
-          </div>
-          <h3>No hay implementos disponibles</h3>
-          <p>No se encontraron implementos con los filtros aplicados</p>
-          <button 
-            className="btn btn-primary"
-            onClick={() => {
-              setFilters({ search: '' });
-              cargarImplementosDisponibles();
-            }}
-          >
-            <RefreshCw size={16} />
-            Ver todos los implementos
-          </button>
-        </div>
-      ) : (
-        <div className="implementos-grid">
-          {implementos.map(implemento => {
-            const disponibilidad = getDisponibilidadBadge(
-              implemento.cantidad_disponible, 
-              implemento.cantidad_total
-            );
-            
-            return (
-              <div key={implemento.id} className="implemento-card">
-                <div className="implemento-image">
-                  {implemento.imagen_url ? (
-                    <img src={implemento.imagen_url} alt={implemento.nombre} />
-                  ) : (
-                    <div className="implemento-placeholder">
-                      <Wrench size={48} />
-                    </div>
-                  )}
-                </div>
-                
-                <div className="implemento-content">
-                  <div className="implemento-header">
-                    <h4>{implemento.nombre}</h4>
-                    <span className={`badge ${disponibilidad.class}`}>
-                      {disponibilidad.icon}
-                      {disponibilidad.text}
-                    </span>
-                  </div>
-                  
-                  <div className="implemento-details">
-                    <div className="detail-item">
-                      <span className="detail-label">
-                        <Package size={14} />
-                        Stock:
-                      </span>
-                      <span className="detail-value">
-                        {getStockInfo(implemento.cantidad_disponible, implemento.cantidad_total)}
-                      </span>
-                    </div>
-                    
-                    <div className="detail-item">
-                      <span className="detail-label">
-                        <BarChart3 size={14} />
-                        Estado:
-                      </span>
-                      <span className={`status ${implemento.activo ? 'active' : 'inactive'}`}>
-                        {implemento.activo ? (
-                          <>
-                            <CheckCircle size={14} />
-                            Activo
-                          </>
-                        ) : (
-                          <>
-                            <XCircle size={14} />
-                            Inactivo
-                          </>
-                        )}
-                      </span>
-                    </div>
-
-                    {implemento.descripcion && (
-                      <div className="detail-item">
-                        <span className="detail-label">
-                          <Clock size={14} />
-                          Descripción:
-                        </span>
-                        <span className="detail-value" style={{fontSize: '0.8rem', textAlign: 'right'}}>
-                          {implemento.descripcion.length > 50 
-                            ? `${implemento.descripcion.substring(0, 50)}...` 
-                            : implemento.descripcion}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Botón de Solicitar */}
-                  <div className="implemento-actions">
-                    <button
-                      onClick={() => handleSolicitarPrestamo(implemento)}
-                      disabled={
-                        implemento.cantidad_disponible <= 0 || 
-                        !implemento.activo ||
-                        solicitando === implemento.id
-                      }
-                      className={`btn-solicitar ${
-                        implemento.cantidad_disponible <= 0 || !implemento.activo ? 'disabled' : ''
-                      }`}
-                    >
-                      {solicitando === implemento.id ? (
-                        <>
-                          <RefreshCw size={16} className="spinning" />
-                          Enviando solicitud...
-                        </>
-                      ) : implemento.cantidad_disponible <= 0 ? (
-                        <>
-                          <PackageX size={16} />
-                          No Disponible
-                        </>
-                      ) : !implemento.activo ? (
-                        <>
-                          <XCircle size={16} />
-                          Temporalmente Inactivo
-                        </>
-                      ) : (
-                        <>
-                          <Send size={16} />
-                          Solicitar Préstamo
-                        </>
-                      )}
-                    </button>
-                  </div>
-
-                  {implemento.fecha_actualizacion && (
-                    <div className="implemento-footer">
-                      <small>
-                        <Clock size={12} />
-                        Actualizado: {new Date(implemento.fecha_actualizacion).toLocaleDateString('es-CO')}
-                      </small>
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
+  // Convertir a hora de Bogotá (UTC-5)
+  const bogotaOffset = -5 * 60; // UTC-5 en minutos
+  const localOffset = now.getTimezoneOffset(); // Offset local en minutos
+  const bogotaTime = new Date(now.getTime() + (bogotaOffset + localOffset) * 60000);
+  
+  return bogotaTime;
 };
 
-export default UserImplementos;
+// Formatear fecha para el backend (ISO string)
+const formatDateForBackend = (date) => {
+  return date.toISOString();
+};
+
+const loanRequestsService = {
+  createLoanRequest: async (loanData) => {
+    try {
+      // ✅ Agregar timestamps con hora de Bogotá
+      const bogotaTime = getBogotaTime();
+      const enrichedLoanData = {
+        ...loanData,
+        fecha_solicitud: formatDateForBackend(bogotaTime),
+        // Si necesitas fecha de devolución estimada
+        fecha_devolucion_estimada: loanData.fecha_devolucion_estimada 
+          ? formatDateForBackend(new Date(loanData.fecha_devolucion_estimada))
+          : null,
+        // Timestamp adicional para auditoría
+        timestamp_bogota: formatDateForBackend(bogotaTime)
+      };
+
+      const response = await api.post('/api/prestamos/solicitar', enrichedLoanData);
+      return response.data;
+    } catch (error) {
+      console.error('Error creando solicitud:', error);
+      throw error.response?.data || { 
+        success: false, 
+        message: 'Error de conexión al crear solicitud' 
+      };
+    }
+  },
+
+  getPendingRequests: async () => {
+    try {
+      const response = await api.get('/api/prestamos/solicitudes-pendientes');
+      return response.data;
+    } catch (error) {
+      console.error('Error obteniendo solicitudes pendientes:', error);
+      throw error.response?.data || { 
+        success: false, 
+        message: 'Error de conexión al obtener solicitudes' 
+      };
+    }
+  },
+
+  getUserLoanRequests: async (userId) => {
+    try {
+      const response = await api.get(`/api/prestamos/usuario/${userId}/solicitudes`);
+      return response.data;
+    } catch (error) {
+      console.error('Error obteniendo mis solicitudes:', error);
+      throw error.response?.data || { 
+        success: false, 
+        message: 'Error de conexión al obtener mis solicitudes' 
+      };
+    }
+  },
+
+  approveLoanRequest: async (loanId) => {
+    try {
+      // ✅ Agregar timestamp de aprobación en hora Bogotá
+      const bogotaTime = getBogotaTime();
+      const requestData = {
+        fecha_aprobacion: formatDateForBackend(bogotaTime),
+        timestamp_aprobacion_bogota: formatDateForBackend(bogotaTime)
+      };
+
+      const response = await api.put(`/api/prestamos/${loanId}/aprobar`, requestData);
+      return response.data;
+    } catch (error) {
+      console.error('Error aprobando solicitud:', error);
+      throw error.response?.data || { 
+        success: false, 
+        message: 'Error de conexión al aprobar solicitud' 
+      };
+    }
+  },
+
+  rejectLoanRequest: async (loanId, motivo) => {
+    try {
+      // ✅ Agregar timestamp de rechazo en hora Bogotá
+      const bogotaTime = getBogotaTime();
+      const requestData = {
+        motivo_rechazo: motivo,
+        fecha_rechazo: formatDateForBackend(bogotaTime),
+        timestamp_rechazo_bogota: formatDateForBackend(bogotaTime)
+      };
+
+      const response = await api.put(`/api/prestamos/${loanId}/rechazar`, requestData);
+      return response.data;
+    } catch (error) {
+      console.error('Error rechazando solicitud:', error);
+      throw error.response?.data || { 
+        success: false, 
+        message: 'Error de conexión al rechazar solicitud' 
+      };
+    }
+  },
+
+  getAvailableImplementos: async () => {
+    try {
+      const response = await api.get('/api/implementos');
+      return response.data;
+    } catch (error) {
+      console.error('Error obteniendo implementos:', error);
+      throw error.response?.data || { 
+        success: false, 
+        message: 'Error de conexión al obtener implementos' 
+      };
+    }
+  },
+
+  // ✅ Función auxiliar para formatear fechas en el frontend
+  formatBogotaDate: (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString('es-CO', {
+      timeZone: 'America/Bogota',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+  }
+};
+
+export default loanRequestsService;
