@@ -3,6 +3,21 @@ import React, { useState, useEffect } from 'react';
 import { useImplementosUser } from '../../hooks/useImplementosUser';
 import loanRequestsService from '../../services/loanRequests.service';
 import { useAuth } from '../../hooks/useAuth'; 
+import { 
+  Search, 
+  RefreshCw, 
+  Wrench, 
+  Package, 
+  PackageCheck, 
+  PackageX,
+  CheckCircle, 
+  XCircle, 
+  Dices,
+  Clock,
+  AlertCircle,
+  BarChart3,
+  Send
+} from 'lucide-react';
 import './UserImplementos.css';
 
 const UserImplementos = () => {
@@ -15,9 +30,9 @@ const UserImplementos = () => {
     buscarImplementos 
   } = useImplementosUser();
 
-  const { user } = useAuth(); // ✅ AHORA DEBERÍA FUNCIONAR
+  const { user } = useAuth();
   
-  // ✅ AGREGAR DEBUG PARA VERIFICAR
+  // Debug para verificar datos del usuario
   console.log('🔐 Usuario desde useAuth:', user);
   console.log('🆔 User ID:', user?.id);
   console.log('📧 User email:', user?.email);
@@ -40,7 +55,7 @@ const UserImplementos = () => {
   };
 
   const handleSolicitarPrestamo = async (implemento) => {
-    // ✅ VERIFICAR USUARIO CON DEBUG
+    // Verificar usuario
     console.log('🔄 Intentando solicitar préstamo...');
     console.log('👤 Usuario actual:', user);
     console.log('🆔 User ID para solicitud:', user?.id);
@@ -86,13 +101,29 @@ const UserImplementos = () => {
 
   const getDisponibilidadBadge = (cantidadDisponible, cantidadTotal) => {
     if (cantidadDisponible === 0) {
-      return { text: '🔴 No disponible', class: 'badge-unavailable' };
+      return { 
+        text: 'No disponible', 
+        class: 'badge-unavailable',
+        icon: <PackageX size={14} />
+      };
     } else if (cantidadDisponible < cantidadTotal * 0.3) {
-      return { text: '🟡 Poco stock', class: 'badge-low' };
+      return { 
+        text: 'Poco stock', 
+        class: 'badge-low',
+        icon: <Package size={14} />
+      };
     } else if (cantidadDisponible < cantidadTotal * 0.7) {
-      return { text: '🟠 Stock moderado', class: 'badge-medium' };
+      return { 
+        text: 'Stock moderado', 
+        class: 'badge-medium',
+        icon: <Package size={14} />
+      };
     } else {
-      return { text: '🟢 Disponible', class: 'badge-available' };
+      return { 
+        text: 'Disponible', 
+        class: 'badge-available',
+        icon: <PackageCheck size={14} />
+      };
     }
   };
 
@@ -103,13 +134,16 @@ const UserImplementos = () => {
   if (error) {
     return (
       <div className="error-state">
-        <div className="error-icon">⚠️</div>
+        <div className="error-icon">
+          <AlertCircle size={48} />
+        </div>
         <h3>Error al cargar implementos</h3>
         <p>{error}</p>
         <button 
           className="btn btn-primary"
           onClick={() => cargarImplementosDisponibles()}
         >
+          <RefreshCw size={16} />
           Reintentar
         </button>
       </div>
@@ -119,14 +153,20 @@ const UserImplementos = () => {
   return (
     <div className="user-implementos">
       <div className="implementos-header">
-        <h2>🎯 Implementos Disponibles</h2>
+        <h2>
+          <Wrench size={24} />
+          Implementos Disponibles
+        </h2>
         <p>Selecciona un implemento para solicitar préstamo</p>
       </div>
 
       {/* Filtros */}
       <div className="implementos-filters">
         <div className="filter-group">
-          <label>Buscar implemento:</label>
+          <label>
+            <Search size={16} />
+            Buscar implemento:
+          </label>
           <input
             type="text"
             placeholder="Nombre del implemento..."
@@ -140,7 +180,17 @@ const UserImplementos = () => {
           onClick={() => cargarImplementosDisponibles()}
           disabled={loading}
         >
-          {loading ? '🔄 Cargando...' : '🔄 Actualizar'}
+          {loading ? (
+            <>
+              <RefreshCw size={16} className="spinning" />
+              Cargando...
+            </>
+          ) : (
+            <>
+              <RefreshCw size={16} />
+              Actualizar
+            </>
+          )}
         </button>
       </div>
 
@@ -148,15 +198,24 @@ const UserImplementos = () => {
       <div className="implementos-stats">
         <div className="stat-card">
           <span className="stat-number">{stats.total}</span>
-          <span className="stat-label">Total Implementos</span>
+          <span className="stat-label">
+            <Dices size={16} />
+            Total Implementos
+          </span>
         </div>
         <div className="stat-card">
           <span className="stat-number">{stats.disponibles}</span>
-          <span className="stat-label">Disponibles</span>
+          <span className="stat-label">
+            <PackageCheck size={16} />
+            Disponibles Ahora
+          </span>
         </div>
         <div className="stat-card">
           <span className="stat-number">{stats.unidadesTotales}</span>
-          <span className="stat-label">Unidades Totales</span>
+          <span className="stat-label">
+            <Package size={16} />
+            Unidades Totales
+          </span>
         </div>
       </div>
 
@@ -168,9 +227,21 @@ const UserImplementos = () => {
         </div>
       ) : implementos.length === 0 ? (
         <div className="empty-state">
-          <div className="empty-icon">🎯</div>
+          <div className="empty-icon">
+            <Dices size={48} />
+          </div>
           <h3>No hay implementos disponibles</h3>
           <p>No se encontraron implementos con los filtros aplicados</p>
+          <button 
+            className="btn btn-primary"
+            onClick={() => {
+              setFilters({ search: '' });
+              cargarImplementosDisponibles();
+            }}
+          >
+            <RefreshCw size={16} />
+            Ver todos los implementos
+          </button>
         </div>
       ) : (
         <div className="implementos-grid">
@@ -187,7 +258,7 @@ const UserImplementos = () => {
                     <img src={implemento.imagen_url} alt={implemento.nombre} />
                   ) : (
                     <div className="implemento-placeholder">
-                      🎯
+                      <Wrench size={48} />
                     </div>
                   )}
                 </div>
@@ -196,27 +267,58 @@ const UserImplementos = () => {
                   <div className="implemento-header">
                     <h4>{implemento.nombre}</h4>
                     <span className={`badge ${disponibilidad.class}`}>
+                      {disponibilidad.icon}
                       {disponibilidad.text}
                     </span>
                   </div>
                   
                   <div className="implemento-details">
                     <div className="detail-item">
-                      <span className="detail-label">Stock:</span>
+                      <span className="detail-label">
+                        <Package size={14} />
+                        Stock:
+                      </span>
                       <span className="detail-value">
                         {getStockInfo(implemento.cantidad_disponible, implemento.cantidad_total)}
                       </span>
                     </div>
                     
                     <div className="detail-item">
-                      <span className="detail-label">Estado:</span>
+                      <span className="detail-label">
+                        <BarChart3 size={14} />
+                        Estado:
+                      </span>
                       <span className={`status ${implemento.activo ? 'active' : 'inactive'}`}>
-                        {implemento.activo ? '✅ Activo' : '⏸️ Inactivo'}
+                        {implemento.activo ? (
+                          <>
+                            <CheckCircle size={14} />
+                            Activo
+                          </>
+                        ) : (
+                          <>
+                            <XCircle size={14} />
+                            Inactivo
+                          </>
+                        )}
                       </span>
                     </div>
+
+                    {implemento.descripcion && (
+                      <div className="detail-item">
+                        <span className="detail-label">
+                          <Clock size={14} />
+                          Descripción:
+                        </span>
+                        <span className="detail-value" style={{fontSize: '0.8rem', textAlign: 'right'}}>
+                          {implemento.descripcion.length > 50 
+                            ? `${implemento.descripcion.substring(0, 50)}...` 
+                            : implemento.descripcion}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
-                  {/* ✅ BOTÓN DE SOLICITAR - AGREGADO */}
+                  {/* Botón de Solicitar */}
                   <div className="implemento-actions">
                     <button
                       onClick={() => handleSolicitarPrestamo(implemento)}
@@ -230,13 +332,25 @@ const UserImplementos = () => {
                       }`}
                     >
                       {solicitando === implemento.id ? (
-                        '⏳ Enviando...'
+                        <>
+                          <RefreshCw size={16} className="spinning" />
+                          Enviando solicitud...
+                        </>
                       ) : implemento.cantidad_disponible <= 0 ? (
-                        '❌ No Disponible'
+                        <>
+                          <PackageX size={16} />
+                          No Disponible
+                        </>
                       ) : !implemento.activo ? (
-                        '⏸️ Inactivo'
+                        <>
+                          <XCircle size={16} />
+                          Temporalmente Inactivo
+                        </>
                       ) : (
-                        '📝 Solicitar Préstamo'
+                        <>
+                          <Send size={16} />
+                          Solicitar Préstamo
+                        </>
                       )}
                     </button>
                   </div>
@@ -244,6 +358,7 @@ const UserImplementos = () => {
                   {implemento.fecha_actualizacion && (
                     <div className="implemento-footer">
                       <small>
+                        <Clock size={12} />
                         Actualizado: {new Date(implemento.fecha_actualizacion).toLocaleDateString('es-CO')}
                       </small>
                     </div>

@@ -6,29 +6,24 @@ import { userProfileService } from "../services/userProfileService";
 import UserLoansHistory from "../components/UserProfile/UserLoansHistory";
 import UserStats from "../components/UserProfile/UserStats";
 import UserImplementos from "../components/UserProfile/UserImplementos";
-import UserLoanRequests from "../components/UserProfile/UserLoanRequests";
-import { 
-  FaUser, 
-  FaHistory, 
-  FaTools, 
-  FaChartBar, 
-  FaSignOutAlt,
-  FaBook,
-  FaClock,
-  FaCheckCircle,
-  FaEnvelope,
-  FaPhone,
-  FaIdCard
-} from "react-icons/fa";
-import { 
-  MdEmail, 
-  MdPhone, 
-  MdPerson, 
-  MdSchool,
-  MdCalendarToday
-} from "react-icons/md";
-import logo from "../assets/logo1.svg";
+import {
+  Menu,
+  User,
+  History,
+  Wrench,
+  BarChart3,
+  LogOut,
+  BookOpen,
+  Clock,
+  Calendar,
+  ChevronDown,
+  Mail,
+  Phone,
+  IdCard,
+  CheckCircle,
+} from "lucide-react";
 import "./UserProfile.css";
+import logo from "../assets/logo1.svg";
 
 const UserProfile = () => {
   const { user, logout } = useAuth();
@@ -36,6 +31,8 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("profile");
   const [stats, setStats] = useState(null);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
 
   useEffect(() => {
     loadUserProfile();
@@ -104,19 +101,35 @@ const UserProfile = () => {
     return "Sin programa asignado";
   };
 
-  // Items de navegación
-  const navItems = [
-    { id: "profile", icon: FaUser, label: "Información Personal" },
-    { id: "implementos", icon: FaTools, label: "Implementos" },
-    { id: "history", icon: FaHistory, label: "Historial" },
-    { id: "stats", icon: FaChartBar, label: "Estadísticas" }
+  // Items de navegación para usuario
+  const menuItems = [
+    {
+      id: "profile",
+      icon: User,
+      text: "Información Personal",
+    },
+    {
+      id: "implementos",
+      icon: Wrench,
+      text: "Implementos Disponibles",
+    },
+    {
+      id: "history",
+      icon: History,
+      text: "Historial de Préstamos",
+    },
+    {
+      id: "stats",
+      icon: BarChart3,
+      text: "Estadísticas",
+    },
   ];
 
   if (loading && !userData) {
     return (
-      <div className="profile-container">
-        <div className="profile-loading">
-          <div className="loading-spinner"></div>
+      <div className="user-profile-container">
+        <div className="user-profile-loading">
+          <div className="user-profile-loading-spinner"></div>
           <p>Cargando perfil...</p>
         </div>
       </div>
@@ -124,158 +137,311 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="profile-container">
+    <div className="user-profile-container">
       {/* Sidebar */}
-      <div className="profile-sidebar">
+      <div
+        className={`user-profile-sidebar ${
+          sidebarOpen
+            ? "user-profile-sidebar-open"
+            : "user-profile-sidebar-closed"
+        }`}
+      >
         {/* Header del Sidebar */}
-        <div className="sidebar-header">
-          <div className="logo-container">
-            <img src={logo} alt="UCC LOANS" className="logo-svg" />
-            <span className="logo-text">UCC LOANS</span>
-          </div>
+        <div className="user-profile-sidebar-header">
+          <Menu
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="user-profile-menu-icon"
+            size={20}
+          />
+          {sidebarOpen && (
+            <div className="user-profile-logo-container">
+              <div className="user-profile-logo-svg-container">
+                <img
+                  src={logo}
+                  alt="UCC LOANS Logo"
+                  className="user-profile-logo-svg"
+                />
+              </div>
+              <div className="user-profile-logo-text-container">
+                <span className="user-profile-logo-text">UCC LOANS</span>
+                <span className="user-profile-logo-subtitle">Usuario</span>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Información del Usuario */}
-        <div className="user-info-sidebar">
-          <div className="user-avatar">
-            {user?.nombre_completo?.charAt(0) || "U"}
-          </div>
-          <h3 className="user-name">{user?.nombre_completo}</h3>
-          <p className="user-email">{user?.email}</p>
-          <p className="user-program">
-            <MdSchool style={{ marginRight: '4px' }} />
-            {getProgramaNombre()}
-          </p>
-          
-          <div className="user-stats-sidebar">
-            <div className="stat-sidebar">
-              <span className="stat-value-sidebar">
-                {userData?.horas_totales_acumuladas || 0}
-              </span>
-              <span className="stat-label-sidebar">Horas</span>
-            </div>
-            <div className="stat-sidebar">
-              <span className="stat-value-sidebar">
-                {userData?.total_prestamos || 0}
-              </span>
-              <span className="stat-label-sidebar">Préstamos</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Navegación */}
-        <nav className="sidebar-nav">
-          <ul className="nav-list">
-            {navItems.map((item) => {
-              const IconComponent = item.icon;
-              return (
-                <li key={item.id} className="nav-item">
-                  <button
-                    className={`nav-link ${activeTab === item.id ? 'active' : ''}`}
-                    onClick={() => handleTabChange(item.id)}
-                  >
-                    <IconComponent className="nav-icon" />
-                    <span>{item.label}</span>
-                  </button>
-                </li>
-              );
-            })}
+        {/* Navegación principal */}
+        <nav className="user-profile-sidebar-nav">
+          <ul className="user-profile-nav-list">
+            {menuItems.map(({ id, icon: Icon, text }) => (
+              <li key={id} className="user-profile-nav-item">
+                <button
+                  className={`user-profile-nav-link ${
+                    activeTab === id ? "user-profile-nav-link-active" : ""
+                  }`}
+                  onClick={() => handleTabChange(id)}
+                >
+                  <Icon size={18} className="user-profile-nav-icon" />
+                  {sidebarOpen && (
+                    <span className="user-profile-nav-text">{text}</span>
+                  )}
+                </button>
+              </li>
+            ))}
           </ul>
         </nav>
-
-        {/* Footer del Sidebar */}
-        <div className="sidebar-footer">
-          <button className="logout-button" onClick={handleLogout}>
-            <FaSignOutAlt />
-            Cerrar Sesión
-          </button>
-        </div>
       </div>
 
       {/* Contenido Principal */}
-      <main className="profile-main">
-        <div className="profile-header">
-          <h1>Mi Perfil</h1>
-          <p>Gestiona tu información y préstamos</p>
-        </div>
-
-        {activeTab === "profile" && (
-          <div className="tab-content">
-            <h2>Información Personal</h2>
-            <div className="info-grid">
-              <div className="info-item">
-                <label><MdPerson style={{ marginRight: '4px' }} /> Nombre Completo</label>
-                <span>{userData?.nombre_completo}</span>
-              </div>
-              <div className="info-item">
-                <label><FaIdCard style={{ marginRight: '4px' }} /> Número de Cédula</label>
-                <span>{userData?.numero_cedula}</span>
-              </div>
-              <div className="info-item">
-                <label><MdPhone style={{ marginRight: '4px' }} /> Teléfono</label>
-                <span>{userData?.numero_telefono}</span>
-              </div>
-              <div className="info-item">
-                <label><MdSchool style={{ marginRight: '4px' }} /> Programa</label>
-                <span>{getProgramaNombre()}</span>
-              </div>
-              <div className="info-item">
-                <label><MdEmail style={{ marginRight: '4px' }} /> Email</label>
-                <span>{userData?.email}</span>
-              </div>
-              <div className="info-item">
-                <label><FaCheckCircle style={{ marginRight: '4px' }} /> Estado de Cuenta</label>
-                <span className={`status ${userData?.verificado ? "verified" : "pending"}`}>
-                  {userData?.verificado ? "✅ Verificada" : "⏳ Pendiente"}
-                </span>
-              </div>
-              <div className="info-item">
-                <label><MdCalendarToday style={{ marginRight: '4px' }} /> Fecha de Registro</label>
-                <span>
-                  {userData?.fecha_registro
-                    ? formatDate(userData.fecha_registro)
-                    : "N/A"}
-                </span>
-              </div>
-              <div className="info-item">
-                <label><FaClock style={{ marginRight: '4px' }} /> Último Login</label>
-                <span>
-                  {userData?.ultimo_login
-                    ? formatDate(userData.ultimo_login)
-                    : "N/A"}
-                </span>
-              </div>
+      <main className={`user-profile-main ${sidebarOpen ? '' : 'user-profile-main-expanded'}`}>
+        {/* Top Header con información de usuario */}
+        <header className="user-profile-top-header">
+          {/* Logo en móvil - Parte superior izquierda */}
+          <div className="user-profile-mobile-logo">
+            <div className="user-profile-mobile-logo-container">
+              <img
+                src={logo}
+                alt="UCC LOANS Logo"
+                className="user-profile-mobile-logo-svg"
+              />
+              <span className="user-profile-mobile-logo-text">UCC LOANS</span>
             </div>
           </div>
-        )}
 
-        {activeTab === "implementos" && (
-          <div className="tab-content">
-            <h2>Implementos Disponibles</h2>
-            <UserImplementos />
-          </div>
-        )}
+          <div className="user-profile-header-content">
+            <div className="user-profile-header-title">
+              <h1>
+                {activeTab === "profile" && "Información Personal"}
+                {activeTab === "implementos" && "Implementos Disponibles"}
+                {activeTab === "history" && "Historial de Préstamos"}
+                {activeTab === "stats" && "Estadísticas de Uso"}
+              </h1>
+              <p>Gestiona tu información y préstamos</p>
+            </div>
 
-        {activeTab === "history" && userData && (
-          <div className="tab-content">
-            <h2>Historial de Préstamos</h2>
-            <UserLoansHistory userId={userData.id} />
-          </div>
-        )}
+            {/* User Dropdown */}
+            <div className="user-profile-dropdown-container">
+              <button
+                className="user-profile-dropdown-trigger"
+                onClick={() => setShowUserDropdown(!showUserDropdown)}
+              >
+                <div className="user-profile-avatar-small">
+                  {user?.nombre_completo?.charAt(0) || "U"}
+                </div>
+                <ChevronDown size={16} />
+              </button>
 
-        {activeTab === "solicitudes" && userData && (
-          <div className="tab-content">
-            <h2>Mis Solicitudes de Préstamo</h2>
-            <UserLoanRequests userId={userData.id} />
-          </div>
-        )}
+              {showUserDropdown && (
+                <div className="user-profile-dropdown">
+                  <div className="user-profile-dropdown-header">
+                    <div className="user-profile-avatar-medium">
+                      {user?.nombre_completo?.charAt(0) || "U"}
+                    </div>
+                    <div className="user-profile-info">
+                      <div className="user-profile-name">
+                        {user?.nombre_completo}
+                      </div>
+                      <div className="user-profile-email">{user?.email}</div>
+                      <div className="user-profile-program">
+                        <BookOpen size={12} />
+                        {getProgramaNombre()}
+                      </div>
+                    </div>
+                  </div>
 
-        {activeTab === "stats" && userData && (
-          <div className="tab-content">
-            <h2>Estadísticas de Uso</h2>
-            <UserStats userId={userData.id} statsData={stats} />
+                  <div className="user-profile-stats-dropdown">
+                    <div className="user-profile-stat">
+                      <div className="user-profile-stat-value">
+                        {userData?.horas_totales_acumuladas || 0}
+                      </div>
+                      <div className="user-profile-stat-label">
+                        Horas Acumuladas
+                      </div>
+                    </div>
+                    <div className="user-profile-stat">
+                      <div className="user-profile-stat-value">
+                        {userData?.total_prestamos || 0}
+                      </div>
+                      <div className="user-profile-stat-label">
+                        Préstamos Totales
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="user-profile-dropdown-info">
+                    <div className="user-profile-info-item">
+                      <IdCard size={14} />
+                      <span>{userData?.numero_cedula}</span>
+                    </div>
+                    <div className="user-profile-info-item">
+                      <Phone size={14} />
+                      <span>{userData?.numero_telefono}</span>
+                    </div>
+                    <div className="user-profile-info-item">
+                      <Calendar size={14} />
+                      <span>
+                        {userData?.fecha_registro
+                          ? formatDate(userData.fecha_registro)
+                          : "N/A"}
+                      </span>
+                    </div>
+                    <div className="user-profile-info-item status">
+                      <CheckCircle size={14} />
+                      <span
+                        className={`${
+                          userData?.verificado
+                            ? "user-profile-status-verified"
+                            : "user-profile-status-pending"
+                        }`}
+                      >
+                        {userData?.verificado
+                          ? "Cuenta Verificada"
+                          : "Pendiente de Verificación"}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* BOTÓN DE LOGOUT EN DROPDOWN */}
+                  <button
+                    className="user-profile-dropdown-logout"
+                    onClick={handleLogout}
+                  >
+                    <LogOut size={16} />
+                    Cerrar Sesión
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-        )}
+        </header>
+
+        {/* Contenido de las pestañas */}
+        <div className="user-profile-tab-content-container">
+          {activeTab === "profile" && (
+            <div className="user-profile-tab-content">
+              <h2>Detalles de la Cuenta</h2>
+              <div className="user-profile-info-grid">
+                <div className="user-profile-info-item-detailed">
+                  <div className="user-profile-info-icon">
+                    <User size={18} />
+                  </div>
+                  <div className="user-profile-info-content">
+                    <label>Nombre Completo</label>
+                    <span>{userData?.nombre_completo}</span>
+                  </div>
+                </div>
+
+                <div className="user-profile-info-item-detailed">
+                  <div className="user-profile-info-icon">
+                    <IdCard size={18} />
+                  </div>
+                  <div className="user-profile-info-content">
+                    <label>Número de Cédula</label>
+                    <span>{userData?.numero_cedula}</span>
+                  </div>
+                </div>
+
+                <div className="user-profile-info-item-detailed">
+                  <div className="user-profile-info-icon">
+                    <Phone size={18} />
+                  </div>
+                  <div className="user-profile-info-content">
+                    <label>Teléfono</label>
+                    <span>{userData?.numero_telefono}</span>
+                  </div>
+                </div>
+
+                <div className="user-profile-info-item-detailed">
+                  <div className="user-profile-info-icon">
+                    <BookOpen size={18} />
+                  </div>
+                  <div className="user-profile-info-content">
+                    <label>Programa Académico</label>
+                    <span>{getProgramaNombre()}</span>
+                  </div>
+                </div>
+
+                <div className="user-profile-info-item-detailed">
+                  <div className="user-profile-info-icon">
+                    <Mail size={18} />
+                  </div>
+                  <div className="user-profile-info-content">
+                    <label>Email</label>
+                    <span>{userData?.email}</span>
+                  </div>
+                </div>
+
+                <div className="user-profile-info-item-detailed">
+                  <div className="user-profile-info-icon">
+                    <CheckCircle size={18} />
+                  </div>
+                  <div className="user-profile-info-content">
+                    <label>Estado de Cuenta</label>
+                    <span
+                      className={`${
+                        userData?.verificado
+                          ? "user-profile-status-verified"
+                          : "user-profile-status-pending"
+                      }`}
+                    >
+                      {userData?.verificado
+                        ? "✅ Verificada"
+                        : "⏳ Pendiente de verificación"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="user-profile-info-item-detailed">
+                  <div className="user-profile-info-icon">
+                    <Calendar size={18} />
+                  </div>
+                  <div className="user-profile-info-content">
+                    <label>Fecha de Registro</label>
+                    <span>
+                      {userData?.fecha_registro
+                        ? formatDate(userData.fecha_registro)
+                        : "N/A"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="user-profile-info-item-detailed">
+                  <div className="user-profile-info-icon">
+                    <Clock size={18} />
+                  </div>
+                  <div className="user-profile-info-content">
+                    <label>Último Login</label>
+                    <span>
+                      {userData?.ultimo_login
+                        ? formatDate(userData.ultimo_login)
+                        : "N/A"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "implementos" && (
+            <div className="user-profile-tab-content">
+              <UserImplementos />
+            </div>
+          )}
+
+          {activeTab === "history" && userData && (
+            <div className="user-profile-tab-content">
+              <h2>Historial de Préstamos Realizados</h2>
+              <UserLoansHistory userId={userData.id} />
+            </div>
+          )}
+
+          {activeTab === "stats" && userData && (
+            <div className="user-profile-tab-content">
+              <h2>Estadísticas de Uso</h2>
+              <UserStats userId={userData.id} statsData={stats} />
+            </div>
+          )}
+        </div>
       </main>
     </div>
   );

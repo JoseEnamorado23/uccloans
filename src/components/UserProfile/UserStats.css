@@ -3,82 +3,35 @@
   padding: 0;
 }
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.stat-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  border-left: 4px solid #007bff;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.stat-card.primary { border-left-color: #007bff; }
-.stat-card.success { border-left-color: #28a745; }
-.stat-card.warning { border-left-color: #ffc107; }
-.stat-card.info { border-left-color: #17a2b8; }
-.stat-card.danger { border-left-color: #dc3545; }
-.stat-card.secondary { border-left-color: #6c757d; }
-
-.stat-icon {
-  font-size: 2rem;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f8f9fa;
-  border-radius: 50%;
-}
-
-.stat-info {
-  flex: 1;
-}
-
-.stat-info h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1rem;
-  color: #555;
-  font-weight: 600;
-}
-
-.stat-number {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
-  color: #333;
-}
-
-.stat-desc {
-  margin: 0.25rem 0 0 0;
-  color: #666;
-  font-size: 0.85rem;
-}
-
+/* Resumen de actividad */
 .stats-summary {
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border: 1px solid #e5e7eb;
+  margin-bottom: 2rem;
 }
 
-.stats-summary h3 {
-  margin: 0 0 1rem 0;
-  color: #333;
-  font-size: 1.2rem;
+.summary-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+.summary-header h3 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .summary-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
 }
 
@@ -86,23 +39,224 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #00acc9;
+  transition: all 0.2s ease;
+}
+
+.summary-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .summary-label {
   font-weight: 600;
-  color: #555;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
 }
 
 .summary-value {
   font-weight: 700;
-  color: #007bff;
+  color: #00acc9;
   font-size: 1.1rem;
 }
 
+/* Grid de estadísticas */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border: 1px solid #e5e7eb;
+  border-left: 4px solid #007bff;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Colores de las tarjetas */
+.stat-card.primary { 
+  border-left-color: #00acc9; 
+  background: linear-gradient(135deg, #f0fdff 0%, #ffffff 100%);
+}
+
+.stat-card.success { 
+  border-left-color: #10b981; 
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+}
+
+.stat-card.completed { 
+  border-left-color: #059669; 
+  background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
+}
+
+.stat-card.active { 
+  border-left-color: #f59e0b; 
+  background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+}
+
+.stat-card.requested { 
+  border-left-color: #8b5cf6; 
+  background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%);
+}
+
+.stat-card.rejected { 
+  border-left-color: #ef4444; 
+  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+}
+
+/* Iconos */
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.stat-card.primary .stat-icon {
+  background: #e0f7fa;
+  color: #00acc9;
+}
+
+.stat-card.success .stat-icon {
+  background: #e8f5e8;
+  color: #10b981;
+}
+
+.stat-card.completed .stat-icon {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.stat-card.active .stat-icon {
+  background: #fef3c7;
+  color: #f59e0b;
+}
+
+.stat-card.requested .stat-icon {
+  background: #e0e7ff;
+  color: #8b5cf6;
+}
+
+.stat-card.rejected .stat-icon {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+/* Información de la estadística */
+.stat-info {
+  flex: 1;
+}
+
+.stat-info h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #1f2937;
+  line-height: 1;
+}
+
+.stat-desc {
+  margin: 0.5rem 0 0 0;
+  color: #6b7280;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+/* Estados de carga */
 .stats-loading {
   text-align: center;
   padding: 3rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
+.loading-spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #00acc9;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.stats-loading p {
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat-card {
+    padding: 1.25rem;
+  }
+  
+  .stat-number {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-summary {
+    padding: 1.25rem;
+  }
+  
+  .summary-item {
+    padding: 0.875rem;
+  }
+  
+  .stat-icon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .stat-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+}
