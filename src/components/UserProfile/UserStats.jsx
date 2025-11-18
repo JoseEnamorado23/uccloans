@@ -46,14 +46,8 @@ const UserStats = ({ userId, statsData }) => {
   const [loading, setLoading] = useState(!statsData);
 
   useEffect(() => {
-    console.log('⏰ Debug Timezone Frontend:', {
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    horaNavegador: new Date().toString(),
-    horaLocal: new Date().toLocaleString('es-CO')
-  });
     if (!statsData) {
       loadStats();
-
     }
   }, [userId]);
 
