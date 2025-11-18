@@ -32,6 +32,97 @@ import Image3 from '../../public/jenga.jpg';
 import Image4 from '../../public/ball.jpg';
 import logo from '../assets/logo1.svg';
 
+// HomePage.jsx - AGREGAR ESTO TEMPORALMENTE
+import React, { useState, useEffect } from 'react';
+
+const TimeDebugger = () => {
+  const [frontendTime, setFrontendTime] = useState('');
+  const [backendTime, setBackendTime] = useState('');
+  const [timezoneInfo, setTimezoneInfo] = useState({});
+
+  useEffect(() => {
+    // Debug del frontend
+    const updateFrontendTime = () => {
+      const now = new Date();
+      setFrontendTime({
+        local: now.toString(),
+        colombia: now.toLocaleString('es-CO', { timeZone: 'America/Bogota' }),
+        iso: now.toISOString(),
+        timestamp: now.getTime()
+      });
+      
+      setTimezoneInfo({
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        offset: now.getTimezoneOffset(),
+        envTZ: process.env.TZ || 'No configurado'
+      });
+    };
+
+    updateFrontendTime();
+    const interval = setInterval(updateFrontendTime, 1000);
+
+    // Intentar obtener hora del backend
+    const fetchBackendTime = async () => {
+      try {
+        const response = await fetch('/api/debug/time');
+        const data = await response.json();
+        setBackendTime(data);
+      } catch (error) {
+        setBackendTime({ error: 'No se pudo conectar al backend' });
+      }
+    };
+
+    fetchBackendTime();
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: '80px',
+      right: '20px',
+      background: 'rgba(0,0,0,0.9)',
+      color: 'white',
+      padding: '15px',
+      borderRadius: '8px',
+      fontSize: '12px',
+      zIndex: 1000,
+      maxWidth: '400px',
+      fontFamily: 'monospace'
+    }}>
+      <h4 style={{ margin: '0 0 10px 0', color: '#00ff88' }}>🕒 DEBUG TIMEZONE</h4>
+      
+      <div style={{ marginBottom: '10px' }}>
+        <strong>🌍 Frontend:</strong>
+        <div>Local: {frontendTime.local}</div>
+        <div>Colombia: {frontendTime.colombia}</div>
+        <div>ISO: {frontendTime.iso}</div>
+      </div>
+
+      <div style={{ marginBottom: '10px' }}>
+        <strong>⚙️ Info:</strong>
+        <div>Timezone: {timezoneInfo.timezone}</div>
+        <div>Offset: {timezoneInfo.offset} min</div>
+        <div>Env TZ: {timezoneInfo.envTZ}</div>
+      </div>
+
+      <div>
+        <strong>🔧 Backend:</strong>
+        {backendTime.error ? (
+          <div style={{ color: '#ff4444' }}>{backendTime.error}</div>
+        ) : (
+          <>
+            <div>Server: {backendTime.serverTime}</div>
+            <div>Colombia: {backendTime.colombiaTime}</div>
+            <div>Timezone: {backendTime.timezone}</div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
 const HomePage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
