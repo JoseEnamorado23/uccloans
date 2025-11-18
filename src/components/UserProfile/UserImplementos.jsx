@@ -43,6 +43,9 @@ const UserImplementos = () => {
   const [solicitando, setSolicitando] = useState(null);
 
   useEffect(() => {
+    console.log('🔧 INICIANDO DEBUG DE HORA BOGOTÁ');
+  const test = loanRequestsService.testBogotaTime();
+  console.log('🧪 RESULTADO TEST:', test);
     if (filters.search) {
       buscarImplementos(filters.search);
     } else {
