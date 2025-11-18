@@ -26,7 +26,7 @@ const Implementos = () => {
 
   const handleEditarImplemento = (implemento) => {
     setImplementoEditando(implemento);
-    setMostrarFormulario(true);
+    setMostrarFormulario(true); //aqui para ver
   };
 
   const handleCerrarFormulario = () => {
