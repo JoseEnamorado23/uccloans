@@ -55,36 +55,22 @@
   gap: 1.5rem;
 }
 
+/* ESTILOS DE FORM-GROUP CON LABEL FLOTANTE */
 .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.form-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #374151;
-  margin: 0;
-}
-
-.form-label svg {
-  color: #6b7280;
+  position: relative;
+  width: 100%;
 }
 
 .form-input {
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
+  padding: 1rem;
+  border: 2px solid #e1e8ed;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-family: 'Lato', sans-serif;
   background: white;
   color: #1f2937;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   box-sizing: border-box;
 }
 
@@ -100,9 +86,43 @@
 }
 
 .form-input:disabled {
-  background: #f9fafb;
-  color: #6b7280;
+  background-color: #f8fafc;
+  color: #475569;
+  border-color: #e2e8f0;
   cursor: not-allowed;
+}
+
+/* LABEL FLOTANTE - IGUAL QUE EN LOAN FORM */
+.form-group label {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  color: #95a5a6;
+  font-size: 1rem;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  background: white;
+  padding: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-group label svg {
+  color: #6b7280;
+}
+
+/* ESTADOS DEL LABEL FLOTANTE */
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+  top: -0.5rem;
+  font-size: 0.8rem;
+  color: #00acc9;
+}
+
+.form-group input:focus + label svg,
+.form-group input:not(:placeholder-shown) + label svg {
+  color: #00acc9;
 }
 
 .error-text {
@@ -110,6 +130,7 @@
   font-size: 0.75rem;
   font-weight: 500;
   margin-top: 0.25rem;
+  display: block;
 }
 
 .form-actions {
@@ -184,5 +205,14 @@
   
   .btn {
     justify-content: center;
+  }
+  
+  .form-group label {
+    font-size: 0.9rem;
+  }
+  
+  .form-input {
+    padding: 0.875rem;
+    font-size: 0.9rem;
   }
 }
