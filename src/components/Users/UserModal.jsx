@@ -199,8 +199,12 @@ const UserModal = ({ user, mode = "view", programas = [], onClose, onSave }) => 
                 </div>
               </section>
 
+              {/* ESTADÍSTICAS EN BLOCK DEL MISMO TAMAÑO */}
               {userStats && (
-                <section className="user-modal-stats">
+                <div className="user-modal-block">
+                  <div className="user-modal-block-title">
+                    <BarChart3 size={16} /> <span>Estadísticas</span>
+                  </div>
                   <div className="user-stats-grid">
                     <div className="user-stat-item">
                       <div className="user-stat-value">{userStats.total_prestamos || 0}</div>
@@ -221,7 +225,7 @@ const UserModal = ({ user, mode = "view", programas = [], onClose, onSave }) => 
                       <div className="user-stat-label">Horas Acum.</div>
                     </div>
                   </div>
-                </section>
+                </div>
               )}
 
               <section className="user-modal-grid">
