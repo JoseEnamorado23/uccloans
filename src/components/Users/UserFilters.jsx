@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { Filter, Search, RefreshCw } from 'lucide-react';
 import './UserFilters.css';
-import API from '../../services/api'; // ← IMPORTAR API
+import API from '../../services/api';
 
 const UserFilters = ({ filters, onFiltersChange, onClearFilters, onRefresh }) => {
   const [localFilters, setLocalFilters] = useState(filters);
-  const [programas, setProgramas] = useState([]); // ← ESTADO PARA PROGRAMAS
+  const [programas, setProgramas] = useState([]);
   const [loadingProgramas, setLoadingProgramas] = useState(false);
 
-  // ✅ CARGAR PROGRAMAS AL INICIAR
+  // Cargar programas al iniciar
   useEffect(() => {
     const loadProgramas = async () => {
       try {
@@ -38,7 +39,7 @@ const UserFilters = ({ filters, onFiltersChange, onClearFilters, onRefresh }) =>
   const handleClear = () => {
     const defaultFilters = {
       search: '',
-      programa_id: '', // ← programa_id, no programa
+      programa_id: '',
       estado: '',
       ordenar_por: 'nombre_completo',
       orden: 'ASC'
@@ -48,18 +49,33 @@ const UserFilters = ({ filters, onFiltersChange, onClearFilters, onRefresh }) =>
   };
 
   return (
-    <div className="filters-container">
+    <div className="user-filters-container">
       <div className="filters-header">
-        <h3>🔍 Filtros de Usuarios</h3>
+        <div className="filters-title">
+          <Filter size={20} />
+          <h3>Filtros Avanzados</h3>
+        </div>
+        
         <div className="filter-actions">
-          <button onClick={handleApply} className="btn btn-primary">
+          <button 
+            onClick={onRefresh} 
+            className="btn btn-outline"
+          >
+            <RefreshCw size={16} />
+            Actualizar
+          </button>
+          <button 
+            onClick={handleClear} 
+            className="btn btn-outline"
+            disabled={!localFilters.search && !localFilters.programa_id && !localFilters.estado}
+          >
+            Limpiar Filtros
+          </button>
+          <button 
+            onClick={handleApply} 
+            className="btn btn-primary"
+          >
             Aplicar Filtros
-          </button>
-          <button onClick={handleClear} className="btn btn-secondary">
-            Limpiar
-          </button>
-          <button onClick={onRefresh} className="btn btn-outline">
-            🔄 Actualizar
           </button>
         </div>
       </div>
@@ -67,27 +83,30 @@ const UserFilters = ({ filters, onFiltersChange, onClearFilters, onRefresh }) =>
       <div className="filters-grid">
         {/* Búsqueda general */}
         <div className="filter-group">
-          <label>Búsqueda general:</label>
-          <input
-            type="text"
-            placeholder="Buscar por nombre, cédula, email..."
-            value={localFilters.search}
-            onChange={(e) => handleFilterChange('search', e.target.value)}
-          />
+          <label>Búsqueda general</label>
+          <div className="search-input-wrapper">
+            <Search size={16} className="search-icon" />
+            <input
+              type="text"
+              placeholder="Buscar por nombre, cédula, email..."
+              value={localFilters.search}
+              onChange={(e) => handleFilterChange('search', e.target.value)}
+            />
+          </div>
         </div>
 
-        {/* ✅ FILTRO POR PROGRAMA - CORREGIDO */}
+        {/* Filtro por programa */}
         <div className="filter-group">
-          <label>Programa:</label>
+          <label>Programa</label>
           <select
-            value={localFilters.programa_id} // ← programa_id
+            value={localFilters.programa_id}
             onChange={(e) => handleFilterChange('programa_id', e.target.value)}
             disabled={loadingProgramas}
           >
             <option value="">Todos los programas</option>
             {programas.map((programa) => (
-              <option key={programa.id} value={programa.id}> {/* ← ID como valor */}
-                {programa.nombre} {/* ← Nombre como texto */}
+              <option key={programa.id} value={programa.id}>
+                {programa.nombre}
               </option>
             ))}
           </select>
@@ -96,7 +115,7 @@ const UserFilters = ({ filters, onFiltersChange, onClearFilters, onRefresh }) =>
 
         {/* Estado */}
         <div className="filter-group">
-          <label>Estado:</label>
+          <label>Estado</label>
           <select
             value={localFilters.estado}
             onChange={(e) => handleFilterChange('estado', e.target.value)}
@@ -109,7 +128,7 @@ const UserFilters = ({ filters, onFiltersChange, onClearFilters, onRefresh }) =>
 
         {/* Ordenamiento */}
         <div className="filter-group">
-          <label>Ordenar por:</label>
+          <label>Ordenar por</label>
           <select
             value={localFilters.ordenar_por}
             onChange={(e) => handleFilterChange('ordenar_por', e.target.value)}
@@ -123,7 +142,7 @@ const UserFilters = ({ filters, onFiltersChange, onClearFilters, onRefresh }) =>
         </div>
 
         <div className="filter-group">
-          <label>Orden:</label>
+          <label>Orden</label>
           <select
             value={localFilters.orden}
             onChange={(e) => handleFilterChange('orden', e.target.value)}
