@@ -196,7 +196,7 @@ const UserModal = ({ user, mode = "view", programas = [], onClose, onSave }) => 
               </section>
 
               {/* ESTADÍSTICAS EN BLOCK DEL MISMO TAMAÑO Y ESTILO */}
-              <div className="user-modal-grid">
+              <section className="user-modal-grid">
                 <div className="user-modal-block">
                   <div className="user-modal-block-title">
                     <BarChart3 size={16} /> <span>Estadísticas</span>
