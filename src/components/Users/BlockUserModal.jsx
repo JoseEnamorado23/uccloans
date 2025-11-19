@@ -1,5 +1,15 @@
-// src/components/Users/BlockUserModal.jsx
 import React, { useState } from 'react';
+import { 
+  X, 
+  User, 
+  IdCard, 
+  BookOpen, 
+  Mail, 
+  AlertTriangle,
+  Lock,
+  AlertCircle,
+  Lightbulb
+} from 'lucide-react';
 import './BlockUserModal.css';
 
 const BlockUserModal = ({ user, onClose, onBlock }) => {
@@ -31,31 +41,59 @@ const BlockUserModal = ({ user, onClose, onBlock }) => {
     }
   };
 
-  return (
-    <div className="modal-overlay">
-      <div className="modal-content block-modal">
-        <div className="modal-header">
-          <h2>🔒 Bloquear Usuario</h2>
-          <button className="btn-close" onClick={onClose}>×</button>
-        </div>
+  const getProgramaNombre = () => {
+    return user.programa_nombre || user.programa || 'Sin programa';
+  };
 
-        <div className="modal-body">
+  return (
+    <div className="block-modal-overlay" onClick={onClose}>
+      <div className="block-modal-card" onClick={(e) => e.stopPropagation()}>
+        <header className="block-modal-head">
+          <div>
+            <h3 className="block-modal-title">
+              <Lock size={18} />
+              Bloquear Usuario
+            </h3>
+            <p className="block-modal-sub">
+              ID #{user.id} · {getProgramaNombre()}
+            </p>
+          </div>
+          <button 
+            aria-label="Cerrar" 
+            className="block-modal-close" 
+            onClick={onClose}
+          >
+            <X size={18} />
+          </button>
+        </header>
+
+        <main className="block-modal-body">
           <div className="warning-section">
-            <div className="warning-icon">⚠️</div>
+            <div className="warning-icon">
+              <AlertTriangle size={20} />
+            </div>
             <div className="warning-content">
               <h3>Estás a punto de bloquear a un usuario</h3>
               <p>El usuario no podrá realizar nuevos préstamos hasta que sea desbloqueado.</p>
             </div>
           </div>
 
-          <div className="user-info">
-            <div className="user-avatar">
+          <div className="block-user-info">
+            <div className="block-user-avatar">
               {user.nombre_completo?.charAt(0) || 'U'}
             </div>
-            <div className="user-details">
+            <div className="block-user-details">
               <h4>{user.nombre_completo}</h4>
-              <p>🆔 {user.numero_cedula} • 📚 {user.programa}</p>
-              <p>📧 {user.email || 'No tiene email registrado'}</p>
+              <p>
+                <IdCard size={14} />
+                {user.numero_cedula}
+                <BookOpen size={14} />
+                {getProgramaNombre()}
+              </p>
+              <p>
+                <Mail size={14} />
+                {user.email || 'No tiene email registrado'}
+              </p>
             </div>
           </div>
 
@@ -68,13 +106,16 @@ const BlockUserModal = ({ user, onClose, onBlock }) => {
                 placeholder="Describe el motivo del bloqueo (mínimo 5 caracteres)..."
                 rows="4"
               />
-              <div className="char-count">
+              <div className={`char-count ${motivo.length < 5 ? 'warning' : ''}`}>
                 {motivo.length}/5 caracteres mínimos
               </div>
             </div>
 
             <div className="form-tips">
-              <h4>💡 Ejemplos de motivos válidos:</h4>
+              <h4>
+                <Lightbulb size={16} />
+                Ejemplos de motivos válidos:
+              </h4>
               <ul>
                 <li>Comportamiento inapropiado en el uso de implementos</li>
                 <li>Incumplimiento reiterado de los horarios de devolución</li>
@@ -83,24 +124,32 @@ const BlockUserModal = ({ user, onClose, onBlock }) => {
               </ul>
             </div>
           </div>
-        </div>
+        </main>
 
-        <div className="modal-footer">
+        <footer className="block-modal-foot">
           <button 
-            className="btn btn-secondary" 
+            className="block-modal-btn block-modal-btn--ghost" 
             onClick={onClose}
             disabled={loading}
           >
+            <X size={16} />
             Cancelar
           </button>
           <button 
-            className="btn btn-danger" 
+            className="block-modal-btn block-modal-btn--danger" 
             onClick={handleBlock}
             disabled={loading || motivo.trim().length < 5}
           >
-            {loading ? 'Bloqueando...' : '🔒 Confirmar Bloqueo'}
+            {loading ? (
+              <span className="block-modal-spinner" />
+            ) : (
+              <>
+                <Lock size={16} />
+                Confirmar Bloqueo
+              </>
+            )}
           </button>
-        </div>
+        </footer>
       </div>
     </div>
   );
