@@ -8,6 +8,7 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .user-card:hover {
@@ -65,6 +66,7 @@
   font-size: 1.1rem;
   color: #2d3748;
   font-weight: 600;
+  text-transform: capitalize;
 }
 
 .user-cedula {
@@ -97,6 +99,104 @@
   background: #f8d7da;
   color: #721c24;
   border: 1px solid #f5c6cb;
+}
+
+/* MENU DE TRES PUNTOS */
+.user-menu {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+.user-card:hover .user-menu {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.menu-trigger {
+  background: none;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #6c757d;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-trigger:hover {
+  background: #f8f9fa;
+  color: #495057;
+}
+
+.menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  min-width: 180px;
+  z-index: 100;
+  margin-top: 8px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #4a5568;
+  transition: all 0.2s ease;
+  font-family: 'Lato', sans-serif;
+}
+
+.menu-item:hover {
+  background: #f7fafc;
+  color: #2d3748;
+}
+
+.menu-item svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.menu-item.view {
+  color: #4299e1;
+}
+
+.menu-item.edit {
+  color: #ed8936;
+}
+
+.menu-item.history {
+  color: #38a169;
+}
+
+.menu-item.block {
+  color: #e53e3e;
+}
+
+.menu-item.unblock {
+  color: #38a169;
+}
+
+.menu-item.hours {
+  color: #805ad5;
 }
 
 /* DETAILS */
@@ -141,6 +241,7 @@
   cursor: pointer;
   font-size: 0.7rem;
   transition: all 0.2s ease;
+  color: #6c757d;
 }
 
 .btn-hours-edit:hover {
@@ -156,15 +257,6 @@
   border-left: 3px solid #ffc107;
   font-size: 0.8rem;
   color: #856404;
-}
-
-/* ACTIONS */
-.user-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  padding-top: 15px;
-  border-top: 1px solid #f1f3f4;
 }
 
 /* MODAL HORAS */
@@ -205,6 +297,7 @@
   margin: 0;
   color: #2d3748;
   font-size: 1.2rem;
+  font-family: 'Lato', sans-serif;
 }
 
 .btn-close {
@@ -240,6 +333,7 @@
   margin-bottom: 8px;
   font-weight: 600;
   color: #4a5568;
+  font-family: 'Lato', sans-serif;
 }
 
 .form-group input {
@@ -249,6 +343,7 @@
   border-radius: 6px;
   font-size: 0.9rem;
   transition: all 0.2s ease;
+  font-family: 'Lato', sans-serif;
 }
 
 .form-group input:focus {
@@ -270,10 +365,6 @@
     text-align: center;
   }
   
-  .user-actions {
-    grid-template-columns: 1fr;
-  }
-  
   .detail-item {
     flex-direction: column;
     align-items: flex-start;
@@ -282,5 +373,10 @@
   
   .detail-value {
     text-align: left;
+  }
+  
+  .menu-dropdown {
+    right: -50px;
+    min-width: 160px;
   }
 }

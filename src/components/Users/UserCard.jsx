@@ -1,5 +1,14 @@
 // src/components/Users/UserCard.jsx
 import React, { useState } from "react";
+import { 
+  Eye, 
+  Edit, 
+  FileText, 
+  Lock, 
+  Unlock, 
+  Clock,
+  MoreVertical 
+} from "lucide-react";
 import "./UserCard.css";
 
 const UserCard = ({
@@ -12,6 +21,7 @@ const UserCard = ({
   onUpdateHours,
 }) => {
   const [showHoursModal, setShowHoursModal] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const [newHours, setNewHours] = useState("");
 
   const handleUpdateHours = () => {
@@ -30,8 +40,101 @@ const UserCard = ({
     }
   };
 
+  const handleMenuAction = (action) => {
+    setShowMenu(false);
+    switch (action) {
+      case 'view':
+        onView(usuario);
+        break;
+      case 'edit':
+        onEdit(usuario);
+        break;
+      case 'history':
+        onHistory(usuario);
+        break;
+      case 'block':
+        onBlock(usuario);
+        break;
+      case 'unblock':
+        onUnblock(usuario.id);
+        break;
+      case 'hours':
+        setShowHoursModal(true);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div className={`user-card ${!usuario.activo ? "inactive" : ""}`}>
+      {/* MENU DE TRES PUNTOS */}
+      <div className="user-menu">
+        <button 
+          className="menu-trigger"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowMenu(!showMenu);
+          }}
+        >
+          <MoreVertical size={18} />
+        </button>
+        
+        {showMenu && (
+          <div className="menu-dropdown">
+            <button 
+              className="menu-item view"
+              onClick={() => handleMenuAction('view')}
+            >
+              <Eye size={16} />
+              Ver información
+            </button>
+            
+            <button 
+              className="menu-item edit"
+              onClick={() => handleMenuAction('edit')}
+            >
+              <Edit size={16} />
+              Editar información
+            </button>
+            
+            <button 
+              className="menu-item history"
+              onClick={() => handleMenuAction('history')}
+            >
+              <FileText size={16} />
+              Historial de préstamos
+            </button>
+            
+            <button 
+              className="menu-item hours"
+              onClick={() => handleMenuAction('hours')}
+            >
+              <Clock size={16} />
+              Editar horas
+            </button>
+            
+            {usuario.activo ? (
+              <button 
+                className="menu-item block"
+                onClick={() => handleMenuAction('block')}
+              >
+                <Lock size={16} />
+                Bloquear usuario
+              </button>
+            ) : (
+              <button 
+                className="menu-item unblock"
+                onClick={() => handleMenuAction('unblock')}
+              >
+                <Unlock size={16} />
+                Desbloquear usuario
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+
       {/* HEADER */}
       <div className="user-header">
         <div className="user-avatar">
@@ -39,13 +142,13 @@ const UserCard = ({
         </div>
         <div className="user-info">
           <h3>{usuario.nombre_completo}</h3>
-          <p className="user-cedula">🆔 {usuario.numero_cedula}</p>
+          <p className="user-cedula">Cédula: {usuario.numero_cedula}</p>
         </div>
         <div className="user-status">
           {usuario.activo ? (
-            <span className="status-badge active">✅ Activo</span>
+            <span className="status-badge active">Activo</span>
           ) : (
-            <span className="status-badge inactive">⏸️ Inactivo</span>
+            <span className="status-badge inactive">Inactivo</span>
           )}
         </div>
       </div>
@@ -53,83 +156,34 @@ const UserCard = ({
       {/* DETALLES */}
       <div className="user-details">
         <div className="detail-item">
-          <span className="detail-label">📧 Email:</span>
+          <span className="detail-label">Email:</span>
           <span className="detail-value">
             {usuario.email || "No registrado"}
           </span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">📞 Teléfono:</span>
+          <span className="detail-label">Teléfono:</span>
           <span className="detail-value">{usuario.numero_telefono}</span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">📚 Programa:</span>
+          <span className="detail-label">Programa:</span>
           <span className="detail-value">
             {usuario.programa_nombre || `Programa ${usuario.programa_id}` || "N/A"}
           </span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">⏱️ Horas:</span>
+          <span className="detail-label">Horas acumuladas:</span>
           <span className="detail-value hours-value">
             {parseFloat(usuario.horas_totales_acumuladas || 0).toFixed(2)}h
-            <button
-              className="btn-hours-edit"
-              onClick={() => setShowHoursModal(true)}
-              title="Editar horas"
-            >
-              ✏️
-            </button>
           </span>
         </div>
         {usuario.motivo_bloqueo && (
           <div className="detail-item">
-            <span className="detail-label">🚫 Motivo bloqueo:</span>
+            <span className="detail-label">Motivo bloqueo:</span>
             <span className="detail-value motivo-bloqueo">
               {usuario.motivo_bloqueo}
             </span>
           </div>
-        )}
-      </div>
-
-      {/* ACCIONES */}
-      <div className="user-actions">
-        <button
-          className="btn btn-info btn-sm"
-          onClick={() => onView(usuario)}
-          title="Ver información completa"
-        >
-          👁️ Ver
-        </button>
-        <button
-          className="btn btn-warning btn-sm"
-          onClick={() => onEdit(usuario)}
-          title="Editar información"
-        >
-          ✏️ Editar
-        </button>
-        <button
-          className="btn btn-secondary btn-sm"
-          onClick={() => onHistory(usuario)}
-          title="Ver historial de préstamos"
-        >
-          📋 Historial
-        </button>
-        {usuario.activo ? (
-          <button
-            className="btn btn-danger btn-sm"
-            onClick={() => onBlock(usuario)}
-            title="Bloquear usuario"
-          >
-            🔒 Bloquear
-          </button>
-        ) : (
-          <button
-            className="btn btn-success btn-sm"
-            onClick={() => onUnblock(usuario.id)}
-            title="Desbloquear usuario"
-          >
-            🔓 Desbloquear
-          </button>
         )}
       </div>
 
@@ -138,7 +192,7 @@ const UserCard = ({
         <div className="modal-overlay" onClick={() => setShowHoursModal(false)}>
           <div className="modal-content small" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>✏️ Editar Horas</h3>
+              <h3>Editar Horas</h3>
               <button
                 className="btn-close"
                 onClick={() => setShowHoursModal(false)}
