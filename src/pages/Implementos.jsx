@@ -1,5 +1,17 @@
 // pages/Implementos.jsx
 import React, { useState } from 'react';
+import { 
+  Package, 
+  Plus, 
+  Edit, 
+  Trash2, 
+  CheckCircle, 
+  AlertCircle, 
+  Loader,
+  BarChart3,
+  ShoppingCart,
+  RefreshCw
+} from 'lucide-react';
 import { useImplementos } from '../hooks/useImplementos';
 import ImplementoForm from '../components/ImplementoForm/ImplementoForm';
 import './Implementos.css';
@@ -21,12 +33,12 @@ const Implementos = () => {
 
   const handleCrearImplemento = () => {
     setImplementoEditando(null);
-    setMostrarFormulario(true); //agregamos esto a ver
+    setMostrarFormulario(true);
   };
 
   const handleEditarImplemento = (implemento) => {
     setImplementoEditando(implemento);
-    setMostrarFormulario(true); //aqui para ver
+    setMostrarFormulario(true);
   };
 
   const handleCerrarFormulario = () => {
@@ -41,9 +53,9 @@ const Implementos = () => {
       setProcesando(false);
       
       if (resultado.success) {
-        alert('✅ Implemento eliminado exitosamente');
+        alert('Implemento eliminado exitosamente');
       } else {
-        alert(`❌ Error: ${resultado.error}`);
+        alert(`Error: ${resultado.error}`);
       }
     }
   };
@@ -62,19 +74,22 @@ const Implementos = () => {
     
     if (resultado.success) {
       alert(implementoEditando ? 
-        '✅ Implemento actualizado exitosamente' : 
-        '✅ Implemento creado exitosamente'
+        'Implemento actualizado exitosamente' : 
+        'Implemento creado exitosamente'
       );
       handleCerrarFormulario();
     } else {
-      alert(`❌ Error: ${resultado.error}`);
+      alert(`Error: ${resultado.error}`);
     }
   };
 
   if (loading && implementos.length === 0) {
     return (
       <div className="implementos-page">
-        <div className="loading">⏳ Cargando implementos...</div>
+        <div className="loading-container">
+          <Loader size={32} className="spinner" />
+          <h3>Cargando implementos...</h3>
+        </div>
       </div>
     );
   }
@@ -82,15 +97,24 @@ const Implementos = () => {
   return (
     <div className="implementos-page">
       <div className="page-header">
-        <h1 className="page-title">🎮 Gestión de Implementos</h1>
-        <p className="page-subtitle">Administra los implementos disponibles para préstamos</p>
+        <div className="title-section">
+          <h1 className="page-title">
+            <Package size={28} />
+            Gestión de Implementos
+          </h1>
+          <p className="page-subtitle">
+            Administra los implementos disponibles para préstamos
+          </p>
+        </div>
       </div>
       
       <div className="implementos-content">
         {/* Estadísticas */}
-        <div className="stats-cards">
+        <div className="stats-grid">
           <div className="stat-card">
-            <div className="stat-icon">📦</div>
+            <div className="stat-icon">
+              <Package size={24} />
+            </div>
             <div className="stat-info">
               <h3>Total Implementos</h3>
               <span className="stat-number">{stats.total}</span>
@@ -98,7 +122,9 @@ const Implementos = () => {
           </div>
           
           <div className="stat-card">
-            <div className="stat-icon">✅</div>
+            <div className="stat-icon">
+              <CheckCircle size={24} />
+            </div>
             <div className="stat-info">
               <h3>Disponibles</h3>
               <span className="stat-number">{stats.disponibles}</span>
@@ -106,7 +132,9 @@ const Implementos = () => {
           </div>
           
           <div className="stat-card">
-            <div className="stat-icon">🔄</div>
+            <div className="stat-icon">
+              <RefreshCw size={24} />
+            </div>
             <div className="stat-info">
               <h3>En Préstamo</h3>
               <span className="stat-number">{stats.prestados}</span>
@@ -115,33 +143,38 @@ const Implementos = () => {
         </div>
 
         {/* Barra de Acciones */}
-        <div className="actions-bar">
+        <div className="actions-section">
           <button 
-            className="btn-primary"
+            className="btn btn-primary"
             onClick={handleCrearImplemento}
             disabled={procesando}
           >
-            ➕ Agregar Implemento
+            <Plus size={18} />
+            Agregar Implemento
           </button>
         </div>
 
         {/* Lista de Implementos */}
-        <div className="implementos-list">
+        <div className="implementos-section">
           {error && (
             <div className="error-message">
-              ❌ Error: {error}
+              <AlertCircle size={18} />
+              <span>Error: {error}</span>
             </div>
           )}
 
           {implementos.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-icon">🎮</div>
+              <div className="empty-icon">
+                <ShoppingCart size={48} />
+              </div>
               <h3>No hay implementos registrados</h3>
               <p>Comienza agregando el primer implemento al sistema</p>
               <button 
-                className="btn-primary"
+                className="btn btn-primary"
                 onClick={handleCrearImplemento}
               >
+                <Plus size={18} />
                 Agregar Primer Implemento
               </button>
             </div>
@@ -153,10 +186,10 @@ const Implementos = () => {
                     <h3 className="implemento-nombre">{implemento.nombre}</h3>
                     <div className="implemento-status">
                       {!implemento.activo && (
-                        <span className="inactive-badge">Inactivo</span>
+                        <span className="badge badge-inactive">Inactivo</span>
                       )}
                       {implemento.cantidad_disponible === 0 && (
-                        <span className="sin-stock-badge">Sin stock</span>
+                        <span className="badge badge-warning">Sin stock</span>
                       )}
                     </div>
                   </div>
@@ -168,7 +201,7 @@ const Implementos = () => {
                     </div>
                     <div className="stat-item">
                       <span className="stat-label">Disponibles:</span>
-                      <span className={`stat-value ${implemento.cantidad_disponible === 0 ? 'sin-stock' : 'con-stock'}`}>
+                      <span className={`stat-value ${implemento.cantidad_disponible === 0 ? 'stock-out' : 'stock-ok'}`}>
                         {implemento.cantidad_disponible}
                       </span>
                     </div>
@@ -182,18 +215,20 @@ const Implementos = () => {
 
                   <div className="implemento-actions">
                     <button 
-                      className="btn-editar"
+                      className="btn btn-outline"
                       onClick={() => handleEditarImplemento(implemento)}
                       disabled={procesando}
                     >
-                      ✏️ Editar
+                      <Edit size={16} />
+                      Editar
                     </button>
                     <button 
-                      className="btn-eliminar"
+                      className="btn btn-danger"
                       onClick={() => handleEliminar(implemento.id, implemento.nombre)}
                       disabled={procesando}
                     >
-                      🗑️ Eliminar
+                      <Trash2 size={16} />
+                      Eliminar
                     </button>
                   </div>
                 </div>
