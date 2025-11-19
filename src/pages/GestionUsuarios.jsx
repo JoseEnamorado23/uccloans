@@ -1,6 +1,6 @@
-// src/pages/GestionUsuarios.jsx - VERSIÓN ORGANIZADA
+// src/pages/GestionUsuarios.jsx - VERSIÓN ACTUALIZADA
 import React, { useState, useEffect } from "react";
-import { Users, Filter, Search, RefreshCw, UserPlus } from "lucide-react";
+import { Users, Search } from "lucide-react";
 import API from "../services/api";
 import UserModal from "../components/Users/UserModal";
 import UserHistoryModal from "../components/Users/UserHistoryModal";
@@ -183,46 +183,6 @@ const GestionUsuarios = () => {
             </h1>
             <p>Administra y gestiona todos los usuarios del sistema</p>
           </div>
-          
-          <div className="header-actions">
-            <button 
-              className="btn btn-primary"
-              onClick={() => openModal(null, "edit")}
-            >
-              <UserPlus size={18} />
-              Nuevo Usuario
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* BARRA DE BÚSQUEDA RÁPIDA */}
-      <div className="search-section">
-        <div className="search-container">
-          <div className="search-input-wrapper">
-            <Search size={20} className="search-icon" />
-            <input
-              type="text"
-              placeholder="Buscar por nombre, cédula, email..."
-              value={searchInput}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              className="search-input"
-            />
-            {searchInput && (
-              <button 
-                onClick={() => handleSearchChange("")}
-                className="clear-search-btn"
-              >
-                ✕
-              </button>
-            )}
-          </div>
-          
-          <div className="search-stats">
-            <span className="results-count">
-              {stats.total} usuarios encontrados
-            </span>
-          </div>
         </div>
       </div>
 
@@ -259,37 +219,45 @@ const GestionUsuarios = () => {
         </div>
       </div>
 
-      {/* FILTROS AVANZADOS */}
-      <div className="filters-section">
-        <div className="filters-header">
-          <div className="filters-title">
-            <Filter size={20} />
-            <h3>Filtros Avanzados</h3>
-          </div>
-          
-          <div className="filters-actions">
-            <button 
-              onClick={loadUsuarios}
-              className="btn btn-outline"
-            >
-              <RefreshCw size={16} />
-              Actualizar
-            </button>
-            <button 
-              onClick={handleClearFilters}
-              className="btn btn-outline"
-              disabled={!filters.search && !filters.programa_id && !filters.estado}
-            >
-              Limpiar Filtros
-            </button>
+      {/* SECCIÓN DE BÚSQUEDA Y FILTROS */}
+      <div className="filters-search-section">
+        {/* BARRA DE BÚSQUEDA GENERAL */}
+        <div className="search-section">
+          <div className="search-container">
+            <div className="search-input-wrapper">
+              <Search size={20} className="search-icon" />
+              <input
+                type="text"
+                placeholder="Buscar por nombre, cédula, email..."
+                value={searchInput}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                className="search-input"
+              />
+              {searchInput && (
+                <button 
+                  onClick={() => handleSearchChange("")}
+                  className="clear-search-btn"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+            
+            <div className="search-stats">
+              <span className="results-count">
+                {stats.total} usuarios encontrados
+              </span>
+            </div>
           </div>
         </div>
 
+        {/* FILTROS AVANZADOS */}
         <UserFilters
           filters={filters}
           programas={programas}
           onFiltersChange={handleFilterChange}
           onClearFilters={handleClearFilters}
+          onRefresh={loadUsuarios}
         />
       </div>
 
