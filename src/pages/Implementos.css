@@ -66,9 +66,25 @@
   justify-content: center;
   width: 48px;
   height: 48px;
-  background: #f0f9ff;
   border-radius: 10px;
-  color: #00acc9;
+}
+
+/* Total Implementos - Azul */
+.stat-card:nth-child(1) .stat-icon {
+  background: #f0f9ff;
+  color: #00acc9; /* Azul visible */
+}
+
+/* Disponibles - Verde */
+.stat-card:nth-child(2) .stat-icon {
+  background: #f0fdf4;
+  color: #10b981; /* Verde visible */
+}
+
+/* En Préstamo - Naranja */
+.stat-card:nth-child(3) .stat-icon {
+  background: #fff7ed;
+  color: #f59e0b; /* Naranja visible */
 }
 
 .stat-info h3 {
