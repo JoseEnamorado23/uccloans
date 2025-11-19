@@ -186,7 +186,6 @@ const UserCard = ({
         )}
       </div>
       {/* MODAL PARA EDITAR HORAS */}
-      // MODAL PARA AGREGAR HORAS - ACTUALIZADO
       {showHoursModal && (
         <div className="modal-overlay" onClick={() => setShowHoursModal(false)}>
           <div
@@ -207,8 +206,7 @@ const UserCard = ({
             </div>
             <div className="modal-body">
               <p>
-                Actualizar horas para:{" "}
-                <strong>{usuario.nombre_completo}</strong>
+                Agregar horas
               </p>
               <div className="form-group">
                 <input
@@ -229,7 +227,6 @@ const UserCard = ({
                   onClick={() => setShowHoursModal(false)}
                 >
                   <X size={16} />
-                  Cancelar
                 </button>
                 <button
                   className="btn btn-primary"
@@ -239,7 +236,7 @@ const UserCard = ({
                   }
                 >
                   <Clock size={16} />
-                  Agregar Horas
+                  Agregar
                 </button>
               </div>
             </div>
