@@ -100,7 +100,7 @@ const ImplementoForm = ({ implementoExistente, onSubmit, onCancel, isSubmitting 
             disabled={isSubmitting}
           />
           <label htmlFor="nombre">
-            <Package size={16} />
+            
             <span>Nombre del Implemento</span>
           </label>
           {errors.nombre && <span className="error-text">{errors.nombre}</span>}
@@ -120,7 +120,7 @@ const ImplementoForm = ({ implementoExistente, onSubmit, onCancel, isSubmitting 
             disabled={isSubmitting}
           />
           <label htmlFor="cantidad_total">
-            <Hash size={16} />
+            
             <span>Cantidad Total</span>
           </label>
           {errors.cantidad_total && (
