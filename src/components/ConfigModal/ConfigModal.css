@@ -87,10 +87,17 @@
   font-size: 0.875rem;
 }
 
-/* Config Grid */
-.config-grid {
+/* Config Grid - 2 Columnas */
+.config-grid-two-columns {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.config-column {
+  display: flex;
+  flex-direction: column;
   gap: 1.25rem;
 }
 
@@ -238,12 +245,28 @@
     border-bottom-color: #2563eb;
   }
   
-  .config-grid {
+  .config-grid-two-columns {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
   
   .seccion-header {
     flex-direction: column;
     gap: 0.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .config-modal-card {
+    margin: 1rem;
+    max-width: calc(100vw - 2rem);
+  }
+  
+  .config-main-content {
+    padding: 1rem;
+  }
+  
+  .config-item {
+    padding: 1rem;
   }
 }

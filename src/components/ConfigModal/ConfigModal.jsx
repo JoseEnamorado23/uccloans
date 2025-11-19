@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { X, Clock, Settings, Users, Calendar, Save, Loader } from 'lucide-react';
 import './ConfigModal.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
 const ConfigModal = ({ isOpen, onClose }) => {
   const [configuraciones, setConfiguraciones] = useState({});
   const [seccionActiva, setSeccionActiva] = useState('tiempos');
@@ -18,7 +20,7 @@ const ConfigModal = ({ isOpen, onClose }) => {
   const cargarConfiguraciones = async () => {
     setCargando(true);
     try {
-      const response = await fetch('http://localhost:4000/api/config/object');
+      const response = await fetch(`${API_BASE_URL}/api/config/object`);
       const data = await response.json();
       
       if (data.success) {
@@ -34,7 +36,7 @@ const ConfigModal = ({ isOpen, onClose }) => {
   const actualizarConfiguracion = async (clave, valor) => {
     setGuardando(true);
     try {
-      const response = await fetch(`http://localhost:4000/api/config/${clave}`, {
+      const response = await fetch(`${API_BASE_URL}/api/config/${clave}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -129,160 +131,169 @@ const ConfigModal = ({ isOpen, onClose }) => {
                       </div>
                     </div>
 
-                    <div className="config-grid">
-                      {/* Tiempo máximo de préstamo */}
-                      <div className="config-item">
-                        <div className="config-item-header">
-                          <label>Tiempo Máximo</label>
-                          <span className="config-item-value">
-                            {configuraciones.tiempo_maximo_prestamo_horas || 0}h
-                          </span>
+                    <div className="config-grid-two-columns">
+                      {/* Columna 1 */}
+                      <div className="config-column">
+                        {/* Tiempo máximo de préstamo */}
+                        <div className="config-item">
+                          <div className="config-item-header">
+                            <label>Tiempo Máximo</label>
+                            <span className="config-item-value">
+                              {configuraciones.tiempo_maximo_prestamo_horas || 0}h
+                            </span>
+                          </div>
+                          <div className="input-group">
+                            <input
+                              type="number"
+                              value={configuraciones.tiempo_maximo_prestamo_horas || ''}
+                              onChange={(e) => handleChange('tiempo_maximo_prestamo_horas', e.target.value)}
+                              min="1"
+                              max="8"
+                              step="0.5"
+                              placeholder="3"
+                            />
+                            <span className="input-suffix">horas</span>
+                          </div>
+                          <small>Duración máxima del préstamo</small>
+                          <button 
+                            className="mm-btn mm-btn--primary config-save-btn"
+                            onClick={() => handleGuardar('tiempo_maximo_prestamo_horas')}
+                            disabled={guardando}
+                          >
+                            {guardando ? <Loader size={16} className="spinner" /> : <Save size={16} />}
+                            Guardar
+                          </button>
                         </div>
-                        <div className="input-group">
+
+                        {/* Tiempo de alerta */}
+                        <div className="config-item">
+                          <div className="config-item-header">
+                            <label>Alerta Preventiva</label>
+                            <span className="config-item-value">
+                              {configuraciones.mostrar_alerta_horas_antes || 0}h
+                            </span>
+                          </div>
+                          <div className="input-group">
+                            <input
+                              type="number"
+                              value={configuraciones.mostrar_alerta_horas_antes || ''}
+                              onChange={(e) => handleChange('mostrar_alerta_horas_antes', e.target.value)}
+                              min="0.1"
+                              max="2"
+                              step="0.1"
+                              placeholder="0.5"
+                            />
+                            <span className="input-suffix">horas</span>
+                          </div>
+                          <small>Anticipación para alertas</small>
+                          <button 
+                            className="mm-btn mm-btn--primary config-save-btn"
+                            onClick={() => handleGuardar('mostrar_alerta_horas_antes')}
+                            disabled={guardando}
+                          >
+                            {guardando ? <Loader size={16} className="spinner" /> : <Save size={16} />}
+                            Guardar
+                          </button>
+                        </div>
+
+                        {/* Apertura Mañana */}
+                        <div className="config-item">
+                          <div className="config-item-header">
+                            <label>Apertura Mañana</label>
+                            <span className="config-item-value">
+                              {configuraciones.hora_apertura_manana || '--:--'}
+                            </span>
+                          </div>
                           <input
-                            type="number"
-                            value={configuraciones.tiempo_maximo_prestamo_horas || ''}
-                            onChange={(e) => handleChange('tiempo_maximo_prestamo_horas', e.target.value)}
-                            min="1"
-                            max="8"
-                            step="0.5"
-                            placeholder="3"
+                            type="time"
+                            value={configuraciones.hora_apertura_manana || ''}
+                            onChange={(e) => handleChange('hora_apertura_manana', e.target.value)}
                           />
-                          <span className="input-suffix">horas</span>
+                          <small>Inicio jornada mañana</small>
+                          <button 
+                            className="mm-btn mm-btn--primary config-save-btn"
+                            onClick={() => handleGuardar('hora_apertura_manana')}
+                            disabled={guardando}
+                          >
+                            {guardando ? <Loader size={16} className="spinner" /> : <Save size={16} />}
+                            Guardar
+                          </button>
                         </div>
-                        <small>Duración máxima del préstamo</small>
-                        <button 
-                          className="mm-btn mm-btn--primary config-save-btn"
-                          onClick={() => handleGuardar('tiempo_maximo_prestamo_horas')}
-                          disabled={guardando}
-                        >
-                          {guardando ? <Loader size={16} className="spinner" /> : <Save size={16} />}
-                          Guardar
-                        </button>
                       </div>
 
-                      {/* Tiempo de alerta */}
-                      <div className="config-item">
-                        <div className="config-item-header">
-                          <label>Alerta Preventiva</label>
-                          <span className="config-item-value">
-                            {configuraciones.mostrar_alerta_horas_antes || 0}h
-                          </span>
-                        </div>
-                        <div className="input-group">
+                      {/* Columna 2 */}
+                      <div className="config-column">
+                        {/* Cierre Mañana */}
+                        <div className="config-item">
+                          <div className="config-item-header">
+                            <label>Cierre Mañana</label>
+                            <span className="config-item-value">
+                              {configuraciones.hora_cierre_manana || '--:--'}
+                            </span>
+                          </div>
                           <input
-                            type="number"
-                            value={configuraciones.mostrar_alerta_horas_antes || ''}
-                            onChange={(e) => handleChange('mostrar_alerta_horas_antes', e.target.value)}
-                            min="0.1"
-                            max="2"
-                            step="0.1"
-                            placeholder="0.5"
+                            type="time"
+                            value={configuraciones.hora_cierre_manana || ''}
+                            onChange={(e) => handleChange('hora_cierre_manana', e.target.value)}
                           />
-                          <span className="input-suffix">horas</span>
+                          <small>Fin jornada mañana</small>
+                          <button 
+                            className="mm-btn mm-btn--primary config-save-btn"
+                            onClick={() => handleGuardar('hora_cierre_manana')}
+                            disabled={guardando}
+                          >
+                            {guardando ? <Loader size={16} className="spinner" /> : <Save size={16} />}
+                            Guardar
+                          </button>
                         </div>
-                        <small>Anticipación para alertas</small>
-                        <button 
-                          className="mm-btn mm-btn--primary config-save-btn"
-                          onClick={() => handleGuardar('mostrar_alerta_horas_antes')}
-                          disabled={guardando}
-                        >
-                          {guardando ? <Loader size={16} className="spinner" /> : <Save size={16} />}
-                          Guardar
-                        </button>
-                      </div>
 
-                      {/* Horarios */}
-                      <div className="config-item">
-                        <div className="config-item-header">
-                          <label>Apertura Mañana</label>
-                          <span className="config-item-value">
-                            {configuraciones.hora_apertura_manana || '--:--'}
-                          </span>
+                        {/* Apertura Tarde */}
+                        <div className="config-item">
+                          <div className="config-item-header">
+                            <label>Apertura Tarde</label>
+                            <span className="config-item-value">
+                              {configuraciones.hora_apertura_tarde || '--:--'}
+                            </span>
+                          </div>
+                          <input
+                            type="time"
+                            value={configuraciones.hora_apertura_tarde || ''}
+                            onChange={(e) => handleChange('hora_apertura_tarde', e.target.value)}
+                          />
+                          <small>Inicio jornada tarde</small>
+                          <button 
+                            className="mm-btn mm-btn--primary config-save-btn"
+                            onClick={() => handleGuardar('hora_apertura_tarde')}
+                            disabled={guardando}
+                          >
+                            {guardando ? <Loader size={16} className="spinner" /> : <Save size={16} />}
+                            Guardar
+                          </button>
                         </div>
-                        <input
-                          type="time"
-                          value={configuraciones.hora_apertura_manana || ''}
-                          onChange={(e) => handleChange('hora_apertura_manana', e.target.value)}
-                        />
-                        <small>Inicio jornada mañana</small>
-                        <button 
-                          className="mm-btn mm-btn--primary config-save-btn"
-                          onClick={() => handleGuardar('hora_apertura_manana')}
-                          disabled={guardando}
-                        >
-                          {guardando ? <Loader size={16} className="spinner" /> : <Save size={16} />}
-                          Guardar
-                        </button>
-                      </div>
 
-                      <div className="config-item">
-                        <div className="config-item-header">
-                          <label>Cierre Mañana</label>
-                          <span className="config-item-value">
-                            {configuraciones.hora_cierre_manana || '--:--'}
-                          </span>
+                        {/* Cierre Tarde */}
+                        <div className="config-item">
+                          <div className="config-item-header">
+                            <label>Cierre Tarde</label>
+                            <span className="config-item-value">
+                              {configuraciones.hora_cierre_tarde || '--:--'}
+                            </span>
+                          </div>
+                          <input
+                            type="time"
+                            value={configuraciones.hora_cierre_tarde || ''}
+                            onChange={(e) => handleChange('hora_cierre_tarde', e.target.value)}
+                          />
+                          <small>Fin jornada tarde</small>
+                          <button 
+                            className="mm-btn mm-btn--primary config-save-btn"
+                            onClick={() => handleGuardar('hora_cierre_tarde')}
+                            disabled={guardando}
+                          >
+                            {guardando ? <Loader size={16} className="spinner" /> : <Save size={16} />}
+                            Guardar
+                          </button>
                         </div>
-                        <input
-                          type="time"
-                          value={configuraciones.hora_cierre_manana || ''}
-                          onChange={(e) => handleChange('hora_cierre_manana', e.target.value)}
-                        />
-                        <small>Fin jornada mañana</small>
-                        <button 
-                          className="mm-btn mm-btn--primary config-save-btn"
-                          onClick={() => handleGuardar('hora_cierre_manana')}
-                          disabled={guardando}
-                        >
-                          {guardando ? <Loader size={16} className="spinner" /> : <Save size={16} />}
-                          Guardar
-                        </button>
-                      </div>
-
-                      <div className="config-item">
-                        <div className="config-item-header">
-                          <label>Apertura Tarde</label>
-                          <span className="config-item-value">
-                            {configuraciones.hora_apertura_tarde || '--:--'}
-                          </span>
-                        </div>
-                        <input
-                          type="time"
-                          value={configuraciones.hora_apertura_tarde || ''}
-                          onChange={(e) => handleChange('hora_apertura_tarde', e.target.value)}
-                        />
-                        <small>Inicio jornada tarde</small>
-                        <button 
-                          className="mm-btn mm-btn--primary config-save-btn"
-                          onClick={() => handleGuardar('hora_apertura_tarde')}
-                          disabled={guardando}
-                        >
-                          {guardando ? <Loader size={16} className="spinner" /> : <Save size={16} />}
-                          Guardar
-                        </button>
-                      </div>
-
-                      <div className="config-item">
-                        <div className="config-item-header">
-                          <label>Cierre Tarde</label>
-                          <span className="config-item-value">
-                            {configuraciones.hora_cierre_tarde || '--:--'}
-                          </span>
-                        </div>
-                        <input
-                          type="time"
-                          value={configuraciones.hora_cierre_tarde || ''}
-                          onChange={(e) => handleChange('hora_cierre_tarde', e.target.value)}
-                        />
-                        <small>Fin jornada tarde</small>
-                        <button 
-                          className="mm-btn mm-btn--primary config-save-btn"
-                          onClick={() => handleGuardar('hora_cierre_tarde')}
-                          disabled={guardando}
-                        >
-                          {guardando ? <Loader size={16} className="spinner" /> : <Save size={16} />}
-                          Guardar
-                        </button>
                       </div>
                     </div>
                   </div>
