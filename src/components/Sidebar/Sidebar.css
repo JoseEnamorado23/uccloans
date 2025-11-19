@@ -21,13 +21,19 @@
   width: 70px;
 }
 
+.sidebar-closed .sidebar-header {
+  min-height: 80px; /* ← Altura específica para cerrado */
+  padding: 10px; /* ← Padding reducido */
+  justify-content: center; /* ← Centra el icono del menú */
+}
+
 /* Header del Sidebar */
 .sidebar-header {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 16px;
-  min-height: 64px;
+  padding: 12px 18px;
+  min-height: 54px;
   border-bottom: 1px solid #e5e7eb;
 }
 

@@ -1,186 +1,247 @@
-/* src/components/Business/LoanCard/LoanCard.css - ESTILOS MEJORADOS */
+/* src/components/Business/LoanCard/LoanCard.css - ESTILOS CON LUCIDE ICONS */
 
 .loan-card {
-  border: 1px solid #e1e5e9;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
-  padding: 16px;
-  margin: 8px 0;
+  padding: 1.25rem;
   background: white;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
 }
 
-
-
 .loan-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
+  border-color: #00acc9;
 }
 
-
-
-/* Asegurar que los botones tengan el tamaño correcto */
-.whatsapp-btn-header {
-  
-  border: none;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
- 
-}
-
-
+/* HEADER */
 .loan-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #f0f0f0;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f3f4f6;
 }
 
-.loan-header h3 {
+.loan-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.loan-implemento {
   margin: 0;
-  color: #2c3e50;
-  font-size: 1.1em;
+  color: #1f2937;
+  font-size: 1rem;
   font-weight: 600;
+  line-height: 1.4;
 }
 
-.status {
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8em;
-  font-weight: 500;
-  text-transform: uppercase;
+/* BOTÓN WHATSAPP */
+.whatsapp-btn-header {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  color: #25D366;
 }
 
-.status.activo {
-  background: #e8f5e8;
-  color: #27ae60;
-  border: 1px solid #27ae60;
+.whatsapp-btn-header:hover {
+  background: #f0f9ff;
+  transform: scale(1.05);
 }
 
-.status.pendiente {
-  background: #ffeaa7;
-  color: #e17055;
-  border: 1px solid #e17055;
-}
-
+/* DETALLES */
 .loan-details {
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
 }
 
-.loan-details p {
-  margin: 6px 0;
-  color: #5a6c7d;
-  font-size: 0.9em;
+.detail-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-icon {
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.detail-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  flex: 1;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-value {
+  font-size: 0.9rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+/* BADGES */
+.badge {
+  padding: 0.375rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  width: fit-content;
+}
+
+.badge-danger { 
+  background: #fee2e2; 
+  color: #991b1b; 
+  border: 1px solid #fca5a5;
+}
+
+.badge-warning { 
+  background: #fef3c7; 
+  color: #92400e; 
+  border: 1px solid #fcd34d;
+}
+
+.badge-alert { 
+  background: #fffbeb; 
+  color: #d97706; 
+  border: 1px solid #fcd34d;
+}
+
+.badge-success { 
+  background: #d1fae5; 
+  color: #065f46; 
+  border: 1px solid #a7f3d0;
+}
+
+/* TIEMPO RESTANTE */
+.time-section {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+
+.time-header {
   display: flex;
   justify-content: space-between;
-}
-
-.loan-details strong {
-  color: #2c3e50;
-  font-weight: 500;
-}
-
-/* ✅ CONTADORES DE TIEMPO MEJORADOS */
-.time-remaining {
-  margin: 12px 0 0 0 !important;
-  padding: 10px;
-  border-radius: 8px;
-  font-weight: 500 !important;
-  display: flex !important;
-  justify-content: space-between;
   align-items: center;
-  border-left: 4px solid;
+  margin-bottom: 0.5rem;
 }
 
-.time-remaining.normal {
-  background: #f8fff8;
-  border-left-color: #27ae60;
-  color: #27ae60;
+.time-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.time-remaining.warning {
-  background: #fffbf0;
-  border-left-color: #f39c12;
-  color: #e67e22;
-}
-
-.time-remaining.critical {
-  background: #fff5f5;
-  border-left-color: #e74c3c;
-  color: #c0392b;
-  animation: subtle-pulse 2s infinite;
-}
-
-.countdown {
-  font-family: 'SF Mono', 'Monaco', 'Consolas', 'Roboto Mono', monospace;
+.time-value {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
   font-weight: 600;
-  font-size: 1.1em;
-  padding: 4px 8px;
+  padding: 0.25rem 0.5rem;
   border-radius: 6px;
-  background: rgba(255,255,255,0.7);
-  border: 1px solid;
 }
 
-.time-remaining.normal .countdown {
-  border-color: #27ae60;
-  background: #e8f5e8;
+/* Estados de tiempo */
+.status-normal .time-value {
+  background: #d1fae5;
+  color: #065f46;
 }
 
-.time-remaining.warning .countdown {
-  border-color: #f39c12;
-  background: #fef9e7;
+.status-warning .time-value {
+  background: #fef3c7;
+  color: #92400e;
 }
 
-.time-remaining.critical .countdown {
-  border-color: #e74c3c;
-  background: #fdedec;
+.status-critical .time-value {
+  background: #fee2e2;
+  color: #991b1b;
+  animation: pulse 1s infinite;
 }
 
+/* BARRA DE PROGRESO */
+.progress-bar-container {
+  width: 100%;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+/* ACCIONES */
 .loan-actions {
   display: flex;
-  gap: 8px;
+  gap: 0.75rem;
   justify-content: flex-end;
 }
 
 .btn {
-  padding: 8px 16px;
+  padding: 0.5rem 1rem;
   border: none;
   border-radius: 6px;
-  font-size: 0.85em;
+  font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 4px;
-}
-
-.btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  gap: 0.5rem;
+  font-family: 'Lato', sans-serif;
 }
 
 .btn-success {
-  background: #27ae60;
+  background: #00acc9;
   color: white;
 }
 
-.btn-success:hover {
-  background: #219653;
+.btn-success:hover:not(:disabled) {
+  background: #0095b3;
+  transform: translateY(-1px);
 }
 
 .btn-info {
-  background: #3498db;
+  background: #6b7280;
   color: white;
 }
 
-.btn-info:hover {
-  background: #2980b9;
+.btn-info:hover:not(:disabled) {
+  background: #4b5563;
+  transform: translateY(-1px);
 }
 
 .btn:disabled {
@@ -189,37 +250,46 @@
   transform: none;
 }
 
-@keyframes subtle-pulse {
-  0%, 100% { 
-    opacity: 1;
-    box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.1);
-  }
-  50% { 
-    opacity: 0.9;
-    box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.1);
-  }
+.spinner-small {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
-/* Responsive */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .loan-card {
-    padding: 12px;
+    padding: 1rem;
   }
   
   .loan-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 0.75rem;
   }
   
-  .loan-details p {
-    flex-direction: column;
-    gap: 2px;
+  .whatsapp-btn-header {
+    align-self: flex-end;
   }
   
-  .time-remaining {
+  .loan-actions {
     flex-direction: column;
-    gap: 8px;
-    text-align: center;
+  }
+  
+  .btn {
+    justify-content: center;
   }
 }

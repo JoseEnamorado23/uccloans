@@ -1,6 +1,6 @@
-// src/components/Admin/TopHeader.jsx - MODIFICADO CON TÍTULOS DINÁMICOS
-import React, { useState, useEffect } from "react";
-
+// src/components/Admin/TopHeader.jsx - MODIFICADO
+import React, { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { 
   Search, Bell, HelpCircle, Settings, User, LogOut, Calendar, Clock,
   Plus, Handshake, Wrench, CheckCircle, Users, BookOpen, BarChart3 
@@ -9,10 +9,10 @@ import loanRequestsService from "../../services/loanRequests.service";
 import "./TopHeader.css";
 
 const TopHeader = ({ onConfigClick, sidebarOpen }) => {
+  const location = useLocation();
   
   const [pageInfo, setPageInfo] = useState({ 
     title: "Dashboard", 
-    subtitle: "Sistema de Gestión de Préstamos", 
     icon: null 
   });
   
@@ -23,6 +23,11 @@ const TopHeader = ({ onConfigClick, sidebarOpen }) => {
   const [loadingSolicitudes, setLoadingSolicitudes] = useState(false);
   const [selectedSolicitud, setSelectedSolicitud] = useState(null);
   const [showSolicitudModal, setShowSolicitudModal] = useState(false);
+  
+  // Refs para cerrar modales al hacer clic fuera
+  const userModalRef = useRef(null);
+  const calendarRef = useRef(null);
+  const notificationsRef = useRef(null);
   
   const currentDate = new Date();
   const formattedTime = currentDate.toLocaleTimeString('es-ES', { 
@@ -37,11 +42,52 @@ const TopHeader = ({ onConfigClick, sidebarOpen }) => {
   });
 
   // ✅ EFECTO PARA TÍTULOS DINÁMICOS
-  
+  useEffect(() => {
+    const getPageInfo = () => {
+      const path = location.pathname;
+      const pageMap = {
+        '/dashboard/': { title: 'Nuevo Préstamo', icon: Plus },
+        '/dashboard/prestamos': { title: 'Préstamos', icon: Handshake },
+        '/dashboard/implementos': { title: 'Implementos', icon: Wrench },
+        '/dashboard/activos': { title: 'Activos', icon: CheckCircle },
+        '/dashboard/gestion-usuarios': { title: 'Gestión de Usuarios', icon: Users },
+        '/dashboard/gestion-programas': { title: 'Programas Académicos', icon: BookOpen },
+        '/dashboard/reportes': { title: 'Reportes', icon: BarChart3 }
+      };
+
+      return pageMap[path] || { title: 'Dashboard', icon: null };
+    };
+
+    setPageInfo(getPageInfo());
+  }, [location.pathname]);
+
+  // ✅ EFECTO PARA CERRAR MODALES AL HACER CLIC FUERA
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Cerrar modal de usuario
+      if (userModalRef.current && !userModalRef.current.contains(event.target)) {
+        setShowUserModal(false);
+      }
+      
+      // Cerrar calendario
+      if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+        setShowCalendar(false);
+      }
+      
+      // Cerrar notificaciones
+      if (notificationsRef.current && !notificationsRef.current.contains(event.target)) {
+        setShowNotifications(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     loadSolicitudesPendientes();
-    // Actualizar cada 30 segundos
     const interval = setInterval(loadSolicitudesPendientes, 30000);
     return () => clearInterval(interval);
   }, []);
@@ -103,16 +149,26 @@ const TopHeader = ({ onConfigClick, sidebarOpen }) => {
   const IconComponent = pageInfo.icon;
 
   return (
-    <header className="top-header">
+    <header className={`top-header ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
       <div className="header-content">
-        {/* ✅ TÍTULO DINÁMICO */}
-        
+        {/* ✅ TÍTULO DINÁMICO - SIN SUBTÍTULO */}
+        <div className="header-title-section">
+          <div className="title-with-icon">
+            {IconComponent && <IconComponent size={24} className="title-icon" />}
+            <div className="title-text">
+              <h1 className="page-title">{pageInfo.title}</h1>
+            </div>
+          </div>
+        </div>
 
-        {/* Iconos */}
+        {/* Iconos - MANTENIDOS IGUAL */}
         <div className="header-icons">
           {/* Calendario */}
-          <div className="icon-container" onClick={() => setShowCalendar(!showCalendar)}>
-            <Calendar size={20} />
+          <div className="icon-container" ref={calendarRef}>
+            <Calendar 
+              size={20} 
+              onClick={() => setShowCalendar(!showCalendar)}
+            />
             {showCalendar && (
               <div className="calendar-dropdown">
                 <div className="calendar-time">{formattedTime}</div>
@@ -122,8 +178,11 @@ const TopHeader = ({ onConfigClick, sidebarOpen }) => {
           </div>
           
           {/* ✅ NOTIFICACIONES DE SOLICITUDES */}
-          <div className="icon-container" onClick={() => setShowNotifications(!showNotifications)}>
-            <Bell size={20} />
+          <div className="icon-container" ref={notificationsRef}>
+            <Bell 
+              size={20} 
+              onClick={() => setShowNotifications(!showNotifications)}
+            />
             {solicitudesPendientes.length > 0 && (
               <span className="notification-badge">{solicitudesPendientes.length}</span>
             )}
@@ -182,7 +241,6 @@ const TopHeader = ({ onConfigClick, sidebarOpen }) => {
                   <button 
                     className="btn-view-all"
                     onClick={() => {
-                      // Aquí podrías redirigir a una página de gestión de solicitudes
                       window.location.href = '/dashboard/prestamos';
                     }}
                   >
@@ -204,8 +262,11 @@ const TopHeader = ({ onConfigClick, sidebarOpen }) => {
           </div>
           
           {/* Usuario */}
-          <div className="icon-container" onClick={() => setShowUserModal(!showUserModal)}>
-            <User size={20} />
+          <div className="icon-container" ref={userModalRef}>
+            <User 
+              size={20} 
+              onClick={() => setShowUserModal(!showUserModal)}
+            />
             {showUserModal && (
               <div className="user-modal">
                 <div className="user-info">
@@ -229,10 +290,16 @@ const TopHeader = ({ onConfigClick, sidebarOpen }) => {
         </div>
       </div>
 
-      {/* ✅ MODAL DE DETALLE DE SOLICITUD */}
+      {/* ✅ MODAL DE DETALLE DE SOLICITUD - MANTENIDO IGUAL */}
       {showSolicitudModal && selectedSolicitud && (
-        <div className="modal-overlay">
-          <div className="solicitud-modal">
+        <div 
+          className="modal-overlay"
+          onClick={() => setShowSolicitudModal(false)}
+        >
+          <div 
+            className="solicitud-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="modal-header">
               <h3>📋 Detalle de Solicitud</h3>
               <button 

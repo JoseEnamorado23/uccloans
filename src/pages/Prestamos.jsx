@@ -278,7 +278,7 @@ const Prestamos = () => {
       <div className="header-title">
         
         <div>
-          <h1> <FileText size={40} />Todos los Préstamos</h1>
+          <h1> Todos los Préstamos</h1>
           <p>Gestión completa de préstamos con filtros avanzados</p>
         </div>
       </div>

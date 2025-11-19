@@ -1,8 +1,21 @@
-// src/components/Business/LoanCard/LoanCard.jsx - VERSIÓN CON ESPACIO PARA WHATSAPP
+// src/components/Business/LoanCard/LoanCard.jsx - VERSIÓN CON LUCIDE ICONS
 import { useState, useEffect, useMemo } from "react";
+import { 
+  Clock, 
+  User, 
+  IdCard, 
+  BookOpen, 
+  Calendar, 
+  MessageCircle, 
+  Eye, 
+  CheckCircle,
+  AlertTriangle,
+  AlertCircle,
+  Inbox
+} from "lucide-react";
 import { io } from "socket.io-client";
 import API from "../../../services/api";
-import whatsAppIcon from "../../../assets/whatsapp.svg";
+//import whatsAppIcon from "../../../assets/whatsapp.svg";
 import "./LoanCard.css";
 
 export default function LoanCard({ loan, onViewDetails, onUpdate }) {
@@ -154,15 +167,35 @@ export default function LoanCard({ loan, onViewDetails, onUpdate }) {
   // ✅ BADGE DE ESTADO
   const getEstadoBadge = () => {
     if (loan.estado === "pendiente") {
-      return <span className="badge badge-danger">⚠️ PENDIENTE</span>;
+      return (
+        <span className="badge badge-danger">
+          <AlertTriangle size={14} />
+          PENDIENTE
+        </span>
+      );
     }
     if (loan._vencido_cliente || (timeInfo && timeInfo.vencido)) {
-      return <span className="badge badge-warning">⏰ VENCIDO</span>;
+      return (
+        <span className="badge badge-warning">
+          <Clock size={14} />
+          VENCIDO
+        </span>
+      );
     }
     if (timeInfo && timeInfo.minutos <= 15) {
-      return <span className="badge badge-alert">🔔 POR VENCER</span>;
+      return (
+        <span className="badge badge-alert">
+          <AlertCircle size={14} />
+          POR VENCER
+        </span>
+      );
     }
-    return <span className="badge badge-success">✅ ACTIVO</span>;
+    return (
+      <span className="badge badge-success">
+        <CheckCircle size={14} />
+        ACTIVO
+      </span>
+    );
   };
 
   return (
@@ -170,7 +203,7 @@ export default function LoanCard({ loan, onViewDetails, onUpdate }) {
       {/* HEADER */}
       <div className="loan-header">
         <div className="loan-title-section">
-          <h3 className="loan-implemento">{loan.implemento}</h3>
+          <h4 className="loan-implemento">{loan.implemento}</h4>
           {getEstadoBadge()}
         </div>
         
@@ -181,10 +214,7 @@ export default function LoanCard({ loan, onViewDetails, onUpdate }) {
             className="whatsapp-btn-header"
             title="Enviar mensaje por WhatsApp"
           >
-            {/* ESPACIO PARA ICONO REAL DE WHATSAPP */}
-            <span className="whatsapp-placeholder">
-              <img src={whatsAppIcon} alt="icono whastsApp" />
-            </span>
+            <MessageCircle size={20} />
           </button>
         )}
       </div>
@@ -192,7 +222,7 @@ export default function LoanCard({ loan, onViewDetails, onUpdate }) {
       {/* DETALLES DEL USUARIO */}
       <div className="loan-details">
         <div className="detail-row">
-          <span className="detail-icon">👤</span>
+          <User size={18} className="detail-icon" />
           <div className="detail-info">
             <span className="detail-label">Usuario</span>
             <span className="detail-value">{loan.nombre_completo}</span>
@@ -200,16 +230,15 @@ export default function LoanCard({ loan, onViewDetails, onUpdate }) {
         </div>
 
         <div className="detail-row">
-          <span className="detail-icon">🆔</span>
+          <IdCard size={18} className="detail-icon" />
           <div className="detail-info">
             <span className="detail-label">Cédula</span>
             <span className="detail-value">{loan.numero_cedula}</span>
           </div>
         </div>
 
-
         <div className="detail-row">
-          <span className="detail-icon">📚</span>
+          <BookOpen size={18} className="detail-icon" />
           <div className="detail-info">
             <span className="detail-label">Programa</span>
             <span className="detail-value">{loan.programa || "N/A"}</span>
@@ -217,7 +246,7 @@ export default function LoanCard({ loan, onViewDetails, onUpdate }) {
         </div>
 
         <div className="detail-row">
-          <span className="detail-icon">🕐</span>
+          <Calendar size={18} className="detail-icon" />
           <div className="detail-info">
             <span className="detail-label">Hora inicio</span>
             <span className="detail-value">{loan.hora_inicio}</span>
@@ -225,7 +254,7 @@ export default function LoanCard({ loan, onViewDetails, onUpdate }) {
         </div>
 
         <div className="detail-row">
-          <span className="detail-icon">🕔</span>
+          <Clock size={18} className="detail-icon" />
           <div className="detail-info">
             <span className="detail-label">Hora límite</span>
             <span className="detail-value">{loan.hora_fin_estimada}</span>
@@ -238,7 +267,17 @@ export default function LoanCard({ loan, onViewDetails, onUpdate }) {
         <div className={`time-section status-${getStatusClass()}`}>
           <div className="time-header">
             <span className="time-label">
-              {timeInfo.vencido ? "⚠️ Tiempo excedido" : "⏱️ Tiempo restante"}
+              {timeInfo.vencido ? (
+                <>
+                  <AlertCircle size={16} />
+                  Tiempo excedido
+                </>
+              ) : (
+                <>
+                  <Clock size={16} />
+                  Tiempo restante
+                </>
+              )}
             </span>
             <span className="time-value">{timeInfo.texto}</span>
           </div>
@@ -278,7 +317,10 @@ export default function LoanCard({ loan, onViewDetails, onUpdate }) {
               Procesando...
             </>
           ) : (
-            <>✅ Finalizar</>
+            <>
+              <CheckCircle size={16} />
+              Finalizar
+            </>
           )}
         </button>
 
@@ -287,7 +329,8 @@ export default function LoanCard({ loan, onViewDetails, onUpdate }) {
           className="btn btn-info"
           title="Ver detalles completos"
         >
-          👁️ Detalles
+          <Eye size={16} />
+          Detalles
         </button>
       </div>
     </div>

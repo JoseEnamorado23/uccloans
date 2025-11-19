@@ -1,50 +1,40 @@
+/* Dashboard.css - AJUSTE PARA EL HEADER FIJO */
 .dashboard-container {
   display: flex;
-  height: 100vh; /* ← CAMBIAR de min-height a height */
-  overflow: hidden; /* ← AGREGAR para eliminar scroll del contenedor principal */
+  height: 100vh;
+  overflow: hidden;
 }
 
 .main-layout {
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 100vh; /* ← CAMBIAR de min-height a height */
+  height: 100vh;
   margin-left: 256px;
   transition: margin-left 0.3s ease-in-out;
-  overflow: hidden; /* ← AGREGAR */
+  overflow: hidden;
 }
 
-/* Cuando el sidebar está CERRADO */
 .main-layout.sidebar-closed {
-  margin-left: 64px;
+  margin-left: 70px;
 }
 
 .main-content {
   flex: 1;
   background-color: white;
-  height: calc(100vh - 40px); /* ← CALCULAR altura exacta */
-  overflow: hidden; /* ← ELIMINAR overflow-x: auto */
+  height: calc(100vh - 80px); /* Ajustado para el header de 80px */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  margin-top: 80px; /* Añadido margen superior para el header fijo */
 }
 
-.content-area {
-  padding: 24px;
-  height: 100%; /* ← CAMBIAR de min-height a height */
-  margin-top: 40px;
-  overflow-y: auto; /* ← MANTENER scroll solo en el contenido si es necesario */
-  flex: 1;
-}
-
-/* Si quieres eliminar TODO scroll, incluso en el content-area: */
-/*
 .content-area {
   padding: 24px;
   height: 100%;
-  margin-top: 40px;
-  overflow: hidden; ← ELIMINAR también aquí
+  overflow-y: auto;
+  flex: 1;
 }
-*/
 
 /* Responsive para móviles */
 @media (max-width: 768px) {
@@ -58,19 +48,12 @@
   }
   
   .main-content {
-    height: calc(100vh - 64px);
+    height: calc(100vh - 70px);
+    margin-top: 70px;
   }
   
   .content-area {
     padding: 16px;
-    margin-top: 64px;
     height: 100%;
-  }
-}
-
-/* Para tablets */
-@media (max-width: 1024px) {
-  .content-area {
-    padding: 20px;
   }
 }
