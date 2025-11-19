@@ -1,5 +1,6 @@
-// src/pages/GestionUsuarios.jsx - VERSIÓN CORREGIDA
+// src/pages/GestionUsuarios.jsx - VERSIÓN ORGANIZADA
 import React, { useState, useEffect } from "react";
+import { Users, Filter, Search, RefreshCw, UserPlus } from "lucide-react";
 import API from "../services/api";
 import UserModal from "../components/Users/UserModal";
 import UserHistoryModal from "../components/Users/UserHistoryModal";
@@ -27,9 +28,10 @@ const GestionUsuarios = () => {
     total_paginas: 0,
   });
 
-  // Estados para modales - ENFOQUE UNIFICADO
+  // Estados para modales
   const [selectedUser, setSelectedUser] = useState(null);
   const [modalType, setModalType] = useState(""); // 'view', 'edit', 'history', 'block'
+  const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
     const loadProgramas = async () => {
@@ -62,7 +64,6 @@ const GestionUsuarios = () => {
       }
     } catch (error) {
       console.error("Error cargando usuarios:", error);
-      alert("Error al cargar los usuarios");
       setUsuarios([]);
       setPaginacion({
         total: 0,
@@ -78,25 +79,18 @@ const GestionUsuarios = () => {
     loadUsuarios();
   }, [filters]);
 
-  // Funciones para abrir modales - ENFOQUE UNIFICADO
-  const openModal = (user, type) => {
-    console.log("🔘 Abriendo modal:", type, "para usuario:", user.id);
-    setSelectedUser(user);
-    setModalType(type);
+  // Funciones para búsqueda y filtros
+  const handleSearchChange = (value) => {
+    setSearchInput(value);
+    setFilters(prev => ({ ...prev, search: value, page: 1 }));
   };
 
-  // Función para cerrar modal
-  const closeModal = () => {
-    setSelectedUser(null);
-    setModalType("");
-  };
-
-  // Funciones de manejo de datos
   const handleFilterChange = (newFilters) => {
     setFilters((prev) => ({ ...prev, ...newFilters, page: 1 }));
   };
 
   const handleClearFilters = () => {
+    setSearchInput("");
     setFilters({
       search: "",
       programa_id: "",
@@ -112,17 +106,27 @@ const GestionUsuarios = () => {
     setFilters((prev) => ({ ...prev, page: newPage }));
   };
 
+  // Funciones para modales
+  const openModal = (user, type) => {
+    setSelectedUser(user);
+    setModalType(type);
+  };
+
+  const closeModal = () => {
+    setSelectedUser(null);
+    setModalType("");
+  };
+
+  // Funciones de manejo de datos
   const handleUpdateUser = async (userId, updateData) => {
     try {
       const response = await API.put(`/api/users/${userId}`, updateData);
       if (response.data.success) {
-        alert("Usuario actualizado exitosamente");
         loadUsuarios();
         closeModal();
       }
     } catch (error) {
       console.error("Error actualizando usuario:", error);
-      alert("Error al actualizar usuario");
     }
   };
 
@@ -130,13 +134,11 @@ const GestionUsuarios = () => {
     try {
       const response = await API.put(`/api/users/${userId}/block`, { motivo });
       if (response.data.success) {
-        alert("Usuario bloqueado exitosamente");
         loadUsuarios();
         closeModal();
       }
     } catch (error) {
       console.error("Error bloqueando usuario:", error);
-      alert("Error al bloquear usuario");
     }
   };
 
@@ -144,12 +146,10 @@ const GestionUsuarios = () => {
     try {
       const response = await API.put(`/api/users/${userId}/unblock`);
       if (response.data.success) {
-        alert("Usuario desbloqueado exitosamente");
         loadUsuarios();
       }
     } catch (error) {
       console.error("Error desbloqueando usuario:", error);
-      alert("Error al desbloquear usuario");
     }
   };
 
@@ -157,72 +157,163 @@ const GestionUsuarios = () => {
     try {
       const response = await API.put(`/api/users/${userId}/horas`, { horas });
       if (response.data.success) {
-        alert("Horas actualizadas exitosamente");
         loadUsuarios();
       }
     } catch (error) {
       console.error("Error actualizando horas:", error);
-      alert("Error al actualizar horas");
     }
   };
 
+  // Calcular estadísticas
+  const stats = {
+    total: paginacion.total || 0,
+    activos: usuarios.filter((u) => u.activo).length,
+    inactivos: usuarios.filter((u) => !u.activo).length
+  };
+
   return (
-    <div className="gestion-usuarios-container">
-      {/* HEADER */}
-      <div className="usuarios-header">
-        <h1>👥 Gestión de Usuarios</h1>
-        <p>Administra y gestiona todos los usuarios del sistema</p>
+    <div className="gestion-usuarios-page">
+      {/* HEADER PRINCIPAL */}
+      <div className="page-header">
+        <div className="header-content">
+          <div className="title-section">
+            <h1>
+              <Users size={28} />
+              Gestión de Usuarios
+            </h1>
+            <p>Administra y gestiona todos los usuarios del sistema</p>
+          </div>
+          
+          <div className="header-actions">
+            <button 
+              className="btn btn-primary"
+              onClick={() => openModal(null, "edit")}
+            >
+              <UserPlus size={18} />
+              Nuevo Usuario
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* FILTROS */}
-      <UserFilters
-        filters={filters}
-        onFiltersChange={handleFilterChange}
-        onClearFilters={handleClearFilters}
-        onRefresh={loadUsuarios}
-      />
+      {/* BARRA DE BÚSQUEDA RÁPIDA */}
+      <div className="search-section">
+        <div className="search-container">
+          <div className="search-input-wrapper">
+            <Search size={20} className="search-icon" />
+            <input
+              type="text"
+              placeholder="Buscar por nombre, cédula, email..."
+              value={searchInput}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              className="search-input"
+            />
+            {searchInput && (
+              <button 
+                onClick={() => handleSearchChange("")}
+                className="clear-search-btn"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+          
+          <div className="search-stats">
+            <span className="results-count">
+              {stats.total} usuarios encontrados
+            </span>
+          </div>
+        </div>
+      </div>
 
-      {/* ESTADÍSTICAS RÁPIDAS */}
-      <div className="stats-section">
+      {/* ESTADÍSTICAS */}
+      <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-icon">👥</div>
+          <div className="stat-icon">
+            <Users size={24} />
+          </div>
           <div className="stat-info">
             <h3>Total Usuarios</h3>
-            <p className="stat-number">{paginacion.total || 0}</p>
+            <span className="stat-number">{stats.total}</span>
           </div>
         </div>
+        
         <div className="stat-card">
-          <div className="stat-icon">✅</div>
+          <div className="stat-icon">
+            <Users size={24} />
+          </div>
           <div className="stat-info">
             <h3>Activos</h3>
-            <p className="stat-number">
-              {usuarios.filter((u) => u.activo).length}
-            </p>
+            <span className="stat-number">{stats.activos}</span>
           </div>
         </div>
+        
         <div className="stat-card">
-          <div className="stat-icon">⏸️</div>
+          <div className="stat-icon">
+            <Users size={24} />
+          </div>
           <div className="stat-info">
             <h3>Inactivos</h3>
-            <p className="stat-number">
-              {usuarios.filter((u) => !u.activo).length}
-            </p>
+            <span className="stat-number">{stats.inactivos}</span>
           </div>
         </div>
+      </div>
+
+      {/* FILTROS AVANZADOS */}
+      <div className="filters-section">
+        <div className="filters-header">
+          <div className="filters-title">
+            <Filter size={20} />
+            <h3>Filtros Avanzados</h3>
+          </div>
+          
+          <div className="filters-actions">
+            <button 
+              onClick={loadUsuarios}
+              className="btn btn-outline"
+            >
+              <RefreshCw size={16} />
+              Actualizar
+            </button>
+            <button 
+              onClick={handleClearFilters}
+              className="btn btn-outline"
+              disabled={!filters.search && !filters.programa_id && !filters.estado}
+            >
+              Limpiar Filtros
+            </button>
+          </div>
+        </div>
+
+        <UserFilters
+          filters={filters}
+          programas={programas}
+          onFiltersChange={handleFilterChange}
+          onClearFilters={handleClearFilters}
+        />
       </div>
 
       {/* LISTA DE USUARIOS */}
-      <div className="usuarios-list-section">
+      <div className="usuarios-section">
         {loading ? (
           <div className="loading-container">
             <div className="loading-spinner"></div>
-            <p>Cargando usuarios...</p>
+            <h3>Cargando usuarios...</h3>
+            <p>Obteniendo la información más reciente</p>
           </div>
         ) : usuarios.length === 0 ? (
           <div className="empty-state">
-            <div className="empty-icon">👥</div>
+            <div className="empty-icon">
+              <Users size={48} />
+            </div>
             <h3>No se encontraron usuarios</h3>
             <p>Intenta ajustar los filtros de búsqueda</p>
+            <button 
+              onClick={handleClearFilters}
+              className="btn btn-outline"
+            >
+              Limpiar filtros
+            </button>
           </div>
         ) : (
           <>
@@ -269,7 +360,7 @@ const GestionUsuarios = () => {
         )}
       </div>
 
-      {/* MODALES - ENFOQUE UNIFICADO */}
+      {/* MODALES */}
       {modalType === "view" && selectedUser && (
         <UserModal user={selectedUser} mode="view" onClose={closeModal} />
       )}
