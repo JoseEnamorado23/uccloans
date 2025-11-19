@@ -122,7 +122,6 @@ const UserModal = ({ user, mode = "view", programas = [], onClose, onSave }) => 
         <main className="user-modal-body">
           {mode === "view" ? (
             <>
-              {/* PRIMERA FILA: 2 BLOCKS */}
               <section className="user-modal-grid">
                 <div className="user-modal-block">
                   <div className="user-modal-block-title">
@@ -196,7 +195,7 @@ const UserModal = ({ user, mode = "view", programas = [], onClose, onSave }) => 
                 </div>
               </section>
 
-              {/* SEGUNDA FILA: 2 BLOCKS */}
+              {/* ESTADÍSTICAS EN BLOCK DEL MISMO TAMAÑO Y ESTILO */}
               <section className="user-modal-grid">
                 <div className="user-modal-block">
                   <div className="user-modal-block-title">
@@ -249,7 +248,6 @@ const UserModal = ({ user, mode = "view", programas = [], onClose, onSave }) => 
                 </div>
               </section>
 
-              {/* BLOQUE ADICIONAL SI HAY MOTIVO DE BLOQUEO */}
               {userData.motivo_bloqueo && (
                 <div className="user-modal-block">
                   <div className="user-modal-block-title">
