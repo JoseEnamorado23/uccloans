@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Filter, Search, RefreshCw } from 'lucide-react';
+import { Filter, RefreshCw } from 'lucide-react';
 import './UserFilters.css';
 import API from '../../services/api';
 
@@ -38,7 +38,6 @@ const UserFilters = ({ filters, onFiltersChange, onClearFilters, onRefresh }) =>
 
   const handleClear = () => {
     const defaultFilters = {
-      search: '',
       programa_id: '',
       estado: '',
       ordenar_por: 'nombre_completo',
@@ -67,7 +66,7 @@ const UserFilters = ({ filters, onFiltersChange, onClearFilters, onRefresh }) =>
           <button 
             onClick={handleClear} 
             className="btn btn-outline"
-            disabled={!localFilters.search && !localFilters.programa_id && !localFilters.estado}
+            disabled={!localFilters.programa_id && !localFilters.estado}
           >
             Limpiar Filtros
           </button>
@@ -81,20 +80,6 @@ const UserFilters = ({ filters, onFiltersChange, onClearFilters, onRefresh }) =>
       </div>
 
       <div className="filters-grid">
-        {/* Búsqueda general */}
-        <div className="filter-group">
-          <label>Búsqueda general</label>
-          <div className="search-input-wrapper">
-            <Search size={16} className="search-icon" />
-            <input
-              type="text"
-              placeholder="Buscar por nombre, cédula, email..."
-              value={localFilters.search}
-              onChange={(e) => handleFilterChange('search', e.target.value)}
-            />
-          </div>
-        </div>
-
         {/* Filtro por programa */}
         <div className="filter-group">
           <label>Programa</label>
