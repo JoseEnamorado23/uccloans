@@ -131,7 +131,7 @@ const ConfigModal = ({ isOpen, onClose }) => {
                       </div>
                     </div>
 
-                    <div className="config-grid-two-columns">
+                    <div className="config-grid-three-columns">
                       {/* Columna 1 */}
                       <div className="config-column">
                         {/* Tiempo máximo de préstamo */}
@@ -158,37 +158,6 @@ const ConfigModal = ({ isOpen, onClose }) => {
                           <button 
                             className="mm-btn mm-btn--primary config-save-btn"
                             onClick={() => handleGuardar('tiempo_maximo_prestamo_horas')}
-                            disabled={guardando}
-                          >
-                            {guardando ? <Loader size={16} className="spinner" /> : <Save size={16} />}
-                            Guardar
-                          </button>
-                        </div>
-
-                        {/* Tiempo de alerta */}
-                        <div className="config-item">
-                          <div className="config-item-header">
-                            <label>Alerta Preventiva</label>
-                            <span className="config-item-value">
-                              {configuraciones.mostrar_alerta_horas_antes || 0}h
-                            </span>
-                          </div>
-                          <div className="input-group">
-                            <input
-                              type="number"
-                              value={configuraciones.mostrar_alerta_horas_antes || ''}
-                              onChange={(e) => handleChange('mostrar_alerta_horas_antes', e.target.value)}
-                              min="0.1"
-                              max="2"
-                              step="0.1"
-                              placeholder="0.5"
-                            />
-                            <span className="input-suffix">horas</span>
-                          </div>
-                          <small>Anticipación para alertas</small>
-                          <button 
-                            className="mm-btn mm-btn--primary config-save-btn"
-                            onClick={() => handleGuardar('mostrar_alerta_horas_antes')}
                             disabled={guardando}
                           >
                             {guardando ? <Loader size={16} className="spinner" /> : <Save size={16} />}
@@ -223,6 +192,37 @@ const ConfigModal = ({ isOpen, onClose }) => {
 
                       {/* Columna 2 */}
                       <div className="config-column">
+                        {/* Tiempo de alerta */}
+                        <div className="config-item">
+                          <div className="config-item-header">
+                            <label>Alerta Preventiva</label>
+                            <span className="config-item-value">
+                              {configuraciones.mostrar_alerta_horas_antes || 0}h
+                            </span>
+                          </div>
+                          <div className="input-group">
+                            <input
+                              type="number"
+                              value={configuraciones.mostrar_alerta_horas_antes || ''}
+                              onChange={(e) => handleChange('mostrar_alerta_horas_antes', e.target.value)}
+                              min="0.1"
+                              max="2"
+                              step="0.1"
+                              placeholder="0.5"
+                            />
+                            <span className="input-suffix">horas</span>
+                          </div>
+                          <small>Anticipación para alertas</small>
+                          <button 
+                            className="mm-btn mm-btn--primary config-save-btn"
+                            onClick={() => handleGuardar('mostrar_alerta_horas_antes')}
+                            disabled={guardando}
+                          >
+                            {guardando ? <Loader size={16} className="spinner" /> : <Save size={16} />}
+                            Guardar
+                          </button>
+                        </div>
+
                         {/* Cierre Mañana */}
                         <div className="config-item">
                           <div className="config-item-header">
@@ -246,7 +246,10 @@ const ConfigModal = ({ isOpen, onClose }) => {
                             Guardar
                           </button>
                         </div>
+                      </div>
 
+                      {/* Columna 3 */}
+                      <div className="config-column">
                         {/* Apertura Tarde */}
                         <div className="config-item">
                           <div className="config-item-header">
