@@ -199,9 +199,6 @@ const UserModal = ({ user, mode = "view", programas = [], onClose, onSave }) => 
               {/* SEGUNDA FILA: 2 BLOCKS */}
               <section className="user-modal-grid">
                 <div className="user-modal-block">
-                  <div className="user-modal-block-title">
-                    <BarChart3 size={16} /> <span>Estadísticas</span>
-                  </div>
                   <div className="user-stats-grid">
                     <div className="user-stat-item">
                       <div className="user-stat-value">{userStats?.total_prestamos || 0}</div>
