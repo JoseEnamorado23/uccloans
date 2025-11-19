@@ -29,7 +29,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #00acc9;
   color: white;
 }
 
@@ -37,6 +37,10 @@
   margin: 0;
   font-size: 1.5rem;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Lato', sans-serif;
 }
 
 .modal-body {
@@ -56,7 +60,7 @@
   background: #f8f9fa;
   border-radius: 8px;
   padding: 20px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #00acc9;
 }
 
 .profile-section h3 {
@@ -67,6 +71,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  font-family: 'Lato', sans-serif;
 }
 
 .info-grid {
@@ -87,15 +92,17 @@
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-family: 'Lato', sans-serif;
 }
 
 .info-item span {
   color: #2d3748;
   font-size: 0.95rem;
+  font-family: 'Lato', sans-serif;
 }
 
 .status.active {
-  color: #28a745;
+  color: #80ba27;
   font-weight: 600;
 }
 
@@ -111,6 +118,7 @@
   border-left: 4px solid #ffc107;
   color: #856404;
   font-size: 0.9rem;
+  font-family: 'Lato', sans-serif;
 }
 
 /* STATS */
@@ -142,6 +150,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-family: 'Lato', sans-serif;
 }
 
 .stat-value {
@@ -149,6 +158,7 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: #2d3748;
+  font-family: 'Lato', sans-serif;
 }
 
 /* EDIT FORM */
@@ -168,6 +178,7 @@
   font-weight: 600;
   color: #4a5568;
   font-size: 0.9rem;
+  font-family: 'Lato', sans-serif;
 }
 
 .form-group input,
@@ -177,13 +188,14 @@
   border-radius: 8px;
   font-size: 0.95rem;
   transition: all 0.2s ease;
+  font-family: 'Lato', sans-serif;
 }
 
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #00acc9;
+  box-shadow: 0 0 0 3px rgba(0, 172, 201, 0.1);
 }
 
 .form-actions {
@@ -211,16 +223,21 @@
   font-size: 0.9rem;
   font-weight: 600;
   transition: all 0.3s ease;
+  font-family: 'Lato', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #00acc9;
   color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
+  background: #0095b3;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 172, 201, 0.4);
 }
 
 .btn-secondary {
