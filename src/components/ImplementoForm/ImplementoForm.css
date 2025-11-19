@@ -1,216 +1,188 @@
-/* components/ImplementoForm/ImplementoForm.css - VERSIÓN CORREGIDA DEFINITIVA */
-
-/* RESET COMPLETO para los inputs del formulario */
-.implemento-form-container .implemento-form .form-group input {
-  all: initial; /* Reset total */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
-/* Estilos específicos y forzados */
+/* components/ImplementoForm/ImplementoForm.css */
 .implemento-form-container {
-  max-width: 500px;
+  max-width: 480px;
   margin: 0 auto;
 }
 
-.implemento-form-container .form-title {
-  text-align: center;
-  color: #2c3e50;
-  margin-bottom: 20px;
-  font-size: 1.8rem;
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-.implemento-form-container .implemento-form {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+.form-title-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-.implemento-form-container .implemento-form .form-group {
-  margin-bottom: 20px;
-  position: relative;
-}
-
-/* LABELS - Asegurar que no sean position: absolute */
-.implemento-form-container .implemento-form .form-group label {
-  display: block !important;
-  margin-bottom: 8px !important;
-  font-weight: bold !important;
-  color: #2c3e50 !important;
-  position: static !important;
-  top: auto !important;
-  left: auto !important;
-  transform: none !important;
-  pointer-events: auto !important;
-}
-
-/* INPUTS - Estilos muy específicos y forzados */
-.implemento-form-container .implemento-form .form-group input[type="text"],
-.implemento-form-container .implemento-form .form-group input[type="number"],
-.implemento-form-container .implemento-form .form-group input[type="url"] {
-  width: 100% !important;
-  padding: 12px !important;
-  border: 2px solid #ddd !important;
-  border-radius: 4px !important;
-  font-size: 16px !important;
-  box-sizing: border-box !important;
-  background: white !important;
-  color: #000000 !important; /* Negro forzado */
-  font-family: inherit !important;
-  display: block !important;
-  position: relative !important;
-  z-index: 10 !important; /* Por encima de todo */
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-.implemento-form-container .implemento-form .form-group input:focus {
-  outline: none !important;
-  border-color: #3498db !important;
-  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2) !important;
-}
-
-.implemento-form-container .implemento-form .form-group input.error {
-  border-color: #e74c3c !important;
-}
-
-.implemento-form-container .implemento-form .form-group input:disabled {
-  background-color: #f8f9fa !important;
-  color: #6c757d !important;
-}
-
-.implemento-form-container .implemento-form .error-text {
-  color: #e74c3c;
-  font-size: 0.85rem;
-  margin-top: 0.25rem;
-  display: block;
-}
-
-/* Imágenes rápidas */
-.implemento-form-container .implemento-form .imagenes-rapidas {
-  margin-top: 1rem;
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-}
-
-.implemento-form-container .implemento-form .imagenes-label {
-  margin: 0 0 0.75rem 0;
-  font-size: 0.9rem;
-  color: #7f8c8d;
+.form-title {
+  margin: 0;
+  font-size: 1.25rem;
   font-weight: 600;
+  color: #1f2937;
 }
 
-.implemento-form-container .implemento-form .imagenes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+.form-close-btn {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #6b7280;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-close-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.form-close-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.implemento-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
   gap: 0.5rem;
 }
 
-.implemento-form-container .implemento-form .imagen-rapida-btn {
-  background: white;
-  border: 1px solid #e1e8ed;
-  border-radius: 6px;
-  padding: 0.5rem;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: center;
-}
-
-.implemento-form-container .implemento-form .imagen-rapida-btn:hover {
-  background: #3498db;
-  color: white;
-  border-color: #3498db;
-}
-
-/* Información adicional */
-.implemento-form-container .implemento-form .form-info {
-  background: #e8f4fd;
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin: 2rem 0;
-  border-left: 4px solid #3498db;
-}
-
-.implemento-form-container .implemento-form .form-info h4 {
-  margin: 0 0 1rem 0;
-  color: #2c3e50;
-}
-
-.implemento-form-container .implemento-form .form-info ul {
-  margin: 0;
-  padding-left: 1.5rem;
-}
-
-.implemento-form-container .implemento-form .form-info li {
-  margin-bottom: 0.5rem;
-  color: #2c3e50;
-}
-
-.implemento-form-container .implemento-form .form-info li:last-child {
-  margin-bottom: 0;
-}
-
-/* Acciones del formulario */
-.implemento-form-container .implemento-form .form-actions {
+.form-label {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+
+.form-label svg {
+  color: #6b7280;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: 'Lato', sans-serif;
+  background: white;
+  color: #1f2937;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #00acc9;
+  box-shadow: 0 0 0 3px rgba(0, 172, 201, 0.1);
+}
+
+.form-input.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-input:disabled {
+  background: #f9fafb;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.error-text {
+  color: #ef4444;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
   justify-content: flex-end;
-  margin-top: 20px;
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f3f4f6;
 }
 
-.implemento-form-container .implemento-form .btn-primary,
-.implemento-form-container .implemento-form .btn-secondary {
-  padding: 10px 20px;
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
-  font-size: 16px;
-  min-width: 120px;
+  transition: all 0.2s ease;
+  font-family: 'Lato', sans-serif;
+  text-decoration: none;
 }
 
-.implemento-form-container .implemento-form .btn-primary {
-  background: #3498db;
+.btn-primary {
+  background: #00acc9;
   color: white;
 }
 
-.implemento-form-container .implemento-form .btn-primary:hover:not(:disabled) {
-  background: #2980b9;
+.btn-primary:hover:not(:disabled) {
+  background: #0095b3;
+  transform: translateY(-1px);
 }
 
-.implemento-form-container .implemento-form .btn-primary:disabled {
-  background: #bdc3c7;
+.btn-outline {
+  background: white;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.btn-outline:hover:not(:disabled) {
+  background: #f8f9fa;
+  border-color: #9ca3af;
+}
+
+.btn:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
-.implemento-form-container .implemento-form .btn-secondary {
-  background: #95a5a6;
-  color: white;
+.spinner {
+  animation: spin 1s linear infinite;
 }
 
-.implemento-form-container .implemento-form .btn-secondary:hover:not(:disabled) {
-  background: #7f8c8d;
-}
-
-.implemento-form-container .implemento-form .btn-secondary:disabled {
-  background: #bdc3c7;
-  cursor: not-allowed;
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .implemento-form-container .implemento-form {
-    padding: 1.5rem;
+  .implemento-form-container {
+    max-width: 100%;
   }
   
-  .implemento-form-container .implemento-form .form-actions {
+  .form-actions {
     flex-direction: column;
   }
   
-  .implemento-form-container .implemento-form .imagenes-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .btn {
+    justify-content: center;
   }
 }

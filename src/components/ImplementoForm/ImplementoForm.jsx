@@ -1,29 +1,26 @@
 // components/ImplementoForm/ImplementoForm.jsx
 import React, { useState, useEffect } from 'react';
+import { Save, X, Loader, Package, Hash } from 'lucide-react';
 import './ImplementoForm.css';
 
 const ImplementoForm = ({ implementoExistente, onSubmit, onCancel, isSubmitting }) => {
   const [formData, setFormData] = useState({
     nombre: '',
-    cantidad_total: '',
-    imagen_url: ''
+    cantidad_total: ''
   });
 
   const [errors, setErrors] = useState({});
 
-  // Cargar datos cuando cambie implementoExistente
   useEffect(() => {
     if (implementoExistente) {
       setFormData({
         nombre: implementoExistente.nombre || '',
-        cantidad_total: implementoExistente.cantidad_total?.toString() || '',
-        imagen_url: implementoExistente.imagen_url || ''
+        cantidad_total: implementoExistente.cantidad_total?.toString() || ''
       });
     } else {
       setFormData({
         nombre: '',
-        cantidad_total: '',
-        imagen_url: ''
+        cantidad_total: ''
       });
     }
   }, [implementoExistente]);
@@ -34,7 +31,6 @@ const ImplementoForm = ({ implementoExistente, onSubmit, onCancel, isSubmitting 
       [field]: value
     }));
 
-    // Limpiar error del campo
     if (errors[field]) {
       setErrors(prev => ({
         ...prev,
@@ -66,31 +62,44 @@ const ImplementoForm = ({ implementoExistente, onSubmit, onCancel, isSubmitting 
     if (validateForm()) {
       const dataToSubmit = {
         nombre: formData.nombre.trim(),
-        cantidad_total: parseInt(formData.cantidad_total),
-        imagen_url: formData.imagen_url.trim() || null
+        cantidad_total: parseInt(formData.cantidad_total)
       };
 
       onSubmit(dataToSubmit);
     }
   };
 
-  
   return (
     <div className="implemento-form-container">
-      <h2 className="form-title">
-        {implementoExistente ? '✏️ Editar Implemento' : '➕ Nuevo Implemento'}
-      </h2>
+      <div className="form-header">
+        <div className="form-title-section">
+          <Package size={24} />
+          <h2 className="form-title">
+            {implementoExistente ? 'Editar Implemento' : 'Nuevo Implemento'}
+          </h2>
+        </div>
+        <button 
+          className="form-close-btn"
+          onClick={onCancel}
+          disabled={isSubmitting}
+        >
+          <X size={20} />
+        </button>
+      </div>
       
       <form onSubmit={handleSubmit} className="implemento-form">
         {/* Campo Nombre */}
         <div className="form-group">
-          <label htmlFor="nombre">Nombre del Implemento *</label>
+          <label htmlFor="nombre" className="form-label">
+            <Package size={16} />
+            Nombre del Implemento
+          </label>
           <input
             type="text"
             id="nombre"
             value={formData.nombre}
             onChange={(e) => handleChange('nombre', e.target.value)}
-            className={errors.nombre ? 'error' : ''}
+            className={`form-input ${errors.nombre ? 'error' : ''}`}
             placeholder="Ej: Ajedrez, Monopoly, UNO..."
             disabled={isSubmitting}
           />
@@ -99,13 +108,16 @@ const ImplementoForm = ({ implementoExistente, onSubmit, onCancel, isSubmitting 
 
         {/* Campo Cantidad */}
         <div className="form-group">
-          <label htmlFor="cantidad_total">Cantidad Total *</label>
+          <label htmlFor="cantidad_total" className="form-label">
+            <Hash size={16} />
+            Cantidad Total
+          </label>
           <input
             type="number"
             id="cantidad_total"
             value={formData.cantidad_total}
             onChange={(e) => handleChange('cantidad_total', e.target.value)}
-            className={errors.cantidad_total ? 'error' : ''}
+            className={`form-input ${errors.cantidad_total ? 'error' : ''}`}
             placeholder="0"
             min="0"
             max="1000"
@@ -116,39 +128,33 @@ const ImplementoForm = ({ implementoExistente, onSubmit, onCancel, isSubmitting 
           )}
         </div>
 
-        {/* Campo Imagen */}
-        <div className="form-group">
-          <label htmlFor="imagen_url">URL de la Imagen (opcional)</label>
-          <input
-            type="text"
-            id="imagen_url"
-            value={formData.imagen_url}
-            onChange={(e) => handleChange('imagen_url', e.target.value)}
-            placeholder="/images/ejemplo.svg"
-            disabled={isSubmitting}
-          />
-          
-          {/* Selector rápido de imágenes */}
-          
-        </div>
-
-
         {/* Acciones */}
         <div className="form-actions">
           <button 
             type="button" 
             onClick={onCancel}
-            className="btn-secondary"
+            className="btn btn-outline"
             disabled={isSubmitting}
           >
+            <X size={16} />
             Cancelar
           </button>
           <button 
             type="submit" 
-            className="btn-primary"
+            className="btn btn-primary"
             disabled={isSubmitting}
           >
-            {isSubmitting ? '⏳ Guardando...' : (implementoExistente ? '💾 Actualizar' : '✅ Crear')}
+            {isSubmitting ? (
+              <>
+                <Loader size={16} className="spinner" />
+                Guardando...
+              </>
+            ) : (
+              <>
+                <Save size={16} />
+                {implementoExistente ? 'Actualizar' : 'Crear'}
+              </>
+            )}
           </button>
         </div>
       </form>
