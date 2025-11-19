@@ -90,39 +90,39 @@ const ImplementoForm = ({ implementoExistente, onSubmit, onCancel, isSubmitting 
       <form onSubmit={handleSubmit} className="implemento-form">
         {/* Campo Nombre */}
         <div className="form-group">
-          <label htmlFor="nombre" className="form-label">
-            <Package size={16} />
-            Nombre del Implemento
-          </label>
           <input
             type="text"
             id="nombre"
             value={formData.nombre}
             onChange={(e) => handleChange('nombre', e.target.value)}
             className={`form-input ${errors.nombre ? 'error' : ''}`}
-            placeholder="Ej: Ajedrez, Monopoly, UNO..."
+            placeholder=" "
             disabled={isSubmitting}
           />
+          <label htmlFor="nombre">
+            <Package size={16} />
+            <span>Nombre del Implemento</span>
+          </label>
           {errors.nombre && <span className="error-text">{errors.nombre}</span>}
         </div>
 
         {/* Campo Cantidad */}
         <div className="form-group">
-          <label htmlFor="cantidad_total" className="form-label">
-            <Hash size={16} />
-            Cantidad Total
-          </label>
           <input
             type="number"
             id="cantidad_total"
             value={formData.cantidad_total}
             onChange={(e) => handleChange('cantidad_total', e.target.value)}
             className={`form-input ${errors.cantidad_total ? 'error' : ''}`}
-            placeholder="0"
+            placeholder=" "
             min="0"
             max="1000"
             disabled={isSubmitting}
           />
+          <label htmlFor="cantidad_total">
+            <Hash size={16} />
+            <span>Cantidad Total</span>
+          </label>
           {errors.cantidad_total && (
             <span className="error-text">{errors.cantidad_total}</span>
           )}
@@ -137,7 +137,7 @@ const ImplementoForm = ({ implementoExistente, onSubmit, onCancel, isSubmitting 
             disabled={isSubmitting}
           >
             <X size={16} />
-            Cancelar
+            <span>Cancelar</span>
           </button>
           <button 
             type="submit" 
@@ -147,12 +147,12 @@ const ImplementoForm = ({ implementoExistente, onSubmit, onCancel, isSubmitting 
             {isSubmitting ? (
               <>
                 <Loader size={16} className="spinner" />
-                Guardando...
+                <span>Guardando...</span>
               </>
             ) : (
               <>
                 <Save size={16} />
-                {implementoExistente ? 'Actualizar' : 'Crear'}
+                <span>{implementoExistente ? 'Actualizar' : 'Crear'}</span>
               </>
             )}
           </button>
