@@ -68,7 +68,7 @@ const UserCard = ({
 
   return (
     <div className={`user-card ${!usuario.activo ? "inactive" : ""}`}>
-      {/* MENU DE TRES PUNTOS */}
+      {/* MENU DE TRES PUNTOS - POSICIÓN CORREGIDA */}
       <div className="user-menu">
         <button 
           className="menu-trigger"
@@ -83,7 +83,7 @@ const UserCard = ({
         {showMenu && (
           <div className="menu-dropdown">
             <button 
-              className="menu-item view"
+              className="menu-item"
               onClick={() => handleMenuAction('view')}
             >
               <Eye size={16} />
@@ -91,7 +91,7 @@ const UserCard = ({
             </button>
             
             <button 
-              className="menu-item edit"
+              className="menu-item"
               onClick={() => handleMenuAction('edit')}
             >
               <Edit size={16} />
@@ -99,7 +99,7 @@ const UserCard = ({
             </button>
             
             <button 
-              className="menu-item history"
+              className="menu-item"
               onClick={() => handleMenuAction('history')}
             >
               <FileText size={16} />
@@ -107,7 +107,7 @@ const UserCard = ({
             </button>
             
             <button 
-              className="menu-item hours"
+              className="menu-item"
               onClick={() => handleMenuAction('hours')}
             >
               <Clock size={16} />
@@ -116,7 +116,7 @@ const UserCard = ({
             
             {usuario.activo ? (
               <button 
-                className="menu-item block"
+                className="menu-item delete"
                 onClick={() => handleMenuAction('block')}
               >
                 <Lock size={16} />
@@ -124,7 +124,7 @@ const UserCard = ({
               </button>
             ) : (
               <button 
-                className="menu-item unblock"
+                className="menu-item"
                 onClick={() => handleMenuAction('unblock')}
               >
                 <Unlock size={16} />
@@ -142,19 +142,22 @@ const UserCard = ({
         </div>
         <div className="user-info">
           <h3>{usuario.nombre_completo}</h3>
-          <p className="user-cedula">Cédula: {usuario.numero_cedula}</p>
-        </div>
-        <div className="user-status">
-          {usuario.activo ? (
-            <span className="status-badge active">Activo</span>
-          ) : (
-            <span className="status-badge inactive">Inactivo</span>
-          )}
+          <div className="user-status">
+            {usuario.activo ? (
+              <span className="status-badge active">Activo</span>
+            ) : (
+              <span className="status-badge inactive">Inactivo</span>
+            )}
+          </div>
         </div>
       </div>
 
       {/* DETALLES */}
       <div className="user-details">
+        <div className="detail-item">
+          <span className="detail-label">Cédula:</span>
+          <span className="detail-value">{usuario.numero_cedula}</span>
+        </div>
         <div className="detail-item">
           <span className="detail-label">Email:</span>
           <span className="detail-value">
@@ -178,11 +181,8 @@ const UserCard = ({
           </span>
         </div>
         {usuario.motivo_bloqueo && (
-          <div className="detail-item">
-            <span className="detail-label">Motivo bloqueo:</span>
-            <span className="detail-value motivo-bloqueo">
-              {usuario.motivo_bloqueo}
-            </span>
+          <div className="motivo-bloqueo">
+            {usuario.motivo_bloqueo}
           </div>
         )}
       </div>
