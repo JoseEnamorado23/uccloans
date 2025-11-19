@@ -1,13 +1,14 @@
 // src/components/Users/UserCard.jsx
 import React, { useState } from "react";
-import { 
-  Eye, 
-  Edit, 
-  FileText, 
-  Lock, 
-  Unlock, 
+import {
+  Eye,
+  Edit,
+  FileText,
+  Lock,
+  Unlock,
   Clock,
-  MoreVertical 
+  X,
+  MoreVertical,
 } from "lucide-react";
 import "./UserCard.css";
 
@@ -35,7 +36,7 @@ const UserCard = ({
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleUpdateHours();
     }
   };
@@ -43,22 +44,22 @@ const UserCard = ({
   const handleMenuAction = (action) => {
     setShowMenu(false);
     switch (action) {
-      case 'view':
+      case "view":
         onView(usuario);
         break;
-      case 'edit':
+      case "edit":
         onEdit(usuario);
         break;
-      case 'history':
+      case "history":
         onHistory(usuario);
         break;
-      case 'block':
+      case "block":
         onBlock(usuario);
         break;
-      case 'unblock':
+      case "unblock":
         onUnblock(usuario.id);
         break;
-      case 'hours':
+      case "hours":
         setShowHoursModal(true);
         break;
       default:
@@ -70,7 +71,7 @@ const UserCard = ({
     <div className={`user-card ${!usuario.activo ? "inactive" : ""}`}>
       {/* MENU DE TRES PUNTOS - POSICIÓN CORREGIDA */}
       <div className="user-menu">
-        <button 
+        <button
           className="menu-trigger"
           onClick={(e) => {
             e.stopPropagation();
@@ -79,53 +80,53 @@ const UserCard = ({
         >
           <MoreVertical size={18} />
         </button>
-        
+
         {showMenu && (
           <div className="menu-dropdown">
-            <button 
+            <button
               className="menu-item"
-              onClick={() => handleMenuAction('view')}
+              onClick={() => handleMenuAction("view")}
             >
               <Eye size={16} />
               Ver información
             </button>
-            
-            <button 
+
+            <button
               className="menu-item"
-              onClick={() => handleMenuAction('edit')}
+              onClick={() => handleMenuAction("edit")}
             >
               <Edit size={16} />
               Editar información
             </button>
-            
-            <button 
+
+            <button
               className="menu-item"
-              onClick={() => handleMenuAction('history')}
+              onClick={() => handleMenuAction("history")}
             >
               <FileText size={16} />
               Historial de préstamos
             </button>
-            
-            <button 
+
+            <button
               className="menu-item"
-              onClick={() => handleMenuAction('hours')}
+              onClick={() => handleMenuAction("hours")}
             >
               <Clock size={16} />
               Editar horas
             </button>
-            
+
             {usuario.activo ? (
-              <button 
+              <button
                 className="menu-item delete"
-                onClick={() => handleMenuAction('block')}
+                onClick={() => handleMenuAction("block")}
               >
                 <Lock size={16} />
                 Bloquear usuario
               </button>
             ) : (
-              <button 
+              <button
                 className="menu-item"
-                onClick={() => handleMenuAction('unblock')}
+                onClick={() => handleMenuAction("unblock")}
               >
                 <Unlock size={16} />
                 Desbloquear usuario
@@ -134,7 +135,6 @@ const UserCard = ({
           </div>
         )}
       </div>
-
       {/* HEADER */}
       <div className="user-header">
         <div className="user-avatar">
@@ -151,7 +151,6 @@ const UserCard = ({
           </div>
         </div>
       </div>
-
       {/* DETALLES */}
       <div className="user-details">
         <div className="detail-item">
@@ -171,7 +170,9 @@ const UserCard = ({
         <div className="detail-item">
           <span className="detail-label">Programa:</span>
           <span className="detail-value">
-            {usuario.programa_nombre || `Programa ${usuario.programa_id}` || "N/A"}
+            {usuario.programa_nombre ||
+              `Programa ${usuario.programa_id}` ||
+              "N/A"}
           </span>
         </div>
         <div className="detail-item">
@@ -181,18 +182,22 @@ const UserCard = ({
           </span>
         </div>
         {usuario.motivo_bloqueo && (
-          <div className="motivo-bloqueo">
-            {usuario.motivo_bloqueo}
-          </div>
+          <div className="motivo-bloqueo">{usuario.motivo_bloqueo}</div>
         )}
       </div>
-
       {/* MODAL PARA EDITAR HORAS */}
+      // MODAL PARA AGREGAR HORAS - ACTUALIZADO
       {showHoursModal && (
         <div className="modal-overlay" onClick={() => setShowHoursModal(false)}>
-          <div className="modal-content small" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="modal-content small"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="modal-header">
-              <h3>Editar Horas</h3>
+              <h3>
+                <Clock size={18} />
+                Agregar Horas
+              </h3>
               <button
                 className="btn-close"
                 onClick={() => setShowHoursModal(false)}
@@ -206,7 +211,6 @@ const UserCard = ({
                 <strong>{usuario.nombre_completo}</strong>
               </p>
               <div className="form-group">
-                <label>Nuevas horas totales:</label>
                 <input
                   type="number"
                   step="0.01"
@@ -214,23 +218,28 @@ const UserCard = ({
                   value={newHours}
                   onChange={(e) => setNewHours(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Ej: 25.5"
+                  placeholder=" "
                   autoFocus
                 />
+                <label>Horas a agregar *</label>
               </div>
               <div className="modal-actions">
                 <button
                   className="btn btn-secondary"
                   onClick={() => setShowHoursModal(false)}
                 >
+                  <X size={16} />
                   Cancelar
                 </button>
                 <button
                   className="btn btn-primary"
                   onClick={handleUpdateHours}
-                  disabled={!newHours || isNaN(newHours) || parseFloat(newHours) < 0}
+                  disabled={
+                    !newHours || isNaN(newHours) || parseFloat(newHours) < 0
+                  }
                 >
-                  Actualizar
+                  <Clock size={16} />
+                  Agregar Horas
                 </button>
               </div>
             </div>
