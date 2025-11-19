@@ -2,16 +2,12 @@ import React, { useState, useEffect } from "react";
 import { 
   X, 
   User, 
-  IdCard, 
   Phone, 
   Mail, 
   BookOpen, 
-  Clock, 
-  Calendar, 
   CheckCircle, 
   XCircle,
   BarChart3,
-  FileText,
   Save,
   Edit3,
   Shield,
@@ -126,6 +122,7 @@ const UserModal = ({ user, mode = "view", programas = [], onClose, onSave }) => 
         <main className="user-modal-body">
           {mode === "view" ? (
             <>
+              {/* PRIMERA FILA: 2 BLOCKS */}
               <section className="user-modal-grid">
                 <div className="user-modal-block">
                   <div className="user-modal-block-title">
@@ -199,36 +196,34 @@ const UserModal = ({ user, mode = "view", programas = [], onClose, onSave }) => 
                 </div>
               </section>
 
-              {/* ESTADÍSTICAS EN BLOCK DEL MISMO TAMAÑO */}
-              {userStats && (
+              {/* SEGUNDA FILA: 2 BLOCKS */}
+              <section className="user-modal-grid">
                 <div className="user-modal-block">
                   <div className="user-modal-block-title">
                     <BarChart3 size={16} /> <span>Estadísticas</span>
                   </div>
                   <div className="user-stats-grid">
                     <div className="user-stat-item">
-                      <div className="user-stat-value">{userStats.total_prestamos || 0}</div>
+                      <div className="user-stat-value">{userStats?.total_prestamos || 0}</div>
                       <div className="user-stat-label">Total Préstamos</div>
                     </div>
                     <div className="user-stat-item">
-                      <div className="user-stat-value">{userStats.prestamos_devueltos || 0}</div>
+                      <div className="user-stat-value">{userStats?.prestamos_devueltos || 0}</div>
                       <div className="user-stat-label">Devueltos</div>
                     </div>
                     <div className="user-stat-item">
-                      <div className="user-stat-value">{userStats.prestamos_activos || 0}</div>
+                      <div className="user-stat-value">{userStats?.prestamos_activos || 0}</div>
                       <div className="user-stat-label">Activos</div>
                     </div>
                     <div className="user-stat-item">
                       <div className="user-stat-value">
-                        {parseFloat(userStats.horas_totales_acumuladas || 0).toFixed(1)}h
+                        {parseFloat(userStats?.horas_totales_acumuladas || 0).toFixed(1)}h
                       </div>
                       <div className="user-stat-label">Horas Acum.</div>
                     </div>
                   </div>
                 </div>
-              )}
 
-              <section className="user-modal-grid">
                 <div className="user-modal-block">
                   <div className="user-modal-block-title">
                     <History size={16} /> <span>Historial</span>
@@ -252,18 +247,19 @@ const UserModal = ({ user, mode = "view", programas = [], onClose, onSave }) => 
                     </div>
                   )}
                 </div>
-
-                {userData.motivo_bloqueo && (
-                  <div className="user-modal-block">
-                    <div className="user-modal-block-title">
-                      <XCircle size={16} /> <span>Información de Bloqueo</span>
-                    </div>
-                    <div className="user-motivo-bloqueo">
-                      {userData.motivo_bloqueo}
-                    </div>
-                  </div>
-                )}
               </section>
+
+              {/* BLOQUE ADICIONAL SI HAY MOTIVO DE BLOQUEO */}
+              {userData.motivo_bloqueo && (
+                <div className="user-modal-block">
+                  <div className="user-modal-block-title">
+                    <XCircle size={16} /> <span>Información de Bloqueo</span>
+                  </div>
+                  <div className="user-motivo-bloqueo">
+                    {userData.motivo_bloqueo}
+                  </div>
+                </div>
+              )}
             </>
           ) : (
             /* MODO EDICIÓN */
