@@ -6,9 +6,7 @@ import {
   BookOpen, 
   Mail, 
   AlertTriangle,
-  Lock,
-  AlertCircle,
-  Lightbulb
+  Lock
 } from 'lucide-react';
 import './BlockUserModal.css';
 
@@ -99,18 +97,17 @@ const BlockUserModal = ({ user, onClose, onBlock }) => {
 
           <div className="form-section">
             <div className="form-group">
-              <label>Motivo del bloqueo *</label>
               <textarea
                 value={motivo}
                 onChange={(e) => setMotivo(e.target.value)}
-                placeholder="Describe el motivo del bloqueo (mínimo 5 caracteres)..."
+                placeholder=" "
                 rows="4"
               />
+              <label>Motivo del bloqueo *</label>
               <div className={`char-count ${motivo.length < 5 ? 'warning' : ''}`}>
                 {motivo.length}/5 caracteres mínimos
               </div>
             </div>
-
           </div>
         </main>
 

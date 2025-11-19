@@ -161,7 +161,7 @@
   gap: 6px;
 }
 
-/* Form Section */
+/* Form Section - LABEL FLOTANTE */
 .form-section {
   display: flex;
   flex-direction: column;
@@ -169,28 +169,46 @@
 }
 
 .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.form-group label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #374151;
+  position: relative;
+  margin-bottom: 8px;
 }
 
 .form-group textarea {
   width: 100%;
-  padding: 12px 14px;
+  padding: 16px 14px 8px 14px;
   border: 2px solid #e2e8f0;
   border-radius: 8px;
   font-size: 0.9rem;
   font-family: 'Lato', sans-serif;
   resize: vertical;
-  min-height: 100px;
+  min-height: 120px;
   transition: all 0.2s ease;
   line-height: 1.4;
+}
+
+/* Label Flotante */
+.form-group label {
+  position: absolute;
+  top: 16px;
+  left: 14px;
+  font-size: 0.9rem;
+  color: var(--muted);
+  background: white;
+  padding: 0 4px;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Cuando el textarea tiene focus o contenido */
+.form-group textarea:focus + label,
+.form-group textarea:not(:placeholder-shown) + label {
+  top: -8px;
+  left: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--danger);
+  background: white;
 }
 
 .form-group textarea:focus {
@@ -209,37 +227,6 @@
 .char-count.warning {
   color: #ef4444;
   font-weight: 600;
-}
-
-/* Form Tips */
-.form-tips {
-  background: #fff7ed;
-  border: 1px solid #fed7aa;
-  border-radius: 8px;
-  padding: 16px;
-  border-left: 4px solid #f59e0b;
-}
-
-.form-tips h4 {
-  margin: 0 0 10px 0;
-  color: #92400e;
-  font-size: 0.85rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.form-tips ul {
-  margin: 0;
-  padding-left: 18px;
-  color: #92400e;
-}
-
-.form-tips li {
-  margin-bottom: 6px;
-  font-size: 0.8rem;
-  line-height: 1.4;
 }
 
 /* Footer actions */
@@ -334,7 +321,7 @@
     padding: 14px 16px;
   }
   
-  .form-tips ul {
-    padding-left: 16px;
+  .form-group textarea {
+    min-height: 100px;
   }
 }
