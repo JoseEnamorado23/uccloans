@@ -129,14 +129,6 @@ const GestionProgramas = () => {
           </div>
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
             <button 
-              className="btn-export"
-              onClick={handleExport}
-              disabled={loading || programas.length === 0}
-            >
-              <Download size={16} />
-              Exportar
-            </button>
-            <button 
               className="btn btn-primary"
               onClick={openCreateModal}
               disabled={loading}
