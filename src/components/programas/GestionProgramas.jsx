@@ -1,5 +1,13 @@
-// src/components/Programas/GestionProgramas.jsx
 import React, { useState } from 'react';
+import { 
+  Plus, 
+  Edit3, 
+  Trash2, 
+  BookOpen,
+  X,
+  Download,
+  RefreshCw
+} from 'lucide-react';
 import { useProgramas } from '../../hooks/useProgramas';
 import './GestionProgramas.css';
 
@@ -98,150 +106,198 @@ const GestionProgramas = () => {
     }
   };
 
-  return (
-    <div className="gestion-programas-container">
-      {/* HEADER */}
-      <div className="programas-header">
-        <h1>📚 Gestión de Programas Académicos</h1>
-        <p>Administra los programas académicos disponibles en el sistema</p>
-        <button 
-          className="btn btn-primary"
-          onClick={openCreateModal}
-          disabled={loading}
-        >
-          ➕ Agregar Programa
-        </button>
-      </div>
+  // Exportar programas
+  const handleExport = () => {
+    const dataStr = JSON.stringify(programas, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `programas-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
 
-      {/* ESTADÍSTICAS */}
-      <div className="stats-section">
-        <div className="stat-card">
-          <div className="stat-icon">📚</div>
-          <div className="stat-info">
-            <h3>Total Programas</h3>
-            <p className="stat-number">{programas.length}</p>
+  return (
+    <div className="prestamos-page">
+      {/* HEADER */}
+      <div className="page-header">
+        <div className="header-actions">
+          <div>
+            <h1>Programas Académicos</h1>
+            <p>Gestiona los programas académicos del sistema</p>
+          </div>
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <button 
+              className="btn-export"
+              onClick={handleExport}
+              disabled={loading || programas.length === 0}
+            >
+              <Download size={16} />
+              Exportar
+            </button>
+            <button 
+              className="btn btn-primary"
+              onClick={openCreateModal}
+              disabled={loading}
+            >
+              <Plus size={16} />
+              Agregar Programa
+            </button>
           </div>
         </div>
       </div>
 
+      {/* INFORMACIÓN DE RESULTADOS */}
+      {!loading && !error && programas.length > 0 && (
+        <div className="results-info">
+          <span>Mostrando {programas.length} programa{programas.length !== 1 ? 's' : ''}</span>
+          <button 
+            className="btn btn-secondary btn-sm"
+            onClick={refreshProgramas}
+            disabled={loading}
+          >
+            <RefreshCw size={14} />
+            Actualizar
+          </button>
+        </div>
+      )}
+
       {/* LISTA DE PROGRAMAS */}
-      <div className="programas-list-section">
+      <div className="loans-table-container">
         {loading ? (
-          <div className="loading-container">
+          <div className="loading-full">
             <div className="loading-spinner"></div>
             <p>Cargando programas...</p>
           </div>
         ) : error ? (
-          <div className="error-container">
-            <div className="error-icon">⚠️</div>
-            <h3>Error al cargar programas</h3>
-            <p>{error}</p>
-            <button className="btn btn-secondary" onClick={refreshProgramas}>
-              🔄 Reintentar
+          <div className="error-message">
+            <div>
+              <h3>Error al cargar programas</h3>
+              <p>{error}</p>
+            </div>
+            <button className="retry-btn" onClick={refreshProgramas}>
+              Reintentar
             </button>
           </div>
         ) : programas.length === 0 ? (
           <div className="empty-state">
-            <div className="empty-icon">📚</div>
+            <div className="empty-icon">
+              <BookOpen size={48} />
+            </div>
             <h3>No hay programas registrados</h3>
             <p>Comienza agregando el primer programa académico</p>
             <button className="btn btn-primary" onClick={openCreateModal}>
-              ➕ Agregar Primer Programa
+              <Plus size={16} />
+              Agregar Primer Programa
             </button>
           </div>
         ) : (
-          <div className="programas-table-container">
-            <table className="programas-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre del Programa</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {programas.map((programa) => (
-                  <tr key={programa.id}>
-                    <td className="programa-id">#{programa.id}</td>
-                    <td className="programa-nombre">{programa.nombre}</td>
-                    <td className="programa-actions">
+          <table className="loans-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre del Programa</th>
+                <th style={{ textAlign: 'center' }}>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {programas.map((programa) => (
+                <tr key={programa.id}>
+                  <td className="programa-id">#{programa.id}</td>
+                  <td className="programa-nombre">
+                    <strong>{programa.nombre}</strong>
+                  </td>
+                  <td>
+                    <div className="status-actions">
                       <button
-                        className="btn btn-warning btn-sm"
+                        className="action-btn approve-btn"
                         onClick={() => openEditModal(programa)}
                         disabled={actionLoading}
                         title="Editar programa"
                       >
-                        ✏️ Editar
+                        <Edit3 size={16} />
                       </button>
                       <button
-                        className="btn btn-danger btn-sm"
+                        className="action-btn reject-btn"
                         onClick={() => handleDelete(programa)}
                         disabled={actionLoading}
                         title="Eliminar programa"
                       >
-                        🗑️ Eliminar
+                        <Trash2 size={16} />
                       </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
       </div>
 
-      {/* MODAL PARA CREAR/EDITAR */}
+      {/* MODAL MINIMALISTA PARA CREAR/EDITAR */}
       {showModal && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2>
-                {modalType === 'create' ? '➕ Agregar Programa' : '✏️ Editar Programa'}
-              </h2>
-              <button className="btn-close" onClick={closeModal}>×</button>
-            </div>
+        <div className="mm-overlay" onClick={closeModal}>
+          <div className="mm-card" onClick={(e) => e.stopPropagation()}>
+            <header className="mm-head">
+              <div>
+                <h3 className="mm-title">
+                  {modalType === 'create' ? 'Agregar Programa' : 'Editar Programa'}
+                </h3>
+                <p className="mm-sub">
+                  {modalType === 'create' ? 'Crear nuevo programa académico' : `ID #${selectedPrograma?.id}`}
+                </p>
+              </div>
+              <button 
+                aria-label="Cerrar" 
+                className="mm-close" 
+                onClick={closeModal}
+              >
+                <X size={18} />
+              </button>
+            </header>
 
-            <form onSubmit={handleSubmit}>
-              <div className="modal-body">
+            <main className="mm-body">
+              <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                  <label>Nombre del Programa *</label>
                   <input
                     type="text"
                     name="nombre"
                     value={formData.nombre}
                     onChange={handleInputChange}
-                    placeholder="Ingresa el nombre del programa..."
+                    placeholder=" "
                     required
                     autoFocus
                   />
+                  <label>Nombre del Programa *</label>
                 </div>
-              </div>
+              </form>
+            </main>
 
-              <div className="modal-actions">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={closeModal}
-                  disabled={actionLoading}
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={actionLoading || !formData.nombre.trim()}
-                >
-                  {actionLoading ? (
-                    <>
-                      <span className="spinner-small"></span>
-                      {modalType === 'create' ? 'Creando...' : 'Actualizando...'}
-                    </>
-                  ) : (
-                    <>💾 {modalType === 'create' ? 'Crear Programa' : 'Actualizar Programa'}</>
-                  )}
-                </button>
-              </div>
-            </form>
+            <footer className="mm-foot">
+              <button 
+                className="mm-btn mm-btn--ghost" 
+                onClick={closeModal}
+                disabled={actionLoading}
+              >
+                <X size={16} />
+                Cancelar
+              </button>
+              <button
+                className="mm-btn mm-btn--primary"
+                onClick={handleSubmit}
+                disabled={actionLoading || !formData.nombre.trim()}
+              >
+                {actionLoading ? (
+                  <span className="mm-spinner" />
+                ) : (
+                  <>
+                    <BookOpen size={16} />
+                    {modalType === 'create' ? 'Crear Programa' : 'Actualizar'}
+                  </>
+                )}
+              </button>
+            </footer>
           </div>
         </div>
       )}
