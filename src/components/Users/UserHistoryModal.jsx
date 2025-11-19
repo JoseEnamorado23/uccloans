@@ -18,15 +18,8 @@ const UserHistoryModal = ({ user, onClose }) => {
   const [prestamos, setPrestamos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
-    page: 1,
-    limit: 10,
     estado: '',
     implemento: ''
-  });
-  const [paginacion, setPaginacion] = useState({
-    total: 0,
-    pagina_actual: 1,
-    total_paginas: 0
   });
 
   useEffect(() => {
@@ -42,31 +35,17 @@ const UserHistoryModal = ({ user, onClose }) => {
       
       if (response.data.success) {
         setPrestamos(response.data.data.prestamos || []);
-        setPaginacion(response.data.data.paginacion || {
-          total: 0,
-          pagina_actual: 1,
-          total_paginas: 0
-        });
       }
     } catch (error) {
       console.error('Error cargando historial:', error);
       setPrestamos([]);
-      setPaginacion({
-        total: 0,
-        pagina_actual: 1,
-        total_paginas: 0
-      });
     } finally {
       setLoading(false);
     }
   };
 
   const handleFilterChange = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value, page: 1 }));
-  };
-
-  const handlePageChange = (newPage) => {
-    setFilters(prev => ({ ...prev, page: newPage }));
+    setFilters(prev => ({ ...prev, [key]: value }));
   };
 
   const getEstadoBadge = (estado) => {
@@ -121,9 +100,9 @@ const UserHistoryModal = ({ user, onClose }) => {
             <div className="history-user-details">
               <h3>{user.nombre_completo}</h3>
               <p>
-                <IdCard size={12} />
+                <IdCard size={14} />
                 {user.numero_cedula}
-                <BookOpen size={12} />
+                <BookOpen size={14} />
                 {user.programa_nombre || user.programa}
               </p>
             </div>
@@ -133,7 +112,7 @@ const UserHistoryModal = ({ user, onClose }) => {
           <div className="history-filters">
             <div className="filter-group">
               <label>
-                <Filter size={12} />
+                <Filter size={14} />
                 Estado
               </label>
               <select
@@ -150,7 +129,7 @@ const UserHistoryModal = ({ user, onClose }) => {
 
             <div className="filter-group">
               <label>
-                <Search size={12} />
+                <Search size={14} />
                 Implemento
               </label>
               <input
@@ -174,7 +153,7 @@ const UserHistoryModal = ({ user, onClose }) => {
             </div>
           </div>
 
-          {/* Lista de préstamos - CON SCROLL */}
+          {/* Lista de préstamos - SIN PAGINACIÓN */}
           {loading ? (
             <div className="loading-container">
               <div className="loading-spinner"></div>
@@ -189,85 +168,67 @@ const UserHistoryModal = ({ user, onClose }) => {
               <p>Este usuario no tiene préstamos en el historial</p>
             </div>
           ) : (
-            <>
-              <div className="prestamos-container">
-                <div className="prestamos-list">
-                  {prestamos.map(prestamo => (
-                    <div key={prestamo.id} className="prestamo-item">
-                      <div className="prestamo-header">
-                        <h4>{prestamo.implemento}</h4>
-                        {getEstadoBadge(prestamo.estado)}
-                      </div>
-                      
-                      <div className="prestamo-details">
-                        <div className="detail-row">
-                          <span className="detail-label">
-                            <Calendar size={12} />
-                            Fecha:
-                          </span>
-                          <span className="detail-value">{formatFecha(prestamo.fecha_prestamo)}</span>
-                        </div>
-                        <div className="detail-row">
-                          <span className="detail-label">
-                            <Clock size={12} />
-                            Inicio:
-                          </span>
-                          <span className="detail-value">{formatHora(prestamo.hora_inicio)}</span>
-                        </div>
-                        <div className="detail-row">
-                          <span className="detail-label">
-                            <Clock size={12} />
-                            Fin Estimado:
-                          </span>
-                          <span className="detail-value">{formatHora(prestamo.hora_fin_estimada)}</span>
-                        </div>
-                        {prestamo.hora_fin_real && (
-                          <div className="detail-row">
-                            <span className="detail-label">
-                              <Clock size={12} />
-                              Fin Real:
-                            </span>
-                            <span className="detail-value">{formatHora(prestamo.hora_fin_real)}</span>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="prestamo-meta">
-                        <span className="fecha-registro">
-                          <Calendar size={10} />
-                          Registrado: {formatFecha(prestamo.fecha_registro)}
-                        </span>
-                      </div>
+            <div className="prestamos-container">
+              <div className="prestamos-list">
+                {prestamos.map(prestamo => (
+                  <div key={prestamo.id} className="prestamo-item">
+                    <div className="prestamo-header">
+                      <h4>{prestamo.implemento}</h4>
+                      {getEstadoBadge(prestamo.estado)}
                     </div>
-                  ))}
-                </div>
-              </div>
+                    
+                    <div className="prestamo-details">
+                      <div className="detail-row">
+                        <span className="detail-label">
+                          <Calendar size={14} />
+                          Fecha:
+                        </span>
+                        <span className="detail-value">{formatFecha(prestamo.fecha_prestamo)}</span>
+                      </div>
+                      <div className="detail-row">
+                        <span className="detail-label">
+                          <Clock size={14} />
+                          Inicio:
+                        </span>
+                        <span className="detail-value">{formatHora(prestamo.hora_inicio)}</span>
+                      </div>
+                      <div className="detail-row">
+                        <span className="detail-label">
+                          <Clock size={14} />
+                          Fin Estimado:
+                        </span>
+                        <span className="detail-value">{formatHora(prestamo.hora_fin_estimada)}</span>
+                      </div>
+                      {prestamo.hora_fin_real && (
+                        <div className="detail-row">
+                          <span className="detail-label">
+                            <Clock size={14} />
+                            Fin Real:
+                          </span>
+                          <span className="detail-value">{formatHora(prestamo.hora_fin_real)}</span>
+                        </div>
+                      )}
+                      {prestamo.horas_totales && (
+                        <div className="detail-row">
+                          <span className="detail-label">
+                            <Clock size={14} />
+                            Horas Totales:
+                          </span>
+                          <span className="detail-value">{prestamo.horas_totales}h</span>
+                        </div>
+                      )}
+                    </div>
 
-              {/* Paginación */}
-              {paginacion.total_paginas > 1 && (
-                <div className="pagination">
-                  <button
-                    className="history-modal-btn history-modal-btn--ghost"
-                    disabled={filters.page === 1}
-                    onClick={() => handlePageChange(filters.page - 1)}
-                  >
-                    Anterior
-                  </button>
-                  
-                  <span className="pagination-info">
-                    Página {filters.page} de {paginacion.total_paginas}
-                  </span>
-                  
-                  <button
-                    className="history-modal-btn history-modal-btn--ghost"
-                    disabled={filters.page >= paginacion.total_paginas}
-                    onClick={() => handlePageChange(filters.page + 1)}
-                  >
-                    Siguiente
-                  </button>
-                </div>
-              )}
-            </>
+                    <div className="prestamo-meta">
+                      <span className="fecha-registro">
+                        <Calendar size={12} />
+                        Registrado: {formatFecha(prestamo.fecha_registro)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </main>
 
