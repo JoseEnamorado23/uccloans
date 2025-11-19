@@ -13,7 +13,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import API from "../../../services/api";
-import "./LoanModal.min.css";
+import "./LoanModal.css";
 
 const LoanModal = ({ loan, onClose, onUpdate }) => {
   const [loading, setLoading] = useState(false);
