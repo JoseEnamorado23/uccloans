@@ -111,18 +111,6 @@ const BlockUserModal = ({ user, onClose, onBlock }) => {
               </div>
             </div>
 
-            <div className="form-tips">
-              <h4>
-                <Lightbulb size={16} />
-                Ejemplos de motivos válidos:
-              </h4>
-              <ul>
-                <li>Comportamiento inapropiado en el uso de implementos</li>
-                <li>Incumplimiento reiterado de los horarios de devolución</li>
-                <li>Daño o pérdida de implementos prestados</li>
-                <li>Uso indebido de las instalaciones</li>
-              </ul>
-            </div>
           </div>
         </main>
 
